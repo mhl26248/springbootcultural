@@ -36,9 +36,6 @@ public class User {
     private List<Integer> roles;
 
     @TableField(exist = false)
-    private List<Book> bookList;
-
-    @TableField(exist = false)
     private String token;
 
     private BigDecimal account;

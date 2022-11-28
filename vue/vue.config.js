@@ -1,5 +1,5 @@
 
-const name =  "物流管理平台"; // page title
+const name =  "车辆管理平台"; // page title
 
 
 // 跨域配置

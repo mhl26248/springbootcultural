@@ -3,29 +3,29 @@
   <div style="padding: 10px">
     <el-row :gutter="10">
       <el-col :span="12">
-        <el-card>
-<!--          城市数：{{summary.citys}} ||-->
-          站点数：{{summary.places}}
-        </el-card>
-        <el-card>
-          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>
-        </el-card>
-
-      </el-col>
-      <el-col :span="12">
 <!--        <el-card>-->
-<!--          站点排行榜：{{summary.newsc}} || 里程排行榜：{{summary.newsMessage}}-->
+<!--&lt;!&ndash;          城市数：{{summary.citys}} ||&ndash;&gt;-->
+<!--          站点数：{{summary.places}}-->
 <!--        </el-card>-->
-        <el-card>
-          司机数：{{summary.drivers}}  ||
-          车辆数：{{summary.cars}} || 里程数：{{summary.miles}}
-        </el-card>
+<!--        <el-card>-->
+<!--          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>-->
+<!--        </el-card>-->
 
-        <!-- 新闻浏览排行 -->
-        <el-card>
-          <div id="myChart2" :style="{width: '600px', height: '500px'}"></div>
-        </el-card>
       </el-col>
+<!--      <el-col :span="12">-->
+<!--&lt;!&ndash;        <el-card>&ndash;&gt;-->
+<!--&lt;!&ndash;          站点排行榜：{{summary.newsc}} || 里程排行榜：{{summary.newsMessage}}&ndash;&gt;-->
+<!--&lt;!&ndash;        </el-card>&ndash;&gt;-->
+<!--        <el-card>-->
+<!--          司机数：{{summary.drivers}}  ||-->
+<!--          车辆数：{{summary.cars}} || 里程数：{{summary.miles}}-->
+<!--        </el-card>-->
+
+<!--        &lt;!&ndash; 新闻浏览排行 &ndash;&gt;-->
+<!--        <el-card>-->
+<!--          <div id="myChart2" :style="{width: '600px', height: '500px'}"></div>-->
+<!--        </el-card>-->
+<!--      </el-col>-->
     </el-row>
 
   </div>
