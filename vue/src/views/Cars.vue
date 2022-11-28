@@ -24,8 +24,8 @@
           label="车辆名称">
       </el-table-column>
       <el-table-column
-          prop="carMiles"
-          label="车辆里程">
+          prop="carNo" min-width="120px"
+          label="车牌">
       </el-table-column>
       <el-table-column
           prop="age"
@@ -33,11 +33,15 @@
       </el-table-column>
       <el-table-column
           prop="brand"
-          label="品牌">
+          label="分类">
       </el-table-column>
       <el-table-column
-          prop="placeName"
-          label="所属站点">
+          prop="userName"
+          label="车主">
+      </el-table-column>
+      <el-table-column
+          prop="placeName" min-width="120px"
+          label="车库">
       </el-table-column>
       <el-table-column label="操作" width="400">
         <template #default="scope">
@@ -64,32 +68,44 @@
     </div>
 
 
-    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
-      <el-table :data="bookList" stripe border>
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-      </el-table>
-    </el-dialog>
-
     <el-dialog title="提示" v-model="dialogVisible" width="40%">
       <el-form :model="form" label-width="120px">
         <el-form-item label="车辆名称">
           <el-input v-model="form.carName" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="里程">
-          <el-input v-model="form.carMiles" style="width: 80%"></el-input>
+        <el-form-item label="车牌">
+          <el-input v-model="form.carNo" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="车龄">
           <el-input v-model="form.age" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="品牌">
-          <el-radio v-model="form.brand" label="大众">大众</el-radio>
-          <el-radio v-model="form.brand" label="本田">本田</el-radio>
-          <el-radio v-model="form.brand" label="未知">未知</el-radio>
+<!--        <el-form-item label="品牌">-->
+<!--          <el-radio v-model="form.brand" label="大众">大众</el-radio>-->
+<!--          <el-radio v-model="form.brand" label="本田">本田</el-radio>-->
+<!--          <el-radio v-model="form.brand" label="未知">未知</el-radio>-->
+<!--        </el-form-item>-->
+        <el-form-item label="分类">
+          <el-select v-model="form.brand">
+            <el-option
+                v-for="item in options4"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="站点">
-          <el-select v-model="form.carZd" @change="resetManagerId">
+        <el-form-item label="用户">
+          <el-select v-model="form.carSj">
+            <el-option
+                v-for="item in options3"
+                :key="item.username"
+                :label="item.username"
+                :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="车库">
+          <el-select v-model="form.carZd">
             <el-option
                 v-for="item in options2"
                 :key="item.placeName"
@@ -121,7 +137,9 @@ export default {
   components: {},
   data() {
     return {
+      options3: [],
       options2: [],
+      options4: [],
       loading: true,
       form: {},
       dialogVisible: false,
@@ -180,6 +198,39 @@ export default {
     add() {
       this.dialogVisible = true
       this.form = {}
+
+      //查询所有站点 options2
+      request.get("/places/findPage", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options2 = [];
+        this.options2 = res.data.records
+      })
+      //
+      request.get("/user/all", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options3 = [];
+        this.options3 = res.data
+      })
+      request.get("/category/getAll", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options4 = [];
+        this.options4 = res.data
+      })
     },
     save() {
       if (this.form.id) {  // 更新
@@ -231,9 +282,30 @@ export default {
           search: ''
         }
       }).then(res => {
+        this.options2 = [];
         this.options2 = res.data.records
       })
-
+      //
+      request.get("/user/all", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options3 = [];
+        this.options3 = res.data
+      })
+      request.get("/category/getAll", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options4 = [];
+        this.options4 = res.data
+      })
     },
     handleDelete(id) {
       console.log(id)

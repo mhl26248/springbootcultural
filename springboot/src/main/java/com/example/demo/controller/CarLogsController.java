@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
+import com.example.demo.entity.CarLogs;
 import com.example.demo.entity.Cars;
 import com.example.demo.entity.Places;
 import com.example.demo.entity.User;
+import com.example.demo.mapper.CarLogsMapper;
 import com.example.demo.mapper.CarsMapper;
 import com.example.demo.mapper.PlacesMapper;
 import com.example.demo.mapper.UserMapper;
@@ -18,11 +20,13 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @RestController
-@RequestMapping("/cars")
-public class CarsController extends BaseController {
+@RequestMapping("/carlogs")
+public class CarLogsController extends BaseController {
 
     @Resource
     CarsMapper carsMapper;
+    @Resource
+    CarLogsMapper carLogsMapper;
     @Resource
     PlacesMapper placesMapper;
     @Resource
@@ -71,93 +75,55 @@ public class CarsController extends BaseController {
         return Result.success(rst);
     }
 
-    @GetMapping("/countCity")
-    public Result<?> countCity() {
-
-        return Result.success(carsMapper.countCity());
-    }
-
     @PostMapping("/save")
-    public Result<?> save(@RequestBody Cars cars) {
-        cars.setCreated(new Date());
-        carsMapper.insert(cars);
+    public Result<?> save(@RequestBody CarLogs obj) {
+        obj.setCreated(new Date());
+        carLogsMapper.insert(obj);
         return Result.success();
     }
 
     @PostMapping("/update")
-    public Result<?> update(@RequestBody Cars cars) {
-        cars.setUpdated(new Date());
-        carsMapper.updateById(cars);
+    public Result<?> update(@RequestBody CarLogs obj) {
+        carLogsMapper.updateById(obj);
         return Result.success();
     }
 
 
-    @DeleteMapping("/{id}")
-    public Result<?> update(@PathVariable Long id) {
-        carsMapper.deleteById(id);
-        return Result.success();
-    }
-
-    @GetMapping("/{id}")
-    public Result<?> getById(@PathVariable Long id) {
-        return Result.success(carsMapper.selectById(id));
-    }
-
-    @GetMapping("/all")
-    public Result<?> findAll() {
-        return Result.success(carsMapper.selectList(null));
-    }
-
-    /**
-     * 统计数据
-     *
-     * @return
-     */
-    @GetMapping("/count")
-    public Result<?> count() {
-//        carsMapper.countAddress()
-        return Result.success();
-    }
-
-
-    /**
-     *
-     * @param pageNum
-     * @param pageSize
-     * @param search
-     * @return
-     */
     @GetMapping("/findPage")
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
-                              @RequestParam(defaultValue = "") String search,
-                              @RequestParam(defaultValue = "") String placeId) {
-        LambdaQueryWrapper<Cars> wrapper = Wrappers.<Cars>lambdaQuery().orderByAsc(Cars::getId);
-        wrapper.like(Cars::getCarName,search);
-        if(StringUtils.isNotBlank(placeId)){
-            wrapper.eq(Cars::getCarZd,placeId);
+                              @RequestParam(defaultValue = "") String start,
+                              @RequestParam(defaultValue = "") String end) {
+        LambdaQueryWrapper<CarLogs> wrapper = Wrappers.<CarLogs>lambdaQuery().orderByDesc(CarLogs::getId);
+        if(StringUtils.isNotBlank(start)){
+            wrapper.ge(CarLogs::getCreated,start);
         }
-        Page<Cars> userPage = carsMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        if(StringUtils.isNotBlank(end)){
+            wrapper.le(CarLogs::getCreated,end);
+        }
+        Page<CarLogs> page = carLogsMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
 
-        if(userPage!=null){
-            List<Cars> carsList = userPage.getRecords();
-            carsList.stream().forEach(o->{
+        if(page!=null && page.getRecords() != null){
+            for(CarLogs c:page.getRecords()){
+                Cars o = carsMapper.selectById(c.getCarId());
+                c.setCarName(o.getCarName());
+                c.setCarNo(o.getCarNo());
                 if(o.getCarZd()!=null){
                     Places p =placesMapper.selectById(o.getCarZd());
                     if(p!=null){
-                        o.setPlaceName(p.getPlaceName());
+                        c.setPlaceName(p.getPlaceName());
                     }
                 }
                 if(o.getCarSj()!=null){
                     User user = userMapper.selectById(o.getCarSj());
                     if(user!=null){
-                        o.setUserName(user.getUsername());
+                        c.setUserName(user.getUsername());
                     }
                 }
-            });
+            }
         }
 
-        return Result.success(userPage);
+        return Result.success(page);
     }
 
 

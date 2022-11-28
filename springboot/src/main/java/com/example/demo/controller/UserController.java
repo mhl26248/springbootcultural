@@ -162,26 +162,26 @@ public class UserController extends BaseController {
         // 再新增 新的绑定关系
         for (Integer roleId : user.getRoles()) {
             //如果 角色 是司机 需要创建一个 driver 并更新 driverId
-            if(roleId == 3){
-                Map req = new HashMap();
-                req.put("driver_name",user.getNickName());
-                List<Drivers> d =  driversMapper.selectByMap(req);
-                Drivers drivers = new Drivers();
-                if(d == null || d.size() == 0){
-                    drivers.setDriverName(user.getNickName());
-                }
-                else{
-                    Random r = new Random();
-                    drivers.setDriverName(user.getNickName()+r.nextInt(5)+r.nextInt(10));
-                }
-                drivers.setAge(user.getAge());
-                drivers.setWorkAge(0);
-                drivers.setSex(user.getSex());
-                drivers.setCreated(new Date());
-                driversMapper.insert(drivers);
-                user.setDriverId(drivers.getId());
-                userMapper.updateById(user);
-            }
+//            if(roleId == 3){
+//                Map req = new HashMap();
+//                req.put("driver_name",user.getNickName());
+//                List<Drivers> d =  driversMapper.selectByMap(req);
+//                Drivers drivers = new Drivers();
+//                if(d == null || d.size() == 0){
+//                    drivers.setDriverName(user.getNickName());
+//                }
+//                else{
+//                    Random r = new Random();
+//                    drivers.setDriverName(user.getNickName()+r.nextInt(5)+r.nextInt(10));
+//                }
+//                drivers.setAge(user.getAge());
+//                drivers.setWorkAge(0);
+//                drivers.setSex(user.getSex());
+//                drivers.setCreated(new Date());
+//                driversMapper.insert(drivers);
+//                user.setDriverId(drivers.getId());
+//                userMapper.updateById(user);
+//            }
 
             roleMapper.insertUserRole(user.getId(), roleId);
         }

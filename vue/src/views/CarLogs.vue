@@ -13,47 +13,46 @@
         border
         stripe
         style="width: 100%">
+<!--      <el-table-column-->
+<!--          prop="id"-->
+<!--          label="ID"-->
+<!--          sortable-->
+<!--      >-->
+<!--      </el-table-column>-->
       <el-table-column
-          prop="id"
-          label="ID"
-          sortable
-      >
+          prop="carName"
+          label="车辆名称">
+      </el-table-column>
+      <el-table-column
+          prop="carNo"
+          label="车牌">
+      </el-table-column>
+      <el-table-column
+          prop="type"
+          label="分类">
+      </el-table-column>
+      <el-table-column
+          prop="userName"
+          label="车主">
       </el-table-column>
       <el-table-column
           prop="placeName"
-          label="站点名称">
+          label="车库">
       </el-table-column>
       <el-table-column
-          prop="city"
-          label="城市">
+          prop="created"
+          label="时间">
       </el-table-column>
-      <el-table-column
-          prop="area"
-          label="区域">
-      </el-table-column>
-      <el-table-column
-          prop="placeLocation"
-          min-width="200"
-          label="位置">
-      </el-table-column>
-<!--      <el-table-column-->
-<!--          prop="managerName"-->
-<!--          label="负责人">-->
+<!--      <el-table-column label="操作" width="400">-->
+<!--        <template #default="scope">-->
+<!--          <el-button size="mini" @click="handleEdit1(scope.row)">编辑</el-button>-->
+<!--          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">-->
+<!--            <template #reference>-->
+<!--              <el-button size="mini" type="danger">删除</el-button>-->
+<!--            </template>-->
+<!--          </el-popconfirm>-->
+<!--        </template>-->
 <!--      </el-table-column>-->
-<!--      <el-table-column-->
-<!--          prop="workTime" min-width="100"-->
-<!--          label="工作时间">-->
-<!--      </el-table-column>-->
-      <el-table-column label="操作" width="400">
-        <template #default="scope">
-          <el-button size="mini" @click="handleEdit1(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
-            <template #reference>
-              <el-button size="mini" type="danger">删除</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
     </el-table>
 
     <div style="margin: 10px 0">
@@ -69,42 +68,23 @@
     </div>
 
 
-    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
-      <el-table :data="bookList" stripe border>
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-      </el-table>
-    </el-dialog>
-
     <el-dialog title="提示" v-model="dialogVisible" width="40%">
       <el-form :model="form" label-width="120px">
-        <el-form-item label="站点名称">
-          <el-input v-model="form.placeName" style="width: 80%"></el-input>
+        <el-form-item label="车辆">
+          <el-select v-model="form.carId">
+            <el-option
+                v-for="item in cars"
+                :key="item.carName"
+                :label="item.carName"
+                :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="城市">
-          <el-input v-model="form.city" style="width: 80%"></el-input>
+        <el-form-item label="类型">
+          <el-radio v-model="form.type" label="进">进</el-radio>
+          <el-radio v-model="form.type" label="出">出</el-radio>
         </el-form-item>
-        <el-form-item label="区域">
-          <el-input v-model="form.area" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="位置">
-          <el-input v-model="form.placeLocation" style="width: 80%"></el-input>
-        </el-form-item>
-<!--        <el-form-item label="负责人">-->
-<!--          <el-select v-model="form.managerName" @change="resetManagerId">-->
-<!--            <el-option-->
-<!--                v-for="item in options2"-->
-<!--                :key="item.username"-->
-<!--                :label="item.username"-->
-<!--                :value="item">-->
-<!--            </el-option>-->
-<!--          </el-select>-->
-<!--&lt;!&ndash;          <el-input type="hidden" v-model="form.managerId" style="width: 80%"></el-input>&ndash;&gt;-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="工作时间">-->
-<!--          <el-input v-model="form.workTime" style="width: 80%"></el-input>-->
-<!--        </el-form-item>-->
+
       </el-form>
       <template #footer>
           <span class="dialog-footer">
@@ -127,7 +107,9 @@ export default {
   components: {},
   data() {
     return {
-      options2:[],
+      options3: [],
+      options2: [],
+      options4: [],
       loading: true,
       form: {},
       dialogVisible: false,
@@ -137,7 +119,7 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
-      bookList: [],
+      cars: [],
       roles: []
     }
   },
@@ -145,24 +127,42 @@ export default {
     this.load()
   },
   methods: {
-
-    showBooks(books) {
-      this.bookList = books
-      this.bookVis = true
+    handleChange(row) {
+      request.put("/cars/changeRole", row).then(res => {
+        if (res.code === '0') {
+          this.$message.success("更新成功")
+          if (res.data) {
+            this.$router.push("/login")
+          }
+        }
+      })
     },
     load() {
       this.loading = true
-      request.get("/places/findPage", {
+      request.get("/carlogs/findPage", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search: this.search
+          start: '',
+          end: '',
         }
       }).then(res => {
         this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })
+      request.get("/cars/findPage", {
+        params: {
+          pageNum: 1,
+          pageSize: 100,
+          search: ''
+        }
+      }).then(res => {
+        this.loading = false
+        this.cars = res.data.records
+        this.total = res.data.total
+      })
+
     },
     handleUploadSuccess(res) {
       if (res.code === "0") {
@@ -174,24 +174,12 @@ export default {
       location.href = "http://" + window.server.filesUploadUrl + ":9090/user/export";
     },
     add() {
-      request.get("/user/getAllPlaceManager", {
-        params: {
-        }
-      }).then(res => {
-        this.options2 = res.data
-      })
       this.dialogVisible = true
       this.form = {}
     },
-    resetManagerId(value){
-      console.log(value.username)
-      console.log(value.id)
-      this.form.managerId = value.id;
-      this.form.managerName = value.username;
-    },
     save() {
       if (this.form.id) {  // 更新
-        request.post("/places/update", this.form).then(res => {
+        request.post("/carlogs/update", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -208,7 +196,7 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       } else {  // 新增
-        request.post("/places/save", this.form).then(res => {
+        request.post("/carlogs/save", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -229,19 +217,41 @@ export default {
 
     },
     handleEdit1(row) {
-      request.get("/user/getAllPlaceManager", {
-        params: {
-        }
-      }).then(res => {
-        this.options2 = res.data
-      })
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true
-
+      //查询所有站点 options2
+      request.get("/places/findPage", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options2 = res.data.records
+      })
+      //
+      request.get("/user/all", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options3 = res.data
+      })
+      request.get("/category/getAll", {
+        params: {
+          pageNum: 1,
+          pageSize: 1000,
+          search: ''
+        }
+      }).then(res => {
+        this.options4 = res.data
+      })
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/places/" + id).then(res => {
+      request.delete("/cars/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",

@@ -44,7 +44,7 @@ public class CategoryController extends BaseController {
      *
      * @return
      */
-    @GetMapping
+    @GetMapping("/getAll")
     public Result<?> getAll() {
         // 先查询所有的数据
         List<Category> allCategories = CategoryMapper.selectList(null);

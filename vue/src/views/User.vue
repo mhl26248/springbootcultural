@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column
           prop="placeName"
-          label="站点">
+          label="车库">
       </el-table-column>
       <el-table-column label="角色列表" width="300">
         <template #default="scope">

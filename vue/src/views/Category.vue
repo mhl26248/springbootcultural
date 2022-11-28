@@ -2,14 +2,15 @@
   <div style="padding: 10px">
     <!--    功能区域-->
 <!--    <div style="margin: 10px 0">-->
-<!--      <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>-->
+<!--      <el-button type="primary" @click="add" >新增</el-button>-->
 <!--    </div>-->
 
-    <!--    搜索区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>-->
-<!--      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
-<!--    </div>-->
+<!--        搜索区域-->
+    <div style="margin: 10px 0">
+      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
+      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
+      <el-button type="primary" @click="add" >新增</el-button>
+    </div>
     <el-table
         v-loading="loading"
         :data="tableData"
@@ -19,20 +20,14 @@
         row-key="id"
         default-expand-all
     >
-<!--      <el-table-column-->
-<!--          prop="id"-->
-<!--          label="ID"-->
-<!--          sortable-->
-<!--      >-->
-<!--      </el-table-column>-->
       <el-table-column
           prop="name"
           label="名称">
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)" v-if="user.role === 1">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)" v-if="user.role === 1">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)" >
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
             </template>
@@ -41,32 +36,32 @@
       </el-table-column>
     </el-table>
 
-    <el-card style="margin: 10px 0; width: 50%">
-      <div class="custom-tree-container">
-        <el-tree :data="tableData" :props="defaultProps" show-checkbox
-                 @check-change="handleCheckChange"
-                 node-key="id"
-                 :default-expanded-keys="[1, 2]"
-                 :default-checked-keys="checkedList"
-        >
-          <template #default="{ node, data }">
-        <span class="custom-tree-node">
-          <span>{{ node.label }}</span>
-          <span>
-            <a
-                @click="remove(node, data)">
-              Delete
-            </a>
-          </span>
-        </span>
-          </template>
-        </el-tree>
-      </div>
-    </el-card>
+<!--    <el-card style="margin: 10px 0; width: 50%">-->
+<!--      <div class="custom-tree-container">-->
+<!--        <el-tree :data="tableData" :props="defaultProps" show-checkbox-->
+<!--                 @check-change="handleCheckChange"-->
+<!--                 node-key="id"-->
+<!--                 :default-expanded-keys="[1, 2]"-->
+<!--                 :default-checked-keys="checkedList"-->
+<!--        >-->
+<!--          <template #default="{ node, data }">-->
+<!--        <span class="custom-tree-node">-->
+<!--          <span>{{ node.label }}</span>-->
+<!--          <span>-->
+<!--            <a-->
+<!--                @click="remove(node, data)">-->
+<!--              Delete-->
+<!--            </a>-->
+<!--          </span>-->
+<!--        </span>-->
+<!--          </template>-->
+<!--        </el-tree>-->
+<!--      </div>-->
+<!--    </el-card>-->
 
-    <el-card style="width: 50%">
-      <el-cascader :options="options" clearable @change="changeCas" v-model="casdata"></el-cascader>
-    </el-card>
+<!--    <el-card style="width: 50%">-->
+<!--      <el-cascader :options="options" clearable @change="changeCas" v-model="casdata"></el-cascader>-->
+<!--    </el-card>-->
 
     <div style="margin: 10px 0">
       <el-dialog title="提示" v-model="dialogVisible" width="30%">

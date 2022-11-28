@@ -6,33 +6,26 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.apache.poi.hpsf.Decimal;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@TableName("cars")
+@TableName("car_logs")
 @Data
-public class Cars {
+public class CarLogs {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private String carName;
-    private Integer carStatus;
-    BigDecimal carMiles;
-    Integer carZd;
-    Integer carSj;
-    String carNo;
-
+    private Integer carId;
+    private String type;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date created;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updated;
-
-    String brand;
-    int age;
 
     @TableField(exist = false)
     String placeName;
     @TableField(exist = false)
     String userName;
+    @TableField(exist = false)
+    String carName;
+    @TableField(exist = false)
+    String carNo;
 }

@@ -51,8 +51,8 @@ public class PlacesController extends BaseController {
     @PostMapping("/update")
     public Result<?> update(@RequestBody Places obj) {
         //更新 user 表 站点管理人员关联
-        userMapper.resetPlace(obj.getId());//删除原有售点绑定的用户
-        userMapper.updatePlace(obj.getId(),obj.getManagerId());//绑定新的用户
+//        userMapper.resetPlace(obj.getId());//删除原有售点绑定的用户
+//        userMapper.updatePlace(obj.getId(),obj.getManagerId());//绑定新的用户
 
         obj.setUpdated(new Date());
         placesMapper.updateById(obj);
