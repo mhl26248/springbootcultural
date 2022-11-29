@@ -3,13 +3,14 @@
   <div style="padding: 10px">
     <el-row :gutter="10">
       <el-col :span="12">
-<!--        <el-card>-->
+        <el-card>
 <!--&lt;!&ndash;          城市数：{{summary.citys}} ||&ndash;&gt;-->
-<!--          站点数：{{summary.places}}-->
-<!--        </el-card>-->
-<!--        <el-card>-->
+          车库数：{{summary.places}}
+        </el-card>
+        <el-card>
 <!--          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>-->
-<!--        </el-card>-->
+          车辆数：{{summary.cars}}
+        </el-card>
 
       </el-col>
 <!--      <el-col :span="12">-->
@@ -42,8 +43,8 @@ export default {
     }
   },
   mounted() {
-    this.drawLine();
-    this.barGraph();
+    // this.drawLine();
+    // this.barGraph();
   },
   created() {
     this.load()
@@ -55,7 +56,8 @@ export default {
           this.summary = res.data
         }
       })
-    },
+    }
+    ,
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$root.echarts.init(document.getElementById('myChart'))

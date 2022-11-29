@@ -23,7 +23,7 @@ public interface CarsMapper extends BaseMapper<Cars> {
     @Select("select count(*) from places ")
     int countPlaces();
 
-    @Select("select count(*) from drivers ")
+    @Select("select count(*) from user ")
     int countDrivers();
 
 

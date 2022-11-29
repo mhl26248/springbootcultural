@@ -103,7 +103,7 @@ public class UserController extends BaseController {
         User userInfo = User.builder()
                 .username(user.getUsername())
                 .password(bCryptPasswordEncoder.encode(user.getPassword()))
-                .nickName("用户" + IdWorker.getId())
+                .nickName("用户" + user.getUsername())
                 .build();
 
         userMapper.insert(userInfo);

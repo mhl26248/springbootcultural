@@ -34,15 +34,15 @@ public class CarsController extends BaseController {
         Map rst = new HashMap<>();
         //城市数
 //        rst.put("citys",carsMapper.countCitys());
-        //站点数
+//        //站点数
         rst.put("places",carsMapper.countPlaces());
         //司机数
-        rst.put("drivers",carsMapper.countDrivers());
+//        rst.put("drivers",carsMapper.countDrivers());
         //车辆数
         rst.put("cars",carsMapper.countCars());
         //总里程数
-        rst.put("miles",carsMapper.sumMiles());
-        rst.put("countCity",carsMapper.countCity());
+//        rst.put("miles",carsMapper.sumMiles());
+//        rst.put("countCity",carsMapper.countCity());
 
         return Result.success(rst);
     }

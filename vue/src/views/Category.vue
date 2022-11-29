@@ -36,32 +36,6 @@
       </el-table-column>
     </el-table>
 
-<!--    <el-card style="margin: 10px 0; width: 50%">-->
-<!--      <div class="custom-tree-container">-->
-<!--        <el-tree :data="tableData" :props="defaultProps" show-checkbox-->
-<!--                 @check-change="handleCheckChange"-->
-<!--                 node-key="id"-->
-<!--                 :default-expanded-keys="[1, 2]"-->
-<!--                 :default-checked-keys="checkedList"-->
-<!--        >-->
-<!--          <template #default="{ node, data }">-->
-<!--        <span class="custom-tree-node">-->
-<!--          <span>{{ node.label }}</span>-->
-<!--          <span>-->
-<!--            <a-->
-<!--                @click="remove(node, data)">-->
-<!--              Delete-->
-<!--            </a>-->
-<!--          </span>-->
-<!--        </span>-->
-<!--          </template>-->
-<!--        </el-tree>-->
-<!--      </div>-->
-<!--    </el-card>-->
-
-<!--    <el-card style="width: 50%">-->
-<!--      <el-cascader :options="options" clearable @change="changeCas" v-model="casdata"></el-cascader>-->
-<!--    </el-card>-->
 
     <div style="margin: 10px 0">
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
@@ -113,88 +87,34 @@ export default {
     }
   },
 
-// {
-//   value: 'Anhui',
-//       label: '安徽省',
-//     children: [
-//   {
-//     value: 'Hefei',
-//     label: '合肥市',
-//     children: [
-//       {
-//         value: 'Zhenwu',
-//         label: '政务区',
-//       },
-//     ],
-//   },
-//   {
-//     value: 'Wuhu',
-//     label: '芜湖市',
-//     children: [
-//       {
-//         value: 'Jinghu',
-//         label: '镜湖区',
-//       },
-//     ],
-//   }
-// ]
-// },
-// {
-//   value: 'Jiangsu',
-//       label: '江苏省',
-//     children: [
-//   {
-//     value: 'Nanjing',
-//     label: '南京市',
-//     children: [
-//       {
-//         value: 'Xuanwu',
-//         label: '玄武区',
-//       },
-//     ],
-//   }
-// ]
-// }
   created() {
-    let userStr = sessionStorage.getItem("user") || "{}"
-    this.user = JSON.parse(userStr)
-    // 请求服务端，确认当前登录用户的 合法信息
-    request.get("/user/" + this.user.id).then(res => {
-      if (res.code === '0') {
-        this.user = res.data
-      }
-    })
-
-    request.get("/area/tree").then(res => {
-      console.log(res.data)
-      this.options = res.data
-    })
+    // let userStr = sessionStorage.getItem("user") || "{}"
+    // this.user = JSON.parse(userStr)
+    // // 请求服务端，确认当前登录用户的 合法信息
+    // request.get("/user/" + this.user.id).then(res => {
+    //   if (res.code === '0') {
+    //     this.user = res.data
+    //   }
+    // })
+    //
+    // request.get("/area/tree").then(res => {
+    //   console.log(res.data)
+    //   this.options = res.data
+    // })
 
     this.load()
   },
   methods: {
-    changeCas(data) {
-      console.log(data)
-      console.log(this.casdata)
-    },
+
     remove(node, data) {
       request.delete("/category/" + data.id).then(res => {
         this.load()
       })
-      // console.log(data)
-      // const parent = node.parent;
-      // const children = parent.data.children || parent.data;
-      // const index = children.findIndex(d => d.id === data.id);
-      // children.splice(index, 1);
-      // this.data = [...this.data]
     },
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data.id);
-      console.log(data.name);
-    },
+
     load() {
       this.loading = true
-      request.get("/category").then(res => {
+      request.get("/category/getAll").then(res => {
         this.loading = false
         this.tableData = res.data
 
