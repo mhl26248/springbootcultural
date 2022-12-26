@@ -24,18 +24,14 @@ public class RecordApply {
     private Date created;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updated;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date applyTime;
     private Integer type;
 
 
     @TableField(exist = false)
-    private String recordNo;
+    private String title;
+    @TableField(exist = false)
+    private String applyName;
 
-    @TableField(exist = false)
-    String applyName;
-    @TableField(exist = false)
-    String passName;
-    @TableField(exist = false)
-    String sickName;
 }

@@ -22,13 +22,7 @@ public class Record {
     private Date created;
     private String images;
 
-    private String idNo;
-    private String mobile;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date inDate;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date outDate;
-    private String inRemark;
+    private String title;
     private String recordNo;
 
 

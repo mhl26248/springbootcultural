@@ -1,15 +1,5 @@
 <template>
   <div style="padding: 10px">
-    <!--    功能区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--    </div>-->
-
-    <!--    搜索区域-->
-    <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
-      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-<!--      <el-button type="primary" @click="add">新增</el-button>-->
-    </div>
     <el-table
         v-loading="loading"
         :data="tableData"
@@ -17,36 +7,22 @@
         stripe
         style="width: 100%">
       <el-table-column
-          prop="recordNo"
-          label="实训号">
+          prop="title"
+          label="景点名称">
       </el-table-column>
       <el-table-column
-          prop="inRemark"
-          label="实训说明">
+          prop="applyTime"
+          label="日期">
       </el-table-column>
-      <el-table-column
-          prop="sickName"
-          label="学生">
-      </el-table-column>
-      <el-table-column
-          prop="doctorName"
-          label="老师">
-      </el-table-column>
-      <el-table-column
-          label="申请状态">
-        <template #default="scope" >
-          <el-tag v-if="scope.row.recordApplyStatus == 0">申请中</el-tag>
-          <el-tag v-if="scope.row.recordApplyStatus == 1">通过</el-tag>
-          <el-tag type="info" v-if="scope.row.recordApplyStatus == 2">拒绝</el-tag>
-          <el-tag type="info" v-if="scope.row.recordApplyStatus == 3">归还</el-tag>
-          <el-tag type="danger" v-if="scope.row.recordApplyStatus == null">未申请</el-tag>
-        </template>
-      </el-table-column>
+
 
       <el-table-column label="操作" min-width="200px">
         <template #default="scope" >
-          <el-button v-if="userName != 'admin' && (scope.row.recordApplyStatus == null || scope.row.recordApplyStatus == 2|| scope.row.recordApplyStatus == 3)" @click="handleApply(scope.row,1)" size="mini" type="danger">申请实训</el-button>
-<!--          <el-button v-if="scope.row.recordApplyStatus == 1" size="mini" type="danger">查看</el-button>-->
+          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">-->
+            <template #reference>
+              <el-button size="mini" type="info">取消</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -63,69 +39,6 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="提示" v-model="dialogVisible" width="70%">
-
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="病人">
-          <el-select v-model="form.sickId">
-            <el-option
-                v-for="item in options"
-                :key="item.username"
-                :label="item.username"
-                :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="病例备注">
-          <el-input v-model="form.remark" style="width: 80%"></el-input>
-        </el-form-item>
-        <div v-for="(item, index) in form.recordLogs" :key="index">
-
-          <el-form-item
-              label="病例详情"
-          >
-            <el-input v-model="item.remark"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button v-if="index+1 == form.recordLogs.length" @click="addItem" type="primary">增加</el-button>
-            <el-button v-if="index !== 0" @click="deleteItem(item, index)" type="danger">删除</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
-
-      <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-          </span>
-      </template>
-    </el-dialog>
-
-    <el-dialog title="审核" v-model="dialogVisible2" width="70%">
-      <el-form ref="form"   :model="form" label-width="80px">
-        <el-form-item label="申请人">
-          <el-select v-model="form.applyId">
-            <el-option
-                v-for="item in options2"
-                :key="item.username"
-                :label="item.username"
-                :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="form.remark" style="width: 80%"></el-input>
-        </el-form-item>
-
-      </el-form>
-
-      <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">拒绝</el-button>
-            <el-button type="primary" @click="save">通过</el-button>
-          </span>
-      </template>
-    </el-dialog>
 
   </div>
 </template>
@@ -197,11 +110,11 @@ export default {
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
       this.userName = user.username
-      request.get("/record/findPageUserId", {
+      request.get("/recordApply/findPage", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          userId: user.id
+          search2: user.id
         }
       }).then(res => {
         this.loading = false
@@ -209,12 +122,7 @@ export default {
         this.total = res.data.total
       })
 
-      // request.get("/user/allSick", {
-      //   params: {
-      //   }
-      // }).then(res => {
-      //   this.options = res.data
-      // })
+
 
 
       // request.get("/user/all", {
@@ -283,11 +191,20 @@ export default {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible2 = true
     },
-    handleEdit(row) {
-      this.form = JSON.parse(JSON.stringify(row))
-      this.dialogVisible = true
+    handleEdit(id) {
+      request.get("/recordApply/deleteById", {
+        params: {
+          id: id
+        }
+      }).then(res => {
+        this.$message({
+          type: "success",
+          message: "取消成功"
+        })
+        this.load() // 刷新表格的数据
+      })
     },
-    handleApply(row,type) {
+    handleApply(row) {
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
       this.form = {}

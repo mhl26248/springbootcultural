@@ -86,12 +86,7 @@ public class RecordController extends BaseController {
                               @RequestParam(defaultValue = "") String search2,
                               @RequestParam(defaultValue = "") String search3) {
         LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
-        if (StrUtil.isNotBlank(search3)) {
-            wrapper.eq(Record::getInDate, DateUtil.format(new Date(),"yyyy-MM-dd"));
-        }
-        if (StrUtil.isNotBlank(search)) {
-            wrapper.like(Record::getInRemark, search);
-        }
+
 
         if (StrUtil.isNotBlank(search2)) {
             wrapper.eq(Record::getStatus, search2);
@@ -122,21 +117,7 @@ public class RecordController extends BaseController {
 
         Page<Record> page = new Page<>();
         List<Record> records = recordMapper.selectApplyRecord(userId,(pageNum-1)*pageSize,pageNum*pageSize);
-        for (Record record : records) {
-            Integer recordId = record.getId();
-//            User sick = userMapper.selectById(record.getSickId());
-//            if(sick!=null){
-//                record.setSickName(sick.getUsername());
-//            }
-//            User doctor = userMapper.selectById(record.getDoctorId());
-//            if(doctor!=null){
-//                record.setDoctorName(doctor.getUsername());
-//            }
-//            LambdaQueryWrapper<RecordLogs> wrapper_logs = Wrappers.lambdaQuery();
-//            wrapper_logs.eq(RecordLogs::getRecordId, recordId);
-//            record.setRecordLogs(recordLogsMapper.selectList(wrapper_logs));
 
-        }
         page.setTotal(recordMapper.selectApplyRecordCount(userId));
         page.setRecords(records);
         return Result.success(page);
@@ -149,21 +130,6 @@ public class RecordController extends BaseController {
 
         Page<Record> page = new Page<>();
         List<Record> records = recordMapper.selectPassApplyRecord(userId,(pageNum-1)*pageSize,pageNum*pageSize);
-        for (Record record : records) {
-            Integer recordId = record.getId();
-//            User sick = userMapper.selectById(record.getSickId());
-//            if(sick!=null){
-//                record.setSickName(sick.getUsername());
-//            }
-//            User doctor = userMapper.selectById(record.getDoctorId());
-//            if(doctor!=null){
-//                record.setDoctorName(doctor.getUsername());
-//            }
-//            LambdaQueryWrapper<RecordLogs> wrapper_logs = Wrappers.lambdaQuery();
-//            wrapper_logs.eq(RecordLogs::getRecordId, recordId);
-//            record.setRecordLogs(recordLogsMapper.selectList(wrapper_logs));
-
-        }
         page.setTotal(recordMapper.selectApplyRecordCount(userId));
         page.setRecords(records);
         return Result.success(page);
@@ -176,26 +142,12 @@ public class RecordController extends BaseController {
 
         LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search2)) {
-            wrapper.eq(Record::getStatus, search2);
+            wrapper.like(Record::getTitle, search2);
         }
         Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
-        List<Record> records = page.getRecords();
-//        Page<Record> page = new Page<>();
-//        List<Record> records = recordMapper.findPageMyRecord(userId,(pageNum-1)*pageSize,pageNum*pageSize);
-        for (Record record : records) {
-            Integer recordId = record.getId();
-
-
-        }
-//        page.setTotal(recordMapper.selectApplyRecordCount(userId));
-        page.setRecords(records);
         return Result.success(page);
     }
 
 
-//    @GetMapping("/summary")
-//    public Result<?> summary() {
-//        return Result.success(recordMapper.selectAll());
-//    }
 
 }

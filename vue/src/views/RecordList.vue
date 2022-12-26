@@ -8,48 +8,22 @@
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入景点标题" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button  @click="add">创建景点</el-button>
+<!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        border
-        stripe
-        style="width: 100%">
-      <el-table-column min-width="200"
-          prop="title"
-          label="标题">
-      </el-table-column>
-      <el-table-column
-          label="图片">
-        <template #default="scope">
-          <img  :src="scope.row.images" style="width: 50px;height: 50px">
-        </template>
-      </el-table-column>
-      <el-table-column min-width="150"
-          label="状态">
-        <template #default="scope">
-          <el-tag v-if="scope.row.status == 0">上架</el-tag>
-          <el-tag type="danger" v-if="scope.row.status == 1">下架</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="220">
-        <template #default="scope">
-          <el-button size="mini" v-if="scope.row.status == 0 || scope.row.status == 6" @click="handleEdit(scope.row)">编辑</el-button>
-<!--          <el-button  v-if="scope.row.inStatus == 0" size="mini" @click="handleIn(scope.row)">入库</el-button>-->
-<!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleUpdate(scope.row.id,6)">-->
-<!--            <template #reference>-->
-<!--              <el-button size="mini" type="info">取消</el-button>-->
-<!--            </template>-->
-<!--          </el-popconfirm>-->
-<!--          <el-popconfirm title="确定重新申请吗？" v-if="scope.row.status == 6" @confirm="handleUpdate(scope.row.id,0)">-->
-<!--            <template #reference>-->
-<!--              <el-button size="mini" type="info">重新申请</el-button>-->
-<!--            </template>-->
-<!--          </el-popconfirm>-->
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-row>
+      <el-col :span="8" v-for="(o, index) in tableData" :key="o" :offset="index > 0 ? 2 : 0">
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src="o.images" style="height: 220px" class="image">
+          <div style="padding: 14px;">
+            <span></span>
+            <div class="bottom clearfix">
+              {{ o.title }}
+
+            </div><el-button type="text" @click="book(o)" class="button">预约</el-button>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <div style="margin: 10px 0">
       <el-pagination
@@ -63,7 +37,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="景点设置" v-model="dialogVisible" width="70%">
+    <el-dialog title="景点预约" v-model="dialogVisible" width="70%">
 
       <el-form ref="form"   :model="form" label-width="80px">
 
@@ -72,21 +46,27 @@
           <el-input v-model="form.title" style="width: 30%"></el-input>
         </el-form-item>
         <el-form-item label="图片">
-          <el-input v-model="form.images"  disabled></el-input>
-          <el-upload
-              class="upload-demo"
-              action="http://127.0.0.1:9091/files/upload"
-              :on-preview="handlePreview"
-              :on-success="handlePreviewVideo"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              list-type="picture">
-            <el-button size="small" type="primary">点击上传</el-button>
-<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-          </el-upload>
+          <img :src="form.images" style="width: 200px;height: 200px">
+<!--          <el-input v-model="form.images" style="width: 80%" disabled></el-input>-->
+<!--          <el-upload-->
+<!--              class="upload-demo"-->
+<!--              action="http://127.0.0.1:9091/files/upload"-->
+<!--              :on-preview="handlePreview"-->
+<!--              :on-success="handlePreviewVideo"-->
+<!--              :on-remove="handleRemove"-->
+<!--              :file-list="fileList"-->
+<!--              list-type="picture">-->
+<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--&lt;!&ndash;            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>&ndash;&gt;-->
+<!--          </el-upload>-->
         </el-form-item>
-        <el-form-item label="备注">
-          <textarea rows="10" v-model="form.remark" style="width: 80%"></textarea>
+        <el-form-item label="预约日期">
+          <el-date-picker
+              value-format="YYYY-MM-DD"
+              v-model="form.applyTime"
+              type="date"
+              placeholder="选择日期">
+          </el-date-picker>
         </el-form-item>
       </el-form>
 
@@ -239,6 +219,7 @@ export default {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
+          search2:this.search,
         }
       }).then(res => {
         this.loading = false
@@ -249,63 +230,35 @@ export default {
 
 
     },
-    add() {
-      this.options = []
-      this.dialogVisible = true
-      this.form =  {
-        recordLogs: [
-          {
-            name: "",
-            phone: ""
-          }
-        ]}
-      // this.addItem()
-    },
     save() {
-      if (this.form.id) {  // 更新
+      let userStr = sessionStorage.getItem("user") || "{}"
+      let user = JSON.parse(userStr)
 
-        request.post("/record/update", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "更新成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      } else {  // 新增
-        let userStr = sessionStorage.getItem("user") || "{}"
-        let user = JSON.parse(userStr)
-        this.form.sickId = user.id
+      let req = {}
+      req.applyId = user.id
+      req.recordId = this.form.id
+      req.applyTime = this.form.applyTime
 
-        request.post("/record/save", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "新增成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
+      request.post("/recordApply/save", req).then(res => {
+        console.log(res)
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "预约成功"
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
 
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      }
+        this.load() // 刷新表格的数据
+        this.dialogVisible = false  // 关闭弹窗
+      })
 
     },
-    handleEdit(row) {
+    book(row) {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true
       this.fileList = []

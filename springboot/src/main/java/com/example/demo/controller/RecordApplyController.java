@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,9 +33,19 @@ public class RecordApplyController extends BaseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody RecordApply obj) {
+        if(null == obj.getApplyTime() ||obj.getApplyTime().equals("")){
+            return Result.error("001","请选择预约日期");
+        }
+        LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(RecordApply::getRecordId,obj.getRecordId());
+        wrapper.eq(RecordApply::getApplyId,obj.getApplyId());
+        wrapper.eq(RecordApply::getApplyTime,DateUtil.format(obj.getApplyTime(),"yyyy-MM-dd"));
+        int c  = recordApplyMapper.selectCount(wrapper);
+        if(c>0){
+            return Result.error("001","该日期已经预约过了");
+        }
         obj.setCreated(new Date());
         obj.setStatus(0);
-        obj.setApplyTime(new Date());
         recordApplyMapper.insert(obj);
 
         return Result.success();
@@ -49,36 +60,6 @@ public class RecordApplyController extends BaseController {
         recordApplyMapper.updateById(obj);
         return Result.success();
     }
-//    @GetMapping("/export")
-//    public Result<?> export(
-//            @RequestParam(defaultValue = "") String qEndDate,
-//            @RequestParam(defaultValue = "") String qStartDate) {
-//        if(StringUtils.isBlank(qEndDate) || StringUtils.isBlank(qStartDate)){
-//            return Result.error("001","开始时间和结束时间不能为空");
-//        }
-//        DateTime date_str = DateUtil.beginOfDay(DateUtil.parse(qStartDate,"yyyy-MM-dd"));
-//        DateTime date_str2 = DateUtil.endOfDay(DateUtil.parse(qEndDate,"yyyy-MM-dd"));
-//        List<Summary> summaryList = recordApplyMapper.summary(date_str,date_str2);
-//        String fileName = DateUtil.format(date_str,"yyyy-MM-dd") + DateUtil.format(date_str2,"yyyy-MM-dd");
-//        ExcelWriter writer = ExcelUtil.getWriter(FileUtil.file(System.getProperty("user.dir")+"/"+fileName+".xlsx"));
-//        ExcelWriter write = writer.write(summaryList);
-//        write.flush();
-//        writer.flush();
-//        writer.close();
-//        return Result.success(summaryList);
-//    }
-
-//    @GetMapping("/summary2")
-//    public Result<?> summary2(
-//                              @RequestParam(defaultValue = "") String qEndDate,
-//                              @RequestParam(defaultValue = "") String qStartDate) {
-//        if(StringUtils.isBlank(qEndDate) || StringUtils.isBlank(qStartDate)){
-//            return Result.error("001","开始时间和结束时间不能为空");
-//        }
-//        DateTime date_str = DateUtil.beginOfDay(DateUtil.parse(qStartDate,"yyyy-MM-dd"));
-//        DateTime date_str2 = DateUtil.endOfDay(DateUtil.parse(qEndDate,"yyyy-MM-dd"));
-//        return Result.success(recordApplyMapper.summary(date_str,date_str2));
-//    }
     @GetMapping("/deleteById")
     public Result<?> deleteById(@RequestParam("id") Long id) {
         recordApplyMapper.deleteById(id);
@@ -93,30 +74,28 @@ public class RecordApplyController extends BaseController {
     @GetMapping("/findPage")
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
-                              @RequestParam(defaultValue = "") String search) {
+                              @RequestParam(defaultValue = "") String search,
+                              @RequestParam(defaultValue = "") String search2) {
         LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
-            wrapper.eq(RecordApply::getStatus, search);
+            wrapper.eq(RecordApply::getApplyTime, search);
+        }
+        if (StrUtil.isNotBlank(search2)) {
+            wrapper.eq(RecordApply::getApplyId, search2);
         }
         wrapper.orderByDesc(RecordApply::getId);
         Page<RecordApply> page = recordApplyMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         List<RecordApply> recordApplies = page.getRecords();
         for (RecordApply recordApply : recordApplies) {
-            User u1 = userMapper.selectById(recordApply.getApplyId());
-            if(u1!=null){
-                recordApply.setApplyName(u1.getUsername());
-            }
-            User u2 = userMapper.selectById(recordApply.getPassId());
-            if(u2!=null){
-                recordApply.setPassName(u2.getUsername());
-            }
-            User u3 = userMapper.selectById(recordApply.getSickId());
-            if(u3!=null){
-                recordApply.setSickName(u3.getUsername());
-            }
+
             Record r = recordMapper.selectById(recordApply.getRecordId());
             if(r!=null){
-                recordApply.setRecordNo(r.getRecordNo());
+                recordApply.setTitle(r.getTitle());
+            }
+
+            User user = userMapper.selectById(recordApply.getApplyId());
+            if(user!=null){
+                recordApply.setApplyName(user.getUsername());
             }
         }
         return Result.success(page);
