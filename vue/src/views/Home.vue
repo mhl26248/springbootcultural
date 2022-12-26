@@ -3,14 +3,15 @@
   <div style="padding: 10px">
     <el-row :gutter="10">
       <el-col :span="12">
-        <el-card>
-<!--&lt;!&ndash;          城市数：{{summary.citys}} ||&ndash;&gt;-->
-          车库数：{{summary.places}}
-        </el-card>
-        <el-card>
-<!--          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>-->
-          车辆数：{{summary.cars}}
-        </el-card>
+        <el-card>欢迎进入旅游平台</el-card>
+<!--        <el-card>-->
+<!--&lt;!&ndash;&lt;!&ndash;          城市数：{{summary.citys}} ||&ndash;&gt;&ndash;&gt;-->
+<!--          车库数：{{summary.places}}-->
+<!--        </el-card>-->
+<!--        <el-card>-->
+<!--&lt;!&ndash;          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>&ndash;&gt;-->
+<!--          车辆数：{{summary.cars}}-->
+<!--        </el-card>-->
 
       </el-col>
 <!--      <el-col :span="12">-->

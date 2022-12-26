@@ -28,10 +28,10 @@ public class User {
     private String sex;
     private String address;
     private String avatar;
-    Integer driverId;
-    Integer placeId;
-    @TableField(exist = false)
-    String placeName;
+//    Integer driverId;
+//    Integer placeId;
+//    @TableField(exist = false)
+//    String placeName;
     @TableField(exist = false)
     private List<Integer> roles;
 

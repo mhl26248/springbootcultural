@@ -1,9 +1,9 @@
 <template>
-  <div class="homepage-hero-module">
+  <div  class="homepage-hero-module">
     <div class="video-container">
-      <div :style="fixStyle" class="filter">
+      <div :style="bg"  class="filter">
         <div style="width: 400px; margin: 100px auto">
-          <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">车辆管理平台</div>
+          <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">旅游平台</div>
           <el-form ref="form" :model="form" size="normal" :rules="rules">
             <el-form-item prop="username">
               <el-input prefix-icon="el-icon-user-solid" v-model="form.username" placeholder="请输入账号"></el-input>
@@ -65,9 +65,9 @@ export default {
       // 加背景图片
       bg: {
         // backgroundColor: "red",
-        // backgroundImage: "url(" + require("@/assets/bg.jpg") + ")",
+        // backgroundImage: "url(" + require("@/assets/bg.jpeg") + ")",
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%"
+        backgroundSize: "100% 150%"
       }
     }
   },
@@ -182,6 +182,7 @@ export default {
   position: absolute;
   background: darkslategray;
   width: 100%;
+  height: 100%;
 }
 
 .fillWidth {

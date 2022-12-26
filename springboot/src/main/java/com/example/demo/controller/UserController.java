@@ -41,10 +41,6 @@ public class UserController extends BaseController {
     @Resource
     PermissionMapper permissionMapper;
     @Resource
-    PlacesMapper placesMapper;
-    @Resource
-    DriversMapper driversMapper;
-    @Resource
     UserRoleMapper userRoleMapper;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder; //注入bcryct加密
@@ -256,12 +252,12 @@ public class UserController extends BaseController {
             List<UserRole> roles = roleMapper.getUserRoleByUserId(record.getId());
             List<Integer> roleIds = roles.stream().map(UserRole::getRoleId).distinct().collect(Collectors.toList());
             record.setRoles(roleIds);
-            if(record.getPlaceId()!=null){
-                Places p = placesMapper.selectById(record.getPlaceId());
-                if(p!=null){
-                    record.setPlaceName(p.getPlaceName());
-                }
-            }
+//            if(record.getPlaceId()!=null){
+//                Places p = placesMapper.selectById(record.getPlaceId());
+//                if(p!=null){
+//                    record.setPlaceName(p.getPlaceName());
+//                }
+//            }
 
         }
         return Result.success(userPage);
