@@ -6,7 +6,8 @@
     <!--    主体-->
     <div style="display: flex">
       <!--      侧边栏-->
-      <Aside />
+      <Aside v-if="user.nickName=='管理员'"/>
+<!--      <Aside />-->
       <!--      内容区域-->
       <router-view style="flex: 1" @userInfo="refreshUser"/>
     </div>

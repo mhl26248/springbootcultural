@@ -1,7 +1,16 @@
 <template>
-  <div style="height: 50px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 200px; padding-left: 30px; font-weight: bold; color: dodgerblue">旅游平台</div>
-    <div style="flex: 1"></div>
+  <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
+    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">购物平台</div>
+    <div style="flex: 1;width: 200px; padding-left: 30px;">
+      <el-menu v-if="user.nickName!='管理员'" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="1" >首页</el-menu-item>
+        <el-menu-item index="2" >购物车</el-menu-item>
+        <el-menu-item index="3" >收藏</el-menu-item>
+        <el-menu-item index="4">订单管理</el-menu-item>
+      </el-menu>
+    </div>
+
+
     <div style="width: 100px">
       <el-dropdown>
         <span class="el-dropdown-link">
@@ -11,7 +20,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="$router.push('/person')">个人信息</el-dropdown-item>
+            <el-dropdown-item v-if="user.nickName!='管理员'" @click="$router.push('/person')">个人信息</el-dropdown-item>
             <el-dropdown-item @click="$router.push('/password')">修改密码</el-dropdown-item>
             <el-dropdown-item @click="$router.push('/login')">退出系统</el-dropdown-item>
           </el-dropdown-menu>
@@ -27,10 +36,27 @@ export default {
   props: ['user'],
   data() {
     return {
-
+      activeIndex:'1'
     }
   },
   created() {
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+      if(key == '2'){
+        this.$router.push('/Cart');
+      }
+      else if(key == '3'){
+        this.$router.push('/Like');
+      }
+      else if(key == '1'){
+        this.$router.push('/Index');
+      }
+      else if(key == '4'){
+        this.$router.push('/MyRecord');
+      }
+    }
   }
 }
 </script>

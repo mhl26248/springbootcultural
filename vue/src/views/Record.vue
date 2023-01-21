@@ -283,7 +283,6 @@ export default {
       } else {  // 新增
         let userStr = sessionStorage.getItem("user") || "{}"
         let user = JSON.parse(userStr)
-        this.form.sickId = user.id
 
         request.post("/record/save", this.form).then(res => {
           console.log(res)

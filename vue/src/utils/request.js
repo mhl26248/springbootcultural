@@ -17,6 +17,7 @@ request.interceptors.request.use(config => {
 
     // 取出sessionStorage里面缓存的用户信息
     let userJson = sessionStorage.getItem("user")
+    console.log(config.url)
     if (!whiteUrls.includes(config.url)) {  // 校验请求白名单
         if(!userJson) {
             router.push("/login")

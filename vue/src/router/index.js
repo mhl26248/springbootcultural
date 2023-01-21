@@ -25,6 +25,28 @@ const routes = [
         name: 'Register',
         component: () => import("@/views/Register")
     },
+    {
+        path: '/index',
+        name: 'Index',
+        component: () => import("@/views/Index")
+    },
+    // {
+    //     path: '/cart',
+    //     name: 'Cart',
+    //     component: () => import("@/views/Cart")
+    // },
+    {
+        path: '/myRecord',
+        name: 'MyRecord',
+        component: () => import("@/views/MyRecord")
+    },
+    // {
+    //     path: '/like',
+    //     name: 'Like',
+    //     component: () => import("@/views/Like")
+    // },
+
+
 ]
 
 const router = createRouter({

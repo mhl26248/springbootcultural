@@ -48,6 +48,7 @@ public class RecordController extends BaseController {
     }
 
 
+    @PostMapping("/save")
     public Result<?> save(@RequestBody Record obj) {
         obj.setCreated(new Date());
         obj.setStatus(0);
