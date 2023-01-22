@@ -1,66 +1,43 @@
 <template>
-
   <div style="padding: 10px">
-
     <div style="margin: 10px 0">
-      <el-date-picker
-          value-format="YYYY-MM-DD"
-          v-model="search"
-          type="date"
-          placeholder="选择日期">
-      </el-date-picker>
-<!--      <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>-->
+      <el-input v-model="search" placeholder="请输入内容" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
     <el-table
         v-loading="loading"
         :data="tableData"
-        stripe
-        style="width: 100%">
-      <el-table-column
-          prop="id"
-          label="订单编号">
-      </el-table-column>
-      <el-table-column
+        border
+       >
+      <el-table-column min-width="50"
           label="图片">
-        <template #default="scope" >
-          <img :src="scope.row.images" style="width: 50px">
+        <template #default="scope">
+          <img  :src="scope.row.images" style="width: 50px;height: 50px">
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column min-width="150"
           prop="title"
-          label="名称">
+          label="标题">
       </el-table-column>
-      <el-table-column
-          prop="payType"
-          label="支付方式">
+      <el-table-column min-width="50"
+                       prop="userName"
+                       label="用户名">
       </el-table-column>
-      <el-table-column
-          label="折扣">
-        <template #default="scope" >
-          <el-tag>{{scope.row.diff}}</el-tag>
-        </template>
+      <el-table-column min-width="100"
+                       prop="remark"
+                       label="内容">
       </el-table-column>
-      <el-table-column
-          prop="payAmt"
-          label="已支付">
+      <el-table-column width="50"
+                       prop="score"
+                       label="分数">
       </el-table-column>
-      <el-table-column
-          prop="created"
-          label="日期">
-      </el-table-column>
-
-
-      <el-table-column label="操作" min-width="200px">
-        <template #default="scope" >
-          <!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">&ndash;&gt;-->
-          <!--            <template #reference>-->
-          <!--              <el-button size="mini" type="info">取消</el-button>-->
-          <!--            </template>-->
-          <!--          </el-popconfirm>-->
-          <el-button size="mini" v-if="scope.row.comments == null" @click="pj(scope.row)">评价</el-button>
-          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>
+      <el-table-column label="操作" width="100">
+        <template #default="scope">
+            <el-popconfirm title="确定删除吗？" @confirm="handleUpdate(scope.row.id)">
+              <template #reference>
+                <el-button size="mini" type="info">删除</el-button>
+              </template>
+            </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -97,22 +74,63 @@ export default {
             desc: ""
           }
         ]},
-      dialogVisible2: false,
       dialogVisible: false,
       search: '',
+      search1: '',
+      search2: '',
       currentPage: 1,
       pageSize: 10,
       total: 0,
       tableData: [],
       options: [],
-      options2:[],
-      userName:''
+      fileList: [],
+      file:{
+        name:'',
+        url:''
+      }
     }
   },
   created() {
     this.load()
   },
   methods: {
+    handleRemove(file, fileList) {
+      var index = this.fileList.findIndex(item => {
+        if (item.name == file.name){
+          return true
+        }
+      })
+      this.fileList.splice(index,1)
+      this.form.images = ''
+      this.fileList.forEach((item, index) => {
+        if (this.form.images == "") {
+          this.form.images = item.name;
+        } else {
+          this.form.images = this.form.images + ";" + item.name;
+        }
+      });
+      console.log( this.fileList);
+    },
+    handlePreviewVideo(file){
+      console.log(file.data)
+      if (file) {
+        if(this.form.images == undefined){
+          this.form.images = ''
+        }
+        else{
+          this.form.images = this.form.images+ ';'
+        }
+        this.form.images = this.form.images+file.data;
+        // this.$set(this.form, "images", file.data.name);
+        this.$message.info('成功');
+      } else {
+        this.fileList = [];
+        this.$message.error('失败');
+      }
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
     addItem() {
       this.form.recordLogs.push({
         desc: ""
@@ -133,6 +151,14 @@ export default {
       this.form.recordLogs.splice(index, 1);
       console.log(this.form.recordLogs, "删除");
     },
+    handleIn(row){
+      request.post("/record/recordIn", row).then(res => {
+        if (res.code === '0') {
+          this.$message.success("入库成功")
+          this.load()
+        }
+      })
+    },
     handleChange(row) {
       request.put("/role/changePermission", row).then(res => {
         if (res.code === '0') {
@@ -143,16 +169,34 @@ export default {
         }
       })
     },
+    loadDoctors(){
+      console.log(this.form.inDate)
+      if(this.form.inDate == '' || this.form.inDate == undefined){
+        this.$message({
+          type: "error",
+          message: "请先选择预约时间"
+        })
+        return ;
+      }
+      request.get("/user/selectByRoleIdDate", {
+        params: {
+          roleId:5,
+          date:this.form.inDate
+        }
+      }).then(res => {
+        this.options = res.data
+      })
+    },
     load() {
       this.loading = true
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
       this.userName = user.username
-      request.get("/recordApply/findPage", {
+      request.get("/comment/findPage", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search:this.search
+          search1: this.search,
         }
       }).then(res => {
         this.loading = false
@@ -162,16 +206,9 @@ export default {
 
 
 
-
-      // request.get("/user/all", {
-      //   params: {
-      //   }
-      // }).then(res => {
-      //   this.options2 = res.data
-      // })
-
     },
     add() {
+      this.options = []
       this.dialogVisible = true
       this.form =  {
         recordLogs: [
@@ -184,6 +221,7 @@ export default {
     },
     save() {
       if (this.form.id) {  // 更新
+
         request.post("/record/update", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
@@ -203,7 +241,6 @@ export default {
       } else {  // 新增
         let userStr = sessionStorage.getItem("user") || "{}"
         let user = JSON.parse(userStr)
-        this.form.doctorId = user.id
 
         request.post("/record/save", this.form).then(res => {
           console.log(res)
@@ -225,36 +262,44 @@ export default {
       }
 
     },
-    handleUpdate(row){
+    handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))
-      this.dialogVisible2 = true
+      this.dialogVisible = true
+      this.fileList = []
+      this.options = []
+      this.initProductImgs();
     },
-    handleEdit(id) {
-      request.get("/recordApply/deleteById", {
-        params: {
-          id: id
+    initProductImgs() {
+      this.fileList = []
+      if (this.form.images != undefined) {
+        if (this.form.images.indexOf(";") != -1) {
+          let urls = this.form.images.split(";");
+          urls.forEach((url, index) => {
+            this.file.name = url;
+            this.file.url =  url;
+            this.fileList.push(this.file);
+            this.resetImgobject();
+          });
+        } else {
+          this.file.name = this.form.images;
+          this.file.url = this.form.images;
+          this.fileList.push(this.file);
+          this.resetImgobject();
         }
-      }).then(res => {
-        this.$message({
-          type: "success",
-          message: "取消成功"
-        })
-        this.load() // 刷新表格的数据
-      })
+      }
     },
-    handleApply(row) {
-      let userStr = sessionStorage.getItem("user") || "{}"
-      let user = JSON.parse(userStr)
-      this.form = {}
-      this.form.applyId = user.id
-      this.form.recordId = row.id
-      this.form.sickId = row.sickId
-      this.form.type = type
-      request.post("/recordApply/save" ,this.form).then(res => {
+    resetImgobject() {
+      this.file = {
+        name: "",
+        url: "",
+      };
+    },
+    handleUpdate(id) {
+      request.get("/comment/deleteById?id=" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",
-            message: "申请成功"
+            message: "删除成功"
           })
         } else {
           this.$message({
@@ -264,6 +309,7 @@ export default {
         }
         this.load()  // 删除之后重新加载表格的数据
       })
+
     },
     handleSizeChange(pageSize) {   // 改变当前每页的个数触发
       this.pageSize = pageSize

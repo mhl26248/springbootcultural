@@ -29,6 +29,10 @@ public class RecordApplyController extends BaseController {
     @Resource
     CommentsMapper commentsMapper;
 
+    @GetMapping("/count")
+    public Result<?> count() {
+        return Result.success(recordApplyMapper.count());
+    }
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody RecordApply obj) {
@@ -81,7 +85,7 @@ public class RecordApplyController extends BaseController {
                               @RequestParam(defaultValue = "") String search2) {
         LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
-            wrapper.eq(RecordApply::getApplyTime, search);
+            wrapper.like(RecordApply::getCreated, search);
         }
         if (StrUtil.isNotBlank(search2)) {
             wrapper.eq(RecordApply::getApplyId, search2);

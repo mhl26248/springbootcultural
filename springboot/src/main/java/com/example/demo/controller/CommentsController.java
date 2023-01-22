@@ -6,17 +6,29 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.Comments;
+import com.example.demo.entity.Record;
+import com.example.demo.entity.RecordApply;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.CommentsMapper;
+import com.example.demo.mapper.RecordApplyMapper;
+import com.example.demo.mapper.RecordMapper;
+import com.example.demo.mapper.UserMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
 public class CommentsController extends BaseController {
     @Resource
     CommentsMapper commentsMapper;
-
+    @Resource
+    UserMapper userMapper;
+    @Resource
+    RecordMapper recordMapper;
+    @Resource
+    RecordApplyMapper recordApplyMapper;
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody Comments obj) {
@@ -47,24 +59,27 @@ public class CommentsController extends BaseController {
                               @RequestParam(defaultValue = "") String search2) {
         LambdaQueryWrapper<Comments> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
-            wrapper.eq(Comments::getUserId, search);
+            wrapper.like(Comments::getRemark, search);
         }
 //
         wrapper.orderByDesc(Comments::getId);
         Page<Comments> page = commentsMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
-//        List<RecordApply> recordApplies = page.getRecords();
-//        for (RecordApply recordApply : recordApplies) {
+        List<Comments> objs = page.getRecords();
+        for (Comments obj : objs) {
+            RecordApply recordApply = recordApplyMapper.selectById(obj.getRecordId());
+            if(recordApply!=null){
+                Record r = recordMapper.selectById(recordApply.getRecordId());
+                if(r!=null){
+                    obj.setTitle(r.getTitle());
+                    obj.setImages(r.getImages());
+                }
+            }
 //
-//            Record r = recordMapper.selectById(recordApply.getRecordId());
-//            if(r!=null){
-//                recordApply.setTitle(r.getTitle());
-//            }
-//
-//            User user = userMapper.selectById(recordApply.getApplyId());
-//            if(user!=null){
-//                recordApply.setApplyName(user.getUsername());
-//            }
-//        }
+            User user = userMapper.selectById(obj.getUserId());
+            if(user!=null){
+                obj.setUserName(user.getUsername());
+            }
+        }
         return Result.success(page);
     }
 }
