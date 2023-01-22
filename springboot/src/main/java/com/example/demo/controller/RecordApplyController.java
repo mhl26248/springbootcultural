@@ -6,9 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
-import com.example.demo.entity.Record;
-import com.example.demo.entity.RecordApply;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
+import com.example.demo.mapper.CommentsMapper;
 import com.example.demo.mapper.RecordApplyMapper;
 import com.example.demo.mapper.RecordMapper;
 import com.example.demo.mapper.UserMapper;
@@ -27,8 +26,8 @@ public class RecordApplyController extends BaseController {
     UserMapper userMapper;
     @Resource
     RecordApplyMapper recordApplyMapper;
-//    @Resource
-//    RecordLogsMapper recordLogsMapper;
+    @Resource
+    CommentsMapper commentsMapper;
 
 
     @PostMapping("/save")
@@ -104,6 +103,14 @@ public class RecordApplyController extends BaseController {
             if(user!=null){
                 recordApply.setApplyName(user.getUsername());
             }
+            LambdaQueryWrapper<Comments> wrapper2 = Wrappers.lambdaQuery();
+            wrapper2.eq(Comments::getRecordId, recordApply.getId());
+            wrapper2.eq(Comments::getUserId, recordApply.getApplyId());
+            List<Comments> comments = commentsMapper.selectList(wrapper2);
+            if(comments!=null && comments.size()>0){
+                recordApply.setComments(comments.get(0));
+            }
+
         }
         return Result.success(page);
     }

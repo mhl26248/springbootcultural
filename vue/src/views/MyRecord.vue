@@ -46,7 +46,8 @@
 <!--              <el-button size="mini" type="info">取消</el-button>-->
 <!--            </template>-->
 <!--          </el-popconfirm>-->
-            <el-button size="mini" >评价</el-button>
+            <el-button size="mini" v-if="scope.row.comments == null" @click="pj(scope.row)">评价</el-button>
+          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -63,6 +64,29 @@
       </el-pagination>
     </div>
 
+    <el-dialog title="评价" v-model="dialogVisible" width="70%">
+      <el-form ref="form"   :model="form" label-width="90px">
+        <el-form-item label="商品">
+          <el-input v-model="form.title" disabled style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="图片">
+          <img :src="form.images" style="width: 200px;height: 200px">
+        </el-form-item>
+        <el-form-item label="评价">
+          <textarea cols="10" rows="10" v-model="form.remark"  style="width: 30%"></textarea>
+        </el-form-item>
+        <el-form-item label="评分">
+          <el-input v-model="form.score"  style="width: 30%"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" v-if="form.comments == null" @click="save">确 定</el-button>
+          </span>
+      </template>
+    </el-dialog>
 
   </div>
 </template>
@@ -99,6 +123,16 @@ export default {
     this.load()
   },
   methods: {
+    pj(row){
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
+    },
+    pj2(row){
+      this.form = JSON.parse(JSON.stringify(row))
+      this.form.remark = this.form.comments.remark
+      this.form.score = this.form.comments.score
+      this.dialogVisible = true
+    },
     addItem() {
       this.form.recordLogs.push({
         desc: ""
@@ -145,17 +179,6 @@ export default {
         this.tableData = res.data.records
         this.total = res.data.total
       })
-
-
-
-
-      // request.get("/user/all", {
-      //   params: {
-      //   }
-      // }).then(res => {
-      //   this.options2 = res.data
-      // })
-
     },
     add() {
       this.dialogVisible = true
@@ -173,24 +196,17 @@ export default {
       let user = JSON.parse(userStr)
 
       let req = {}
-      req.applyId = user.id
+      req.userId = user.id
       req.recordId = this.form.id
-      req.applyTime = this.form.applyTime
-      if(this.form.diff >0 && this.form.diff<1){
-        req.payAmt = this.form.price*this.form.diff
-      }else{
-        req.payAmt = this.form.price
-      }
-      req.payType = this.form.payType
-      req.payPrice = this.form.price
-      req.payDiff = this.form.diff
+      req.remark = this.form.remark
+      req.score = this.form.score
 
-      request.post("/recordApply/save", req).then(res => {
+      request.post("/comment/save", req).then(res => {
         console.log(res)
         if (res.code === '0') {
           this.$message({
             type: "success",
-            message: "预约成功"
+            message: "评价成功"
           })
         } else {
           this.$message({

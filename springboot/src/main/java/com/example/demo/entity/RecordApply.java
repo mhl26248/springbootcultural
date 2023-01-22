@@ -42,5 +42,7 @@ public class RecordApply {
     private BigDecimal price;
     @TableField(exist = false)
     private BigDecimal diff;
+    @TableField(exist = false)
+    private Comments comments;
 
 }

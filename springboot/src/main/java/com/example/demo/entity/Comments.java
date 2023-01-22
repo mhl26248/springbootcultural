@@ -16,5 +16,5 @@ public class Comments {
     private Integer recordId;
     private Date created;
     private String remark;
-    private String scores;
+    private String score;
 }
