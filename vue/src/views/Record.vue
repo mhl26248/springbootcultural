@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="220">
         <template #default="scope">
-          <el-button size="mini" v-if="scope.row.status == 0 || scope.row.status == 6" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
 <!--          <el-button  v-if="scope.row.inStatus == 0" size="mini" @click="handleIn(scope.row)">入库</el-button>-->
 <!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleUpdate(scope.row.id,6)">-->
 <!--            <template #reference>-->
@@ -78,6 +78,10 @@
 
         <el-form-item label="标题">
           <el-input v-model="form.title" style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-radio v-model="form.status" :label="0">上架</el-radio>
+          <el-radio v-model="form.status" :label="1">下架</el-radio>
         </el-form-item>
         <el-form-item label="单价">
           <el-input v-model="form.price" style="width: 30%"></el-input>

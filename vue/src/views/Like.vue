@@ -5,10 +5,6 @@
         :data="tableData"
         stripe
         style="width: 100%">
-<!--      <el-table-column-->
-<!--          prop="id"-->
-<!--          label="编号">-->
-<!--      </el-table-column>-->
       <el-table-column
           label="图片">
         <template #default="scope" >
@@ -18,6 +14,13 @@
       <el-table-column
           prop="title"
           label="名称">
+      </el-table-column>
+      <el-table-column
+          label="状态">
+        <template #default="scope" >
+          <el-tag v-if="scope.row.status == 0" >上架中</el-tag>
+          <el-tag v-if="scope.row.status == 1" type="danger">已下架</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
           prop="price"

@@ -139,11 +139,15 @@ public class RecordController extends BaseController {
     public Result<?> findPageMyRecord(@RequestParam(defaultValue = "1") Integer pageNum,
                                         @RequestParam(defaultValue = "10") Integer pageSize,
                                         @RequestParam(defaultValue = "") Integer userId,
-                                      @RequestParam(defaultValue = "") String search2) {
+                                      @RequestParam(defaultValue = "") String search2,
+                                      @RequestParam(defaultValue = "") String search1) {
 
         LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search2)) {
             wrapper.like(Record::getTitle, search2);
+        }
+        if (StrUtil.isNotBlank(search1)) {
+            wrapper.like(Record::getStatus, search1);
         }
         Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         return Result.success(page);

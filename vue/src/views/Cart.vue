@@ -16,6 +16,13 @@
           label="名称">
       </el-table-column>
       <el-table-column
+          label="状态">
+        <template #default="scope" >
+          <el-tag v-if="scope.row.status == 0" >上架中</el-tag>
+          <el-tag v-if="scope.row.status == 1" type="danger">已下架</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
           prop="price"
           label="单价">
       </el-table-column>
@@ -39,7 +46,7 @@
             </template>
           </el-popconfirm>
 
-          <el-button  class="button" @click="book(scope.row)">购买</el-button>
+          <el-button v-if="scope.row.status == 0" class="button" @click="book(scope.row)">购买</el-button>
         </template>
       </el-table-column>
     </el-table>

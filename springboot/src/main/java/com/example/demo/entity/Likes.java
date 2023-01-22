@@ -28,4 +28,6 @@ public class Likes {
     private BigDecimal price;
     @TableField(exist = false)
     private BigDecimal diff;
+    @TableField(exist = false)
+    private Integer status;
 }

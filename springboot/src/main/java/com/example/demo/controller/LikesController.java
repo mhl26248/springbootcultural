@@ -77,6 +77,7 @@ public class LikesController extends BaseController {
                 obj.setImages(r.getImages());
                 obj.setPrice(r.getPrice());
                 obj.setDiff(r.getDiff());
+                obj.setStatus(r.getStatus());
             }
 
         }

@@ -30,4 +30,6 @@ public class Cart {
     private BigDecimal price;
     @TableField(exist = false)
     private BigDecimal diff;
+    @TableField(exist = false)
+    private Integer status;
 }

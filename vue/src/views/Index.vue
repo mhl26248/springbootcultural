@@ -247,6 +247,7 @@ export default {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
           search2:this.search,
+          search1:0,
         }
       }).then(res => {
         this.loading = false
