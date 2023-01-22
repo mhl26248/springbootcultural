@@ -36,6 +36,10 @@ public class RecordApplyController extends BaseController {
 //        if(null == obj.getApplyTime() ||obj.getApplyTime().equals("")){
 //            return Result.error("001","请选择预约日期");
 //        }
+        Record record = recordMapper.selectById(obj.getRecordId());
+        if(record == null || record.getStatus() != 0){
+            return Result.error("001","商品已经下架");
+        }
         LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(RecordApply::getRecordId,obj.getRecordId());
         wrapper.eq(RecordApply::getApplyId,obj.getApplyId());

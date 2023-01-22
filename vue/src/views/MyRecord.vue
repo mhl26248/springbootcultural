@@ -3,7 +3,6 @@
     <el-table
         v-loading="loading"
         :data="tableData"
-        border
         stripe
         style="width: 100%">
       <el-table-column

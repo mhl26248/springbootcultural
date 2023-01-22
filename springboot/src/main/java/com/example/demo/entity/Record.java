@@ -17,7 +17,7 @@ public class Record {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer userId;
-    private Integer status;//
+    private Integer status;//0 上架 1 下架
     private String remark;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date created;
