@@ -6,9 +6,9 @@
 
     <!--    搜索区域-->
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入景点标题" style="width: 20%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button  @click="add">创建景点</el-button>
+      <el-button  @click="add">创建商品</el-button>
     </div>
     <el-table
         v-loading="loading"
@@ -19,6 +19,14 @@
       <el-table-column min-width="200"
           prop="title"
           label="标题">
+      </el-table-column>
+      <el-table-column min-width="200"
+                       prop="price"
+                       label="单价">
+      </el-table-column>
+      <el-table-column min-width="200"
+                       prop="diff"
+                       label="折扣">
       </el-table-column>
       <el-table-column
           label="图片">
@@ -70,6 +78,12 @@
 
         <el-form-item label="标题">
           <el-input v-model="form.title" style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="单价">
+          <el-input v-model="form.price" style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="折扣">
+          <el-input v-model="form.diff" style="width: 30%"></el-input>
         </el-form-item>
         <el-form-item label="图片">
           <el-input v-model="form.images"  disabled></el-input>

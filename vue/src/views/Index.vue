@@ -13,20 +13,37 @@
       </el-carousel-item>
     </el-carousel>
     <el-row>
-      <el-col :span="5" v-for="(o, index) in tableData" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }" >
-          <img :src="o.images" style="height: 120px"  class="image">
-          <div style="padding: 12px;">
-            <span></span>
-            <div class="bottom clearfix">
-              {{ o.title }}
+<!--      <el-col :span="5" v-for="(o, index) in tableData" :key="o" >-->
+<!--        <el-card :body-style="{ padding: '30px' }" >-->
+<!--          <img :src="o.images" style="height: 120px"  class="image">-->
+<!--          <div >-->
+<!--            <div class="bottom clearfix">-->
+<!--              {{ o.title }}-->
 
-            </div><el-button type="text" @click="book(o)" class="button">预约</el-button>
-            <el-button type="text" @click="toDetail(o)"  class="button">详情</el-button>
+<!--            </div><el-button type="text" @click="book(o)" class="button">预约</el-button>-->
+<!--            <el-button type="text" @click="toDetail(o)"  class="button">详情</el-button>-->
+<!--          </div>-->
+<!--        </el-card>-->
+<!--      </el-col>-->
+      <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
+      style="margin-top: 10px;margin-bottom: 10px">
+      <el-card :body-style="{ padding: '10px'}" style="height:300px" shadow="hover">
+        <img :src="o.images" style="height: 120px"  class="image">
+        <div style="padding: 14px;">
+          <span style="font-size: 20px">{{ o.title }}</span>
+          <div class="bottom clearfix">
+            <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
+            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time>
+
+            <br><br>
+            <el-button @click="toDetail(o)"  class="button">详情</el-button>
+            <el-button  class="button" @click="book(o)">预约</el-button>
           </div>
-        </el-card>
+        </div>
+      </el-card>
       </el-col>
     </el-row>
+
 
     <div style="margin: 10px 0">
       <el-pagination
@@ -255,7 +272,10 @@ export default {
 
     },
     toDetail(row){
-      this.$router.push('/RecordDetail');
+      // sessionStorage.setItem("itemid", JSON.stringify(res.data))  // 缓存用户信息
+      // this.$router.push('/RecordDetail');
+      //
+      this.$router.push({name: 'RecordDetail', query: {sid: row.id}});
     },
     book(row) {
       this.form = JSON.parse(JSON.stringify(row))
