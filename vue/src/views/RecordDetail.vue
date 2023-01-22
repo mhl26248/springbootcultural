@@ -18,7 +18,7 @@
       </el-main>
       <el-footer>
         <el-button type="success" @click="book()">购买</el-button>
-<!--        <el-button type="text" @click="book()" class="button">预约</el-button>-->
+        <el-button type="danger" @click="like()" class="button">收藏</el-button>
       </el-footer>
     </el-container>
   </el-container>
@@ -67,6 +67,7 @@ export default {
   data() {
     return {
       detail:{},
+      form:{},
       dialogVisible:false
     }
   },
@@ -76,10 +77,6 @@ export default {
   methods: {
 
     load() {
-      console.log(this.$route.query.sid)
-      let userStr = sessionStorage.getItem("user") || "{}"
-      let user = JSON.parse(userStr)
-      this.userName = user.username
       request.get("/record/getById", {
         params: {
           id: this.$route.query.sid
@@ -95,7 +92,29 @@ export default {
       this.options = []
       this.initProductImgs();
     },
+    like() {
+      let userStr = sessionStorage.getItem("user") || "{}"
+      console.log(userStr)
+      let user = JSON.parse(userStr)
+      this.userName = user.username
+      this.form.userId = user.id
+      this.form.recordId = this.detail.id
 
+      request.post("/like/save", this.form).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "收藏成功"
+          })
+
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+      })
+    },
   }
 }
 </script>

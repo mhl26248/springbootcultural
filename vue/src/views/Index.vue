@@ -7,7 +7,7 @@
       <!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
 
-    <el-carousel :interval="2000" type="card" height="300px">
+    <el-carousel :interval="2000" type="card" height="250px">
       <el-carousel-item v-for="item in tableData" :key="item">
         <h3 class="medium"  @click="toDetail(item)" ><img :src="item.images" ></h3>
       </el-carousel-item>
@@ -28,15 +28,16 @@
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
       <el-card :body-style="{ padding: '10px'}" style="height:300px" shadow="hover">
-        <img :src="o.images" style="height: 120px"  class="image">
-        <div style="padding: 14px;">
+        <img :src="o.images" style="height: 120px"  @click="toDetail(o)" class="image">
+        <div style="padding: 14px;" >
           <span style="font-size: 20px">{{ o.title }}</span>
           <div class="bottom clearfix">
             <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
             <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time>
             <br><br>
-            <el-button @click="toDetail(o)"  class="button">详情</el-button>
-            <el-button  class="button" @click="book(o)">预约</el-button>
+<!--            <el-button @click="toDetail(o)"  class="button">详情</el-button>-->
+            <el-button  class="button" @click="cart(o)"><i class="el-icon-goods"></i></el-button>
+            <el-button  class="button" @click="book(o)">购买</el-button>
           </div>
         </div>
       </el-card>
@@ -275,6 +276,29 @@ export default {
       // this.$router.push('/RecordDetail');
       //
       this.$router.push({name: 'RecordDetail', query: {sid: row.id}});
+    },
+    cart(row) {
+      let userStr = sessionStorage.getItem("user") || "{}"
+      console.log(userStr)
+      let user = JSON.parse(userStr)
+      this.userName = user.username
+      this.form.userId = user.id
+      this.form.recordId = row.id
+
+      request.post("/cart/save", this.form).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "加入成功"
+          })
+
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+      })
     },
     book(row) {
       this.form = JSON.parse(JSON.stringify(row))
