@@ -6,10 +6,10 @@
         border
         stripe
         style="width: 100%">
-      <el-table-column
-          prop="id"
-          label="编号">
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          prop="id"-->
+<!--          label="编号">-->
+<!--      </el-table-column>-->
       <el-table-column
           label="图片">
         <template #default="scope" >

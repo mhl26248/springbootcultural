@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column
           prop="title"
-          label="景点名称">
+          label="名称">
       </el-table-column>
       <el-table-column
           prop="applyTime"

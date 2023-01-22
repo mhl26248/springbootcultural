@@ -7,22 +7,43 @@
         stripe
         style="width: 100%">
       <el-table-column
+          prop="id"
+          label="订单编号">
+      </el-table-column>
+      <el-table-column
+          label="图片">
+        <template #default="scope" >
+          <img :src="scope.row.images" style="width: 50px">
+        </template>
+      </el-table-column>
+      <el-table-column
           prop="title"
           label="名称">
       </el-table-column>
       <el-table-column
-          prop="applyTime"
+          prop="price"
+          label="单价">
+      </el-table-column>
+      <el-table-column
+          label="折扣">
+        <template #default="scope" >
+          <el-tag>{{scope.row.diff}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="created"
           label="日期">
       </el-table-column>
 
 
       <el-table-column label="操作" min-width="200px">
         <template #default="scope" >
-          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">-->
-            <template #reference>
-              <el-button size="mini" type="info">取消</el-button>
-            </template>
-          </el-popconfirm>
+<!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">&ndash;&gt;-->
+<!--            <template #reference>-->
+<!--              <el-button size="mini" type="info">取消</el-button>-->
+<!--            </template>-->
+<!--          </el-popconfirm>-->
+            <el-button size="mini" >评价</el-button>
         </template>
       </el-table-column>
     </el-table>

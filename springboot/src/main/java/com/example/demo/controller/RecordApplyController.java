@@ -91,6 +91,9 @@ public class RecordApplyController extends BaseController {
             Record r = recordMapper.selectById(recordApply.getRecordId());
             if(r!=null){
                 recordApply.setTitle(r.getTitle());
+                recordApply.setImages(r.getImages());
+                recordApply.setPrice(r.getPrice());
+                recordApply.setDiff(r.getDiff());
             }
 
             User user = userMapper.selectById(recordApply.getApplyId());
