@@ -40,11 +40,11 @@ const routes = [
         name: 'MyRecord',
         component: () => import("@/views/MyRecord")
     },
-    // {
-    //     path: '/like',
-    //     name: 'Like',
-    //     component: () => import("@/views/Like")
-    // },
+    {
+        path: '/recordDetail',
+        name: 'RecordDetail',
+        component: () => import("@/views/RecordDetail")
+    },
 
 
 ]

@@ -2,20 +2,27 @@
 
   <div style="padding: 10px">
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入景点标题" style="width: 20%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入商品名称" style="width: 60%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
       <!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
+
+    <el-carousel :interval="4000" type="card" height="200px">
+      <el-carousel-item v-for="item in tableData" :key="item">
+        <h3 class="medium"  @click="toDetail(item)" ><img :src="item.images" ></h3>
+      </el-carousel-item>
+    </el-carousel>
     <el-row>
       <el-col :span="5" v-for="(o, index) in tableData" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.images" style="height: 120px" class="image">
+        <el-card :body-style="{ padding: '0px' }" >
+          <img :src="o.images" style="height: 120px"  class="image">
           <div style="padding: 12px;">
             <span></span>
             <div class="bottom clearfix">
               {{ o.title }}
 
             </div><el-button type="text" @click="book(o)" class="button">预约</el-button>
+            <el-button type="text" @click="toDetail(o)"  class="button">详情</el-button>
           </div>
         </el-card>
       </el-col>
@@ -33,7 +40,10 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="景点预约" v-model="dialogVisible" width="70%">
+
+
+
+    <el-dialog title="预约" v-model="dialogVisible" width="70%">
 
       <el-form ref="form"   :model="form" label-width="80px">
 
@@ -65,7 +75,6 @@
 
   </div>
 </template>
-
 <script>
 
 import request from "@/utils/request";
@@ -75,6 +84,7 @@ export default {
   components: {},
   data() {
     return {
+      drawer: false,
       loading: true,
       form: {
         recordLogs: [
@@ -244,6 +254,9 @@ export default {
       })
 
     },
+    toDetail(row){
+      this.$router.push('/RecordDetail');
+    },
     book(row) {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true
@@ -309,3 +322,20 @@ export default {
   }
 }
 </script>
+<style>
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
+</style>

@@ -1,6 +1,12 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">购物平台</div>
+    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">购物平台
+
+<!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
+<!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->
+<!--        <el-button v-if="user.nickName!='管理员'" type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
+<!--      </div>-->
+    </div>
     <div style="flex: 1;width: 200px; padding-left: 30px;">
       <el-menu v-if="user.nickName!='管理员'" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
