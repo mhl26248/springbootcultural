@@ -4,32 +4,45 @@
     <el-aside width="500px" style="padding-top: 100px;height: 450px">
       <img :src="detail.images" style="height: 220px"  class="image">
     </el-aside>
-      <el-main >
-        <el-descriptions class="margin-top" title="商品详情" :column="4" direction="vertical">
-          <el-descriptions-item label="标题" :span="4">{{ detail.title}}</el-descriptions-item>
-          <el-descriptions-item label="价格" :span="4"><font color="red">{{ detail.price}}</font></el-descriptions-item>
-          <el-descriptions-item label="折扣" :span="4"><el-tag>{{ detail.diff}}</el-tag></el-descriptions-item>
-<!--          <el-descriptions-item label="备注">-->
-<!--            <el-tag size="small">{{ detail.remark}}</el-tag>-->
-<!--          </el-descriptions-item>-->
-          <el-descriptions-item label="详情" :span="2">{{ detail.remark}}</el-descriptions-item>
-        </el-descriptions>
+      <el-main style="padding-top: 80px;height: 450px">
+        <el-card class="box-card" style="height: 300px" border="0"  shadow="hover">
+          <div  style="height: 50px"  class="text item">
+            <div style="font-size: 30px">{{ detail.title}}</div>
+          </div>
+          <div  style="height: 50px"  class="text item">
+            价格:&nbsp;&nbsp;&nbsp;&nbsp;{{ detail.price}}
+          </div>
+          <div  style="height: 50px"  class="text item">
+            折扣:&nbsp;&nbsp;&nbsp;&nbsp;<el-tag>{{ detail.diff}}</el-tag>
+          </div>
+          <div  style="height: 70px"  >
+            <el-button style="float: right; "  type="success" @click="book()">购买</el-button>
+            <el-button style="float: right; " type="danger" @click="like()" class="button">收藏</el-button>
+          </div>
+        </el-card>
 
-        <el-button type="success" @click="book()">购买</el-button>
-        <el-button type="danger" @click="like()" class="button">收藏</el-button>
       </el-main>
     </el-container>
     <el-footer >
-      <el-card class="box-card">
+      <el-card class="box-card"  shadow="hover">
         <div slot="header" >
-          <span>评价({{activeNames.length}})</span>
+          <span style="font-size: 30px">详情</span>
         </div>
-        <div v-for="o in activeNames" :key="o" class="text item">
+        <div  style="font-size: 15px">
+          {{ detail.remark}}
+        </div>
+      </el-card>
+      <el-card class="box-card"  shadow="hover">
+        <div slot="header" >
+          <span style="font-size: 30px">评价({{activeNames.length}})</span>
+        </div>
+        <div v-for="o in activeNames"  style="font-size: 15px" :key="o" class="text item">
           用户：{{o.userName}}&nbsp;&nbsp;&nbsp;&nbsp;
-          评分：{{o.score}}
+          评分：{{o.score}}&nbsp;&nbsp;&nbsp;&nbsp;
           日期：{{o.created}}
           <br>
-          评价内容：{{o.remark}}
+          评价内容：&nbsp;&nbsp;&nbsp;&nbsp;<br>
+          {{o.remark}}
         </div>
       </el-card>
     </el-footer>
@@ -242,6 +255,6 @@ body > .el-container {
 
 .box-card {
   text-align: left;
-  width: 95%;
+  width: 100%;
 }
 </style>
