@@ -221,7 +221,7 @@ export default {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search2: user.id
+          search: user.id
         }
       }).then(res => {
         this.loading = false
