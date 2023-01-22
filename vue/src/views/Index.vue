@@ -7,8 +7,8 @@
       <!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
 
-    <el-carousel :interval="2000" type="card" height="250px">
-      <el-carousel-item v-for="item in tableData" :key="item">
+    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
+      <el-carousel-item v-for="item in tableData" style="height: 250px;">
         <h3 class="medium"  @click="toDetail(item)" ><img :src="item.images" ></h3>
       </el-carousel-item>
     </el-carousel>
