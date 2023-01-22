@@ -1,9 +1,5 @@
 <template>
   <div style="padding: 10px">
-    <!--    功能区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--    </div>-->
-
     <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
@@ -44,17 +40,6 @@
       <el-table-column label="操作" min-width="220">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-<!--          <el-button  v-if="scope.row.inStatus == 0" size="mini" @click="handleIn(scope.row)">入库</el-button>-->
-<!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleUpdate(scope.row.id,6)">-->
-<!--            <template #reference>-->
-<!--              <el-button size="mini" type="info">取消</el-button>-->
-<!--            </template>-->
-<!--          </el-popconfirm>-->
-<!--          <el-popconfirm title="确定重新申请吗？" v-if="scope.row.status == 6" @confirm="handleUpdate(scope.row.id,0)">-->
-<!--            <template #reference>-->
-<!--              <el-button size="mini" type="info">重新申请</el-button>-->
-<!--            </template>-->
-<!--          </el-popconfirm>-->
         </template>
       </el-table-column>
     </el-table>
@@ -175,7 +160,7 @@ export default {
     handlePreviewVideo(file){
       console.log(file.data)
       if (file) {
-        if(this.form.images == undefined){
+        if(this.form.images == undefined || this.form.images == ''){
           this.form.images = ''
         }
         else{

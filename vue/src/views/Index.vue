@@ -1,41 +1,26 @@
 <template>
-
   <div style="padding: 10px">
     <div style="margin: 10px 100px;">
       <el-input v-model="search" placeholder="请输入商品名称" style="width: 60%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <!--      <el-button  @click="add">创建景点</el-button>-->
     </div>
 
     <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
       <el-carousel-item v-for="item in tableData" style="height: 250px;">
-        <h3 class="medium"  @click="toDetail(item)" ><img :src="item.images" ></h3>
+        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row style="padding-top: 30px">
-<!--      <el-col :span="5" v-for="(o, index) in tableData" :key="o" >-->
-<!--        <el-card :body-style="{ padding: '30px' }" >-->
-<!--          <img :src="o.images" style="height: 120px"  class="image">-->
-<!--          <div >-->
-<!--            <div class="bottom clearfix">-->
-<!--              {{ o.title }}-->
-
-<!--            </div><el-button type="text" @click="book(o)" class="button">预约</el-button>-->
-<!--            <el-button type="text" @click="toDetail(o)"  class="button">详情</el-button>-->
-<!--          </div>-->
-<!--        </el-card>-->
-<!--      </el-col>-->
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
-      <el-card :body-style="{ padding: '10px'}" style="height:300px" shadow="hover">
+      <el-card :body-style="{ padding: '10px'}" style="height:350px" shadow="hover">
         <img :src="o.images" style="height: 120px"  @click="toDetail(o)" class="image">
         <div style="padding: 14px;" >
-          <span style="font-size: 20px">{{ o.title }}</span>
+          <span style="font-size: 18px">{{ o.title }}</span>
           <div class="bottom clearfix">
             <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
             <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time>
             <br><br>
-<!--            <el-button @click="toDetail(o)"  class="button">详情</el-button>-->
             <el-button  class="button" @click="cart(o)"><i class="el-icon-goods"></i></el-button>
             <el-button  class="button" @click="book(o)">购买</el-button>
           </div>
@@ -56,9 +41,6 @@
           :total="total">
       </el-pagination>
     </div>
-
-
-
 
     <el-dialog title="下单" v-model="dialogVisible" width="70%">
       <el-form ref="form"   :model="form" label-width="80px">
