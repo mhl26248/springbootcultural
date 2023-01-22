@@ -1,9 +1,9 @@
 <template>
   <el-container>
-    <el-aside width="500px" style="padding-top: 100px;">
+    <el-container>
+    <el-aside width="500px" style="padding-top: 100px;height: 450px">
       <img :src="detail.images" style="height: 220px"  class="image">
     </el-aside>
-    <el-container>
       <el-main >
         <el-descriptions class="margin-top" title="商品详情" :column="4" direction="vertical">
           <el-descriptions-item label="标题" :span="4">{{ detail.title}}</el-descriptions-item>
@@ -15,12 +15,25 @@
           <el-descriptions-item label="详情" :span="2">{{ detail.remark}}</el-descriptions-item>
         </el-descriptions>
 
-      </el-main>
-      <el-footer>
         <el-button type="success" @click="book()">购买</el-button>
         <el-button type="danger" @click="like()" class="button">收藏</el-button>
-      </el-footer>
+      </el-main>
     </el-container>
+    <el-footer >
+      <el-card class="box-card">
+        <div slot="header" >
+          <span>评价({{activeNames.length}})</span>
+        </div>
+        <div v-for="o in activeNames" :key="o" class="text item">
+          用户：{{o.userName}}&nbsp;&nbsp;&nbsp;&nbsp;
+          评分：{{o.score}}
+          日期：{{o.created}}
+          <br>
+          评价内容：{{o.remark}}
+        </div>
+      </el-card>
+    </el-footer>
+
   </el-container>
 
 
@@ -78,6 +91,8 @@ export default {
   components: {},
   data() {
     return {
+      comments:{},
+      activeNames:[],
       detail:{},
       form:{},
       dialogVisible:false
@@ -95,6 +110,13 @@ export default {
         }
       }).then(res => {
         this.detail = res.data
+      })
+      request.get("/comment/findPage", {
+        params: {
+          search2: this.$route.query.sid
+        }
+      }).then(res => {
+        this.activeNames = res.data.records
       })
     },
     book() {
@@ -179,7 +201,7 @@ export default {
   /*background-color: #D3DCE6;*/
   /*color: #333;*/
   text-align: center;
-  line-height: 200px;
+  line-height: 160px;
 }
 
 .el-main {
@@ -200,5 +222,26 @@ body > .el-container {
 
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
+}
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+
+.box-card {
+  text-align: left;
+  width: 95%;
 }
 </style>

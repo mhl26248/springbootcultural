@@ -200,6 +200,7 @@ export default {
       req.recordId = this.form.id
       req.remark = this.form.remark
       req.score = this.form.score
+      req.goodsId = this.form.recordId
 
       request.post("/comment/save", req).then(res => {
         console.log(res)

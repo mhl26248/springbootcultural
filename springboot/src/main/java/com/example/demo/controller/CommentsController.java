@@ -16,6 +16,7 @@ import com.example.demo.mapper.UserMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,7 @@ public class CommentsController extends BaseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody Comments obj) {
+        obj.setCreated(new Date());
         commentsMapper.insert(obj);
         return Result.success();
     }
@@ -60,6 +62,9 @@ public class CommentsController extends BaseController {
         LambdaQueryWrapper<Comments> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
             wrapper.like(Comments::getRemark, search);
+        }
+        if (StrUtil.isNotBlank(search2)) {
+            wrapper.like(Comments::getGoodsId, search2);
         }
 //
         wrapper.orderByDesc(Comments::getId);
