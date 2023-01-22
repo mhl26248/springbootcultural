@@ -19,10 +19,14 @@
         stripe
         style="width: 100%">
       <el-table-column
-          prop="id"
+          prop="id" width="80px"
           label="订单编号">
       </el-table-column>
       <el-table-column
+          prop="applyName" width="80px"
+          label="用户名">
+      </el-table-column>
+      <el-table-column width="60px"
           label="图片">
         <template #default="scope" >
           <img :src="scope.row.images" style="width: 50px">
@@ -33,16 +37,16 @@
           label="名称">
       </el-table-column>
       <el-table-column
-          prop="payType"
+          prop="payType" width="100px"
           label="支付方式">
       </el-table-column>
-      <el-table-column
+      <el-table-column width="100px"
           label="折扣">
         <template #default="scope" >
           <el-tag>{{scope.row.diff}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column width="100px"
           prop="payAmt"
           label="已支付">
       </el-table-column>
@@ -52,17 +56,17 @@
       </el-table-column>
 
 
-      <el-table-column label="操作" min-width="200px">
-        <template #default="scope" >
-          <!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">&ndash;&gt;-->
-          <!--            <template #reference>-->
-          <!--              <el-button size="mini" type="info">取消</el-button>-->
-          <!--            </template>-->
-          <!--          </el-popconfirm>-->
-          <el-button size="mini" v-if="scope.row.comments == null" @click="pj(scope.row)">评价</el-button>
-          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="操作" min-width="200px">-->
+<!--        <template #default="scope" >-->
+<!--          &lt;!&ndash;          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">&ndash;&gt;&ndash;&gt;-->
+<!--          &lt;!&ndash;            <template #reference>&ndash;&gt;-->
+<!--          &lt;!&ndash;              <el-button size="mini" type="info">取消</el-button>&ndash;&gt;-->
+<!--          &lt;!&ndash;            </template>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </el-popconfirm>&ndash;&gt;-->
+<!--          <el-button size="mini" v-if="scope.row.comments == null" @click="pj(scope.row)">评价</el-button>-->
+<!--          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <div style="margin: 10px 0">

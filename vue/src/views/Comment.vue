@@ -7,7 +7,6 @@
     <el-table
         v-loading="loading"
         :data="tableData"
-        border
        >
       <el-table-column min-width="50"
           label="图片">
@@ -15,9 +14,9 @@
           <img  :src="scope.row.images" style="width: 50px;height: 50px">
         </template>
       </el-table-column>
-      <el-table-column min-width="150"
+      <el-table-column width="150"
           prop="title"
-          label="标题">
+          label="商品名称">
       </el-table-column>
       <el-table-column min-width="50"
                        prop="userName"
