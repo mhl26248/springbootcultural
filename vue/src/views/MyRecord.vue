@@ -21,14 +21,18 @@
           label="名称">
       </el-table-column>
       <el-table-column
-          prop="price"
-          label="单价">
+          prop="payType"
+          label="支付方式">
       </el-table-column>
       <el-table-column
           label="折扣">
         <template #default="scope" >
           <el-tag>{{scope.row.diff}}</el-tag>
         </template>
+      </el-table-column>
+      <el-table-column
+          prop="payAmt"
+          label="已支付">
       </el-table-column>
       <el-table-column
           prop="created"
@@ -166,46 +170,39 @@ export default {
       // this.addItem()
     },
     save() {
-      if (this.form.id) {  // 更新
-        request.post("/record/update", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "更新成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      } else {  // 新增
-        let userStr = sessionStorage.getItem("user") || "{}"
-        let user = JSON.parse(userStr)
-        this.form.doctorId = user.id
+      let userStr = sessionStorage.getItem("user") || "{}"
+      let user = JSON.parse(userStr)
 
-        request.post("/record/save", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "新增成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
-
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
+      let req = {}
+      req.applyId = user.id
+      req.recordId = this.form.id
+      req.applyTime = this.form.applyTime
+      if(this.form.diff >0 && this.form.diff<1){
+        req.payAmt = this.form.price*this.form.diff
+      }else{
+        req.payAmt = this.form.price
       }
+      req.payType = this.form.payType
+      req.payPrice = this.form.price
+      req.payDiff = this.form.diff
+
+      request.post("/recordApply/save", req).then(res => {
+        console.log(res)
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "预约成功"
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+
+        this.load() // 刷新表格的数据
+        this.dialogVisible = false  // 关闭弹窗
+      })
 
     },
     handleUpdate(row){

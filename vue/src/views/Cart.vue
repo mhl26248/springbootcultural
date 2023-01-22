@@ -39,6 +39,8 @@
               <el-button size="mini" type="info">删除</el-button>
             </template>
           </el-popconfirm>
+
+          <el-button  class="button" @click="book(scope.row)">购买</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,6 +57,49 @@
       </el-pagination>
     </div>
 
+    <el-dialog title="下单" v-model="dialogVisible" width="70%">
+      <el-form ref="form"   :model="form" label-width="80px">
+        <el-form-item label="标题">
+          <el-input v-model="form.title" disabled style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="图片">
+          <img :src="form.images" style="width: 200px;height: 200px">
+        </el-form-item>
+        <el-form-item label="单价">
+          <el-input v-model="form.price" disabled style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="折扣">
+          <el-input v-model="form.diff" disabled style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="待支付">
+          <span v-if="form.diff">
+          {{form.diff*form.price}}
+          </span>
+          <span v-if="!form.diff">
+          {{form.price}}
+          </span>
+        </el-form-item>
+        <el-form-item label="支付方式">
+          <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
+          <el-radio v-model="form.payType" label="微信">微信</el-radio>
+        </el-form-item>
+        <!--        <el-form-item label="预约日期">-->
+        <!--          <el-date-picker-->
+        <!--              value-format="YYYY-MM-DD"-->
+        <!--              v-model="form.applyTime"-->
+        <!--              type="date"-->
+        <!--              placeholder="选择日期">-->
+        <!--          </el-date-picker>-->
+        <!--        </el-form-item>-->
+      </el-form>
+
+      <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+          </span>
+      </template>
+    </el-dialog>
 
   </div>
 </template>
@@ -91,6 +136,49 @@ export default {
     this.load()
   },
   methods: {
+    book(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.form.payType = '支付宝'
+      this.dialogVisible = true
+      this.fileList = []
+      this.options = []
+    },
+    save() {
+      let userStr = sessionStorage.getItem("user") || "{}"
+      let user = JSON.parse(userStr)
+
+      let req = {}
+      req.applyId = user.id
+      req.recordId = this.form.recordId
+      req.applyTime = this.form.applyTime
+      if(this.form.diff >0 && this.form.diff<1){
+        req.payAmt = this.form.price*this.form.diff
+      }else{
+        req.payAmt = this.form.price
+      }
+      req.payType = this.form.payType
+      req.payPrice = this.form.price
+      req.payDiff = this.form.diff
+
+      request.post("/recordApply/save", req).then(res => {
+        console.log(res)
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "下单成功"
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+
+        this.load() // 刷新表格的数据
+        this.dialogVisible = false  // 关闭弹窗
+      })
+
+    },
     addItem() {
       this.form.recordLogs.push({
         desc: ""
@@ -137,9 +225,6 @@ export default {
         this.tableData = res.data.records
         this.total = res.data.total
       })
-
-
-
     },
     add() {
       this.dialogVisible = true
@@ -152,49 +237,7 @@ export default {
         ]}
       // this.addItem()
     },
-    save() {
-      if (this.form.id) {  // 更新
-        request.post("/record/update", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "更新成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      } else {  // 新增
-        let userStr = sessionStorage.getItem("user") || "{}"
-        let user = JSON.parse(userStr)
-        this.form.doctorId = user.id
 
-        request.post("/record/save", this.form).then(res => {
-          console.log(res)
-          if (res.code === '0') {
-            this.$message({
-              type: "success",
-              message: "新增成功"
-            })
-          } else {
-            this.$message({
-              type: "error",
-              message: res.msg
-            })
-          }
-
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      }
-
-    },
     handleUpdate(row){
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible2 = true

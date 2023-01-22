@@ -33,17 +33,17 @@ public class RecordApplyController extends BaseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody RecordApply obj) {
-        if(null == obj.getApplyTime() ||obj.getApplyTime().equals("")){
-            return Result.error("001","请选择预约日期");
-        }
+//        if(null == obj.getApplyTime() ||obj.getApplyTime().equals("")){
+//            return Result.error("001","请选择预约日期");
+//        }
         LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(RecordApply::getRecordId,obj.getRecordId());
         wrapper.eq(RecordApply::getApplyId,obj.getApplyId());
         wrapper.eq(RecordApply::getApplyTime,DateUtil.format(obj.getApplyTime(),"yyyy-MM-dd"));
-        int c  = recordApplyMapper.selectCount(wrapper);
-        if(c>0){
-            return Result.error("001","该日期已经预约过了");
-        }
+//        int c  = recordApplyMapper.selectCount(wrapper);
+//        if(c>0){
+//            return Result.error("001","该日期已经预约过了");
+//        }
         obj.setCreated(new Date());
         obj.setStatus(0);
         recordApplyMapper.insert(obj);

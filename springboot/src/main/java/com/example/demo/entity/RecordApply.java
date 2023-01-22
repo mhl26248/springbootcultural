@@ -26,6 +26,10 @@ public class RecordApply {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date applyTime;
     private Integer type;
+    private String payType;
+    private BigDecimal payAmt;
+    private BigDecimal payDiff;
+    private BigDecimal payPrice;
 
 
     @TableField(exist = false)
