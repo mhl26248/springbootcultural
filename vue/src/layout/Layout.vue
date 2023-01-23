@@ -2,7 +2,7 @@
   <div>
     <!--    头部-->
     <Header :user="user"/>
-
+<!--    <v-mini-weather></v-mini-weather>-->
     <!--    主体-->
     <div style="display: flex">
       <!--      侧边栏-->
@@ -19,11 +19,13 @@ import Header from "@/components/Header";
 import Aside from "@/components/Aside";
 import request from "@/utils/request";
 
+import axios from "axios";
+
 export default {
   name: "Layout",
   components: {
     Header,
-    Aside
+    Aside,
   },
   data() {
     return {
@@ -33,8 +35,10 @@ export default {
   },
   created() {
     this.refreshUser()
+    // this.getWeather()
   },
   methods: {
+
     refreshUser() {
       let userJson = sessionStorage.getItem("user");
 

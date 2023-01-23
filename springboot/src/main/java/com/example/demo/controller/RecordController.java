@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,9 +10,16 @@ import com.example.demo.common.Result;
 import com.example.demo.entity.Record;
 import com.example.demo.mapper.RecordMapper;
 import com.example.demo.mapper.UserMapper;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +81,55 @@ public class RecordController extends BaseController {
     }
 
 
+    @GetMapping("/getWeather")
+    public Result<?> getWeather(String city) {
+        String url = "http://www.weather.com.cn/data/cityinfo/"+city+".html";
+        String weatherInfo = getWeatherInfo(url);
+        return Result.success(JSONUtil.parseObj(weatherInfo));
+    }
+
+    public static String getWeatherInfo(String url) {
+        CloseableHttpClient client;
+        client = HttpClients.createDefault();
+
+        HttpGet get = new HttpGet(url);
+        HttpResponse response;
+        try {
+            response = client.execute(get);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                InputStream instreams = entity.getContent();
+                String str = convertStreamToString(instreams);
+                get.abort();
+                return str;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static String convertStreamToString(InputStream is) {
+        StringBuilder sb1 = new StringBuilder();
+        byte[] bytes = new byte[4096];
+        int size;
+
+        try {
+            while ((size = is.read(bytes)) > 0) {
+                String str = new String(bytes, 0, size, "UTF-8");
+                sb1.append(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb1.toString();
+    }
 
     @GetMapping("/getById")
     public Result<?> getById(@RequestParam("id") Long id) {

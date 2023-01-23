@@ -1,12 +1,19 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">去旅游
+    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">去旅游
 
 <!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
 <!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->
 <!--        <el-button v-if="user.nickName!='管理员'" type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
 <!--      </div>-->
+
+      <el-tag>{{city}}
+        {{weather}}</el-tag>
     </div>
+<!--    <div style="padding-left: 10px">-->
+<!--      <el-tag>{{city}}-->
+<!--        {{weather}}</el-tag>-->
+<!--    </div>-->
     <div style="flex: 1;width: 200px; padding-left: 30px;">
       <el-menu v-if="user.nickName!='管理员' && role != 6" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
@@ -38,20 +45,40 @@
 </template>
 
 <script>
+import axios from "axios";
+import request from "@/utils/request";
 export default {
   name: "Header",
   props: ['user'],
   data() {
     return {
       activeIndex:'1',
-      role:0
+      role:0,
+      city:'',
+      weather:{}
     }
   },
   created() {
     this.refreshUser()
+    this.getWeather2()
   },
   methods: {
+    getWeather:function(){
+      var that = this;
+      var url = "https://apia.aidioute.cn/weather/?location_type=0&from=vmweather";
 
+      axios.get(url).then(response=>{
+        console.log(response.data);
+        that.city = response.data.data.location.city
+        that.weather=response.data.data.weather.weather+"/"+response.data.data.weather.WD+response.data.data.weather.WS;
+      }).catch(error=>console.log(err));
+    },
+    getWeather2:function(){
+      request.get("/record/getWeather?city=101010100").then(res => {
+        this.city = res.data.weatherinfo.city
+        this.weather = res.data.weatherinfo.weather+"("+res.data.weatherinfo.temp1+"-"+res.data.weatherinfo.temp2+")"
+      })
+    },
     refreshUser() {
       let userJson = sessionStorage.getItem("user");
       console.log(JSON.parse(userJson).roles[0])
