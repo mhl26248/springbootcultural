@@ -57,7 +57,7 @@ export default {
       let myChart = this.$root.echarts.init(document.getElementById('myChart'))
       let option = {
         title: {
-          text: '各商品销售统计图',
+          text: '销售统计图',
           subtext: '实时数据',
           left: 'left'
         },

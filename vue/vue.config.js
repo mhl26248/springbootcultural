@@ -1,5 +1,5 @@
 
-const name =  "XX平台"; // page title
+const name =  "旅游平台"; // page title
 
 
 // 跨域配置

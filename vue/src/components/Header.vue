@@ -1,6 +1,6 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">购物平台
+    <div style="width: 200px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">去旅游
 
 <!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
 <!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->
