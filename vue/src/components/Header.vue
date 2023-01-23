@@ -13,6 +13,7 @@
         <el-menu-item index="2" >购物车</el-menu-item>
         <el-menu-item index="3" >收藏</el-menu-item>
         <el-menu-item index="4">订单管理</el-menu-item>
+        <el-menu-item index="5">聊天</el-menu-item>
       </el-menu>
     </div>
 
@@ -61,6 +62,9 @@ export default {
       }
       else if(key == '4'){
         this.$router.push('/MyRecord');
+      }
+      else if(key == '5'){
+        this.$router.push('/Im');
       }
     }
   }

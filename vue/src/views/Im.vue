@@ -14,7 +14,7 @@
       </el-col>
 
       <el-col :span="20">
-        <div style="width: 800px; margin: 0 auto; background-color: white;
+        <div style="width: 400px; margin: 0 auto; background-color: white;
                     border-radius: 5px; box-shadow: 0 0 10px #ccc">
           <div style="text-align: center; line-height: 50px;">
             Web聊天室（{{ chatUser }}）
