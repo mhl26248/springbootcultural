@@ -4,6 +4,17 @@
     <el-row :gutter="20">
       <el-col :span="22">
         <el-card>
+          <el-timeline :reverse="reverse">
+            <el-timeline-item
+                v-for="(activity, index) in activities"
+                :key="index"
+                :timestamp="activity.created">
+              {{activity.title}}<br>
+              {{activity.context}}
+            </el-timeline-item>
+          </el-timeline>
+        </el-card>
+        <el-card>
           <div id="myChart" :style="{width: '600px', height: '500px'}"></div>
         </el-card>
 
@@ -34,6 +45,8 @@ export default {
   name: "Home",
   data() {
     return {
+      reverse: true,
+      activities: [],
       summary:{},
     }
   },
@@ -46,12 +59,18 @@ export default {
   },
   methods: {
     load(){
-      // request.get("/recordApply/count").then(res => {
-      //   if (res.code === '0') {
-      //     this.summary = res.data
-      //   }
-      // })
-    },
+      request.get("/notice/findPage", {
+        params: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize,
+          search: this.search
+        }
+      }).then(res => {
+        this.loading = false
+        this.activities = res.data.records
+      })
+    }
+    ,
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$root.echarts.init(document.getElementById('myChart'))
@@ -92,7 +111,11 @@ export default {
           }
         ]
       }
-      request.get("/recordApply/count").then(res => {
+
+      let userStr = sessionStorage.getItem("user") || "{}"
+      let user = JSON.parse(userStr)
+
+      request.get("/recordApply/count?storeId="+user.id).then(res => {
         if (res.code === '0') {
           res.data.forEach(item => {
             option.series[0].data.push({name: item.title, value: item.count})

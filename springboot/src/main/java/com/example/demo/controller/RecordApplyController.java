@@ -31,7 +31,10 @@ public class RecordApplyController extends BaseController {
     CommentsMapper commentsMapper;
 
     @GetMapping("/count")
-    public Result<?> count() {
+    public Result<?> count(@RequestParam(defaultValue = "") Integer storeId) {
+        if(storeId!=null && storeId != 1){
+            return Result.success(recordApplyMapper.countStore(storeId));
+        }
         return Result.success(recordApplyMapper.count());
     }
 
