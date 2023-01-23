@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="200px">
         <template #default="scope" >
-          <el-popconfirm title="确定取消吗？" @confirm="handleEdit(scope.row.id)">-->
+          <el-popconfirm title="确定取消吗？" @confirm="handleEdit(scope.row.id)">
             <template #reference>
               <el-button size="mini" type="info">取消</el-button>
             </template>

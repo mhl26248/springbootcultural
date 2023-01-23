@@ -143,6 +143,9 @@ public class RecordController extends BaseController {
                                       @RequestParam(defaultValue = "") String search1) {
 
         LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
+        if (userId!=null) {
+            wrapper.eq(Record::getUserId, userId);
+        }
         if (StrUtil.isNotBlank(search2)) {
             wrapper.like(Record::getTitle, search2);
         }

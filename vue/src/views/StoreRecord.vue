@@ -40,6 +40,11 @@
       <el-table-column label="操作" min-width="220">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="remove(scope.row.id)">
+            <template #reference>
+              <el-button size="mini" >删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -250,13 +255,23 @@ export default {
         this.total = res.data.total
       })
 
-
+    },
+    remove(id) {
+      this.loading = true
+      request.get("/record/deleteById", {
+        params: {
+          id: id,
+        }
+      }).then(res => {
+        this.load()
+      })
 
     },
     add() {
       this.options = []
       this.dialogVisible = true
       this.form =  {
+        status:0,
         recordLogs: [
           {
             name: "",
@@ -287,7 +302,7 @@ export default {
       } else {  // 新增
         let userStr = sessionStorage.getItem("user") || "{}"
         let user = JSON.parse(userStr)
-
+        this.form.userId = user.id
         request.post("/record/save", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {

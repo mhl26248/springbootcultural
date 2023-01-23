@@ -156,7 +156,8 @@ export default {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search:this.search
+          search:this.search,
+          storeId:user.id
         }
       }).then(res => {
         this.loading = false

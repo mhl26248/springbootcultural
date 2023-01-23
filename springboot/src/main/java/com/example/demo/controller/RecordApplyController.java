@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
@@ -82,7 +83,8 @@ public class RecordApplyController extends BaseController {
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
                               @RequestParam(defaultValue = "") String search,
-                              @RequestParam(defaultValue = "") String search2) {
+                              @RequestParam(defaultValue = "") String search2,
+                              @RequestParam(defaultValue = "") Integer storeId) {
         LambdaQueryWrapper<RecordApply> wrapper = Wrappers.lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
             wrapper.like(RecordApply::getCreated, search);
@@ -90,6 +92,14 @@ public class RecordApplyController extends BaseController {
         if (StrUtil.isNotBlank(search2)) {
             wrapper.eq(RecordApply::getApplyId, search2);
         }
+
+        if (storeId != null) {
+            List<Integer> recordIds = recordMapper.findStoreRecordIds(storeId);
+            if(CollectionUtils.isNotEmpty(recordIds)){
+                wrapper.in(RecordApply::getRecordId, recordIds);
+            }
+        }
+
         wrapper.orderByDesc(RecordApply::getId);
         Page<RecordApply> page = recordApplyMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         List<RecordApply> recordApplies = page.getRecords();

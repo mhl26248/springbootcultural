@@ -31,6 +31,9 @@ public interface RecordMapper extends BaseMapper<Record> {
             "r.id in (select t2.* from(select ra.record_id from record_apply ra where ra.apply_id = #{applyId} and ra.status = 1 order by id desc ) as t2)  limit #{start},#{end}  ")
     List<Record> selectPassApplyRecord(int applyId ,Integer start,Integer end);
 
+    @Select("select id from record  where user_id = #{user_id}   ")
+    List<Integer> findStoreRecordIds(int user_id );
+
     @Select("select r.* from record r where r.sick_id = #{sickId} limit #{start},#{end}  ")
     List<Record> findPageMyRecord(int sickId ,Integer start,Integer end);
 
