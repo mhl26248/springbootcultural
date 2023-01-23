@@ -8,7 +8,7 @@
 <!--      </div>-->
     </div>
     <div style="flex: 1;width: 200px; padding-left: 30px;">
-      <el-menu v-if="user.nickName!='管理员'" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu v-if="user.nickName!='管理员' && role != 6" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
         <el-menu-item index="2" >购物车</el-menu-item>
         <el-menu-item index="3" >收藏</el-menu-item>
@@ -43,12 +43,23 @@ export default {
   props: ['user'],
   data() {
     return {
-      activeIndex:'1'
+      activeIndex:'1',
+      role:0
     }
   },
   created() {
+    this.refreshUser()
   },
   methods: {
+
+    refreshUser() {
+      let userJson = sessionStorage.getItem("user");
+      console.log(JSON.parse(userJson).roles[0])
+      if (!userJson) {
+        return
+      }
+      this.role = JSON.parse(userJson).roles[0]
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       if(key == '2'){

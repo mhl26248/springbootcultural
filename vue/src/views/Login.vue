@@ -151,6 +151,9 @@ export default {
               if(this.form.username == 'admin'){
                 this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
               }
+              else if(res.data.roles[0] == 6){
+                this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
+              }
               else{
                 this.$router.push("/Index")  //登录成功之后进行页面的跳转，跳转到主页
               }

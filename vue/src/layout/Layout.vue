@@ -6,7 +6,7 @@
     <!--    主体-->
     <div style="display: flex">
       <!--      侧边栏-->
-      <Aside v-if="user.nickName=='管理员'"/>
+      <Aside v-if="user.nickName=='管理员' || role == 6"/>
 <!--      <Aside />-->
       <!--      内容区域-->
       <router-view style="flex: 1" @userInfo="refreshUser"/>
@@ -27,7 +27,8 @@ export default {
   },
   data() {
     return {
-      user: {}
+      user: {},
+      role: {},
     }
   },
   created() {
@@ -36,10 +37,13 @@ export default {
   methods: {
     refreshUser() {
       let userJson = sessionStorage.getItem("user");
+
+      console.log(JSON.parse(userJson).roles[0])
       if (!userJson) {
         return
       }
       let userId = JSON.parse(userJson).id
+      this.role = JSON.parse(userJson).roles[0]
       // 从后台取出更新后的最新用户信息
       request.get("/user/" + userId).then(res => {
         this.user = res.data
