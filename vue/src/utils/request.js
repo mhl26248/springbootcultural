@@ -7,7 +7,7 @@ const request = axios.create({
 })
 
 // 请求白名单，如果请求在白名单里面，将不会被拦截校验权限
-const whiteUrls = ["/user/login", '/user/register']
+const whiteUrls = ["/user/login", '/user/register','/record/findPageMyRecord','/record/getWeather']
 
 // request 拦截器
 // 可以自请求发送前对请求做一些处理
@@ -18,6 +18,9 @@ request.interceptors.request.use(config => {
     // 取出sessionStorage里面缓存的用户信息
     let userJson = sessionStorage.getItem("user")
     console.log(config.url)
+    if(config.url.includes("?")){
+        config.url = config.url.split("?")[0]
+    }
     if (!whiteUrls.includes(config.url)) {  // 校验请求白名单
         if(!userJson) {
             router.push("/login")

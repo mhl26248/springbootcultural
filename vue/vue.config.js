@@ -1,5 +1,5 @@
 
-const name =  "去旅游"; // page title
+const name =  ""; // page title
 
 
 // 跨域配置

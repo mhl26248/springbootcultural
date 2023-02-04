@@ -59,6 +59,7 @@ activeRouter()
 
 function activeRouter() {
     const userStr = sessionStorage.getItem("user")
+    console.log(userStr )
     if (userStr) {
         const user = JSON.parse(userStr)
         let root = {
@@ -83,7 +84,8 @@ function activeRouter() {
 }
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login' || to.path === '/register') {
+    console.log(to.path )
+    if (to.path === '/login' || to.path === '/register'|| to.path === '/index') {
         next()
         return
     }

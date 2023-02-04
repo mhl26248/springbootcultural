@@ -1,4 +1,6 @@
 <template>
+
+  <Header v-if="user == ''" :user="user"/>
   <div style="padding: 10px">
     <div style="margin: 10px 100px;">
       <el-input v-model="search" placeholder="请输入商品名称" style="width: 60%" clearable></el-input>
@@ -91,10 +93,13 @@
 <script>
 
 import request from "@/utils/request";
+import Header from "@/components/Header";
 
 export default {
   name: 'Role',
-  components: {},
+  components: {
+    Header
+  },
   data() {
     return {
       drawer: false,
@@ -118,7 +123,8 @@ export default {
       file:{
         name:'',
         url:''
-      }
+      },
+      user: ''
     }
   },
   created() {
@@ -222,6 +228,7 @@ export default {
       this.loading = true
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
+      this.user = user
       this.userName = user.username
       request.get("/record/findPageMyRecord", {
 
