@@ -228,8 +228,10 @@ export default {
       this.loading = true
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
-      this.user = user
       this.userName = user.username
+      if(this.userName){
+        this.user = user
+      }
       request.get("/record/findPageMyRecord", {
 
         params: {

@@ -23,7 +23,8 @@
 <!--            </el-form-item>-->
             <el-form-item>
               <el-button style="width: 40%" type="primary" @click="login">登 录</el-button>
-              <el-button style="width: 40%" type="success" @click="register">注 册</el-button>
+              <el-button style="width: 30%" type="success" @click="register">注 册</el-button>
+              <el-button style="width: 20%" @click="$router.push('/index')">首页</el-button>
             </el-form-item>
 <!--            <el-form-item><el-button type="text" @click="$router.push('/register')">前往注册 >> </el-button></el-form-item>-->
           </el-form>
