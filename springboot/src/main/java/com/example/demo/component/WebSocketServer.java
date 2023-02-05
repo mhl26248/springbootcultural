@@ -3,8 +3,12 @@ package com.example.demo.component;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.example.demo.entity.Message;
+import com.example.demo.entity.Word;
 import com.example.demo.mapper.MessageMapper;
+import com.example.demo.mapper.WordMapper;
+import com.example.demo.utils.SensitiveFilterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,9 +17,9 @@ import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,6 +35,11 @@ public class WebSocketServer {
         WebSocketServer.messageMapper = messageMapper;
     }
 
+    private static WordMapper wordMapper;
+    @Resource
+    private void setWordMapper(WordMapper wordMapper) {
+        WebSocketServer.wordMapper = wordMapper;
+    }
     private static final Logger log = LoggerFactory.getLogger(WebSocketServer.class);
 
     /**
@@ -80,6 +89,8 @@ public class WebSocketServer {
         JSONObject obj = JSONUtil.parseObj(message);
         String toUsername = obj.getStr("to"); // to表示发送给哪个用户，比如 admin
         String text = obj.getStr("text"); // 发送的消息文本  hello
+
+
         // {"to": "admin", "text": "聊天文本"}
         Session toSession = sessionMap.get(toUsername); // 根据 to用户名来获取 session，再通过session发送消息文本
         if (toSession != null) {
