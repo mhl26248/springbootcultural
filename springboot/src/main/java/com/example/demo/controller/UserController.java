@@ -17,6 +17,7 @@ import com.example.demo.enums.RoleEnum;
 import com.example.demo.mapper.*;
 import com.example.demo.utils.EmailService;
 import com.example.demo.utils.TokenUtils;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
+    @Resource
+    CheckCodeMapper checkCodeMapper;
     @Resource
     UserMapper userMapper;
     @Resource
@@ -91,6 +94,12 @@ public class UserController extends BaseController {
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user) {
         User res = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        //check code
+        if(checkCodeMapper.selectCount(Wrappers.<CheckCode>lambdaQuery()
+                .eq(CheckCode::getSend, user.getEmail()).eq(CheckCode::getCode,user.getCode()))==0){
+            return Result.error("-1", "验证码不正确");
+        }
+
         if (res != null) {
             return Result.error("-1", "用户名重复");
         }
@@ -328,14 +337,26 @@ public class UserController extends BaseController {
         return Result.success();
     }
 
-    @Autowired
+    @Resource
     EmailService emailService;
-    @GetMapping("/testsendmail")
-    public void toMail(){
+    @GetMapping("/sendmail")
+    public void toMail(String e){
         Email email = new Email();
-        email.setUser(new String[]{"103370344@qq.com"});
-        email.setSubject("测试");
-        email.setContent("hello.this is my email demo");
+        email.setUser(new String[]{e});
+        String code_str = generateCode4();
+        email.setSubject("验证码");
+        email.setContent("请使用验证码:"+code_str);
+        CheckCode code = new CheckCode();
+        code.setCode(code_str);
+        code.setSend(e);
+        code.setCreated(new Date());
+        checkCodeMapper.insert(code);
+
         emailService.sendMail(email);
+    }
+
+    public String generateCode4() {
+        Random randObj = new Random();
+        return Integer.toString(1000 + randObj.nextInt(9000));
     }
 }

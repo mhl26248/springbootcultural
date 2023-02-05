@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item prop="email">
           <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
-          <el-button type="success" @click="register">发送</el-button>
+          <el-button type="success" @click="send">发送</el-button>
         </el-form-item>
         <el-form-item prop="code">
           <el-input  v-model="form.code" placeholder="请输入验证码"></el-input>
@@ -56,6 +56,25 @@ export default {
     }
   },
   methods: {
+    send(){
+      if (!this.form.email ) {
+        this.$message({
+          type: "error",
+          message: '请先输入邮箱！'
+        })
+        return
+      }
+      request.get("/user/sendmail", {
+        params: {
+          e: this.form.email
+        }
+      }).then(res => {
+        this.$message({
+          type: "success",
+          message: '请去邮箱查看！'
+        })
+      })
+    },
     register() {
 
       if (this.form.password !== this.form.confirm) {

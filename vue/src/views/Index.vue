@@ -249,9 +249,6 @@ export default {
         this.tableData = res.data.records
         this.total = res.data.total
       })
-
-
-
     },
     save() {
       let userStr = sessionStorage.getItem("user") || "{}"
