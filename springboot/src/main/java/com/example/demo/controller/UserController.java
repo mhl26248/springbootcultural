@@ -15,6 +15,7 @@ import com.example.demo.entity.*;
 import com.example.demo.enums.PwdEnum;
 import com.example.demo.enums.RoleEnum;
 import com.example.demo.mapper.*;
+import com.example.demo.utils.EmailService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -327,4 +328,14 @@ public class UserController extends BaseController {
         return Result.success();
     }
 
+    @Autowired
+    EmailService emailService;
+    @GetMapping("/testsendmail")
+    public void toMail(){
+        Email email = new Email();
+        email.setUser(new String[]{"103370344@qq.com"});
+        email.setSubject("测试");
+        email.setContent("hello.this is my email demo");
+        emailService.sendMail(email);
+    }
 }

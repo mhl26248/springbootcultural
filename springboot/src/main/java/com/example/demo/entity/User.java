@@ -28,6 +28,7 @@ public class User {
     private String sex;
     private String address;
     private String avatar;
+    private String email;
 //    Integer driverId;
 //    Integer placeId;
 //    @TableField(exist = false)
