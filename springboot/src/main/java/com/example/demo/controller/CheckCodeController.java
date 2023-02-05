@@ -52,7 +52,7 @@ public class CheckCodeController extends BaseController {
 //        if (StrUtil.isNotBlank(search)) {
 //            wrapper.like(CheckCode::getTitle, search);
 //        }
-        Page<CheckCode> page = checkCodeMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        Page<CheckCode> page = checkCodeMapper.selectPage(new Page<>(pageNum, pageSize), wrapper.orderByDesc(CheckCode::getId));
 
         return Result.success(page);
     }

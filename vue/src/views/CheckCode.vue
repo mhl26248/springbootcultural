@@ -2,11 +2,11 @@
   <div style="padding: 10px">
 
     <!--    搜索区域-->
-    <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
-      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button type="primary" @click="add">新增</el-button>
-    </div>
+<!--    <div style="margin: 10px 0">-->
+<!--      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>-->
+<!--      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
+<!--      <el-button type="primary" @click="add">新增</el-button>-->
+<!--    </div>-->
     <el-table
         v-loading="loading"
         :data="tableData"
@@ -27,18 +27,22 @@
           prop="send"
           label="邮箱">
       </el-table-column>
-
-      <el-table-column label="操作" width="400">
-        <template #default="scope">
-
-          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
-            <template #reference>
-              <el-button size="mini" type="danger">删除</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
+      <el-table-column
+          prop="created"
+          label="日期">
       </el-table-column>
+
+<!--      <el-table-column label="操作" width="400">-->
+<!--        <template #default="scope">-->
+
+<!--          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>-->
+<!--          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">-->
+<!--            <template #reference>-->
+<!--              <el-button size="mini" type="danger">删除</el-button>-->
+<!--            </template>-->
+<!--          </el-popconfirm>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <div style="margin: 10px 0">

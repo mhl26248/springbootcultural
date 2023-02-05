@@ -19,5 +19,6 @@ public class CheckCode {
     private String send;
     private String recive;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:dd", timezone = "GMT+8")
     private Date created;
 }
