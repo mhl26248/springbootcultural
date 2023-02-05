@@ -35,6 +35,9 @@ public class Record {
     @TableField(exist = false)
     Integer recordApplyId;
 
+    @TableField(exist = false)
+    String userName;
+
 
 //    @TableField(exist = false)
 //    List<RecordLogs> recordLogs;

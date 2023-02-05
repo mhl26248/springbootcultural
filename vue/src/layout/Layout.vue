@@ -4,10 +4,15 @@
     <Header :user="user"/>
 <!--    <v-mini-weather></v-mini-weather>-->
     <!--    主体-->
-    <div style="display: flex">
+    <div style="display: flex"  v-if="role != 2">
       <!--      侧边栏-->
-      <Aside v-if="user.nickName=='管理员' || role == 6"/>
+      <Aside/>
 <!--      <Aside />-->
+      <!--      内容区域-->
+      <router-view style="flex: 1" @userInfo="refreshUser"/>
+    </div>
+
+    <div  v-if="role == 2 ">
       <!--      内容区域-->
       <router-view style="flex: 1" @userInfo="refreshUser"/>
     </div>

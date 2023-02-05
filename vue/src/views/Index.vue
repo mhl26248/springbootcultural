@@ -21,8 +21,9 @@
           <span style="font-size: 18px">{{ o.title }}</span>
           <div class="bottom clearfix">
             <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
-            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time>
-            <br><br>
+            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag><el-tag type="danger">{{ o.userName }}</el-tag></time><br>
+
+            <br>
             <el-button  class="button" @click="cart(o)"><i class="el-icon-goods"></i></el-button>
             <el-button  class="button" @click="book(o)">购买</el-button>
           </div>

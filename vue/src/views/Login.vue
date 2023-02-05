@@ -66,7 +66,7 @@ export default {
       // 加背景图片
       bg: {
         // backgroundColor: "red",
-        // backgroundImage: "url(" + require("@/assets/bg.jpeg") + ")",
+        backgroundImage: "url(" + require("@/assets/1.jpeg") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 150%"
       }

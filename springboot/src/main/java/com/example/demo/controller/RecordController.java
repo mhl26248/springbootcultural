@@ -4,10 +4,12 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.Record;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.RecordMapper;
 import com.example.demo.mapper.UserMapper;
 import org.apache.http.HttpEntity;
@@ -210,6 +212,16 @@ public class RecordController extends BaseController {
             wrapper.like(Record::getStatus, search1);
         }
         Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        List<Record> records = page.getRecords();
+        if(page!=null && CollectionUtils.isNotEmpty(records)){
+            for(Record r:records){
+                User u = userMapper.selectById(r.getUserId());
+                if(u!=null){
+                    r.setUserName(u.getUsername());
+                }
+            }
+        }
+
         return Result.success(page);
     }
 
