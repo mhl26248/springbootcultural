@@ -3,13 +3,17 @@ package com.example.demo.component;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.example.demo.entity.Message;
+import com.example.demo.mapper.MessageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +24,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/imserver/{username}")
 @Component
 public class WebSocketServer {
+//    @Resource
+    private static MessageMapper messageMapper;
+    @Resource
+    private void setMessageMapper(MessageMapper messageMapper) {
+        WebSocketServer.messageMapper = messageMapper;
+    }
 
     private static final Logger log = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -78,6 +88,13 @@ public class WebSocketServer {
             JSONObject jsonObject = new JSONObject();
             jsonObject.set("from", username);  // from 是 zhang
             jsonObject.set("text", text);  // text 同上面的text
+
+            Message message1 = new Message();
+            message1.setCreated(new Date());
+            message1.setContent(text);
+            message1.setUsername(username);
+            messageMapper.insert(message1);
+
             this.sendMessage(jsonObject.toString(), toSession);
             log.info("发送给用户username={}，消息：{}", toUsername, jsonObject.toString());
         } else {
