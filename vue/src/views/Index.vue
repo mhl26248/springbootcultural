@@ -4,7 +4,9 @@
   <div style="padding: 10px">
     <div style="margin: 10px 100px;">
       <el-input v-model="search" placeholder="请输入商品名称" style="width: 60%" clearable></el-input>
-      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
+      <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>
+      <el-button type="success" style="margin-left: 5px" @click="load(1)">热度</el-button>
+      <el-button type="success" style="margin-left: 5px" @click="load(2)">最新发布</el-button>
     </div>
 
     <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
@@ -225,7 +227,7 @@ export default {
         this.options = res.data
       })
     },
-    load() {
+    load(sort) {
       this.loading = true
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
@@ -240,6 +242,7 @@ export default {
           pageSize: this.pageSize,
           search2:this.search,
           search1:0,
+          sort:sort
         }
       }).then(res => {
         this.loading = false

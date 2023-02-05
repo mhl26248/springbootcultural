@@ -220,7 +220,8 @@ public class RecordController extends BaseController {
                                         @RequestParam(defaultValue = "10") Integer pageSize,
                                         @RequestParam(defaultValue = "") Integer userId,
                                       @RequestParam(defaultValue = "") String search2,
-                                      @RequestParam(defaultValue = "") String search1) {
+                                      @RequestParam(defaultValue = "") String search1,
+                                      @RequestParam(defaultValue = "") String sort) {
 
         LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
         if (userId!=null) {
@@ -231,6 +232,14 @@ public class RecordController extends BaseController {
         }
         if (StrUtil.isNotBlank(search1)) {
             wrapper.like(Record::getStatus, search1);
+        }
+        if(StrUtil.isNotBlank(sort)){
+            if(sort.equals("1")){
+                wrapper.orderByDesc(Record::getHots);
+            }
+            if(sort.equals("2")){
+                wrapper.orderByDesc(Record::getId);
+            }
         }
         Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         List<Record> records = page.getRecords();
