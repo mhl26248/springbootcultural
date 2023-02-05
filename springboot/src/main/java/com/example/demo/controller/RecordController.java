@@ -8,8 +8,12 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
+import com.example.demo.entity.Likes;
 import com.example.demo.entity.Record;
+import com.example.demo.entity.RecordApply;
 import com.example.demo.entity.User;
+import com.example.demo.mapper.LikesMapper;
+import com.example.demo.mapper.RecordApplyMapper;
 import com.example.demo.mapper.RecordMapper;
 import com.example.demo.mapper.UserMapper;
 import org.apache.http.HttpEntity;
@@ -31,6 +35,10 @@ public class RecordController extends BaseController {
 
     @Resource
     RecordMapper recordMapper;
+    @Resource
+    RecordApplyMapper recordApplyMapper;
+    @Resource
+    LikesMapper likesMapper;
     @Resource
     UserMapper userMapper;
 
@@ -135,6 +143,19 @@ public class RecordController extends BaseController {
 
     @GetMapping("/getById")
     public Result<?> getById(@RequestParam("id") Long id) {
+        Record r = recordMapper.selectById(id);
+        int views = r.getViews()+1;
+        LambdaQueryWrapper<Likes> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(Likes::getRecordId,id);
+        LambdaQueryWrapper<RecordApply> wrapper2 = Wrappers.lambdaQuery();
+        wrapper2.eq(RecordApply::getRecordId,id.intValue());
+        //更新热度  浏览次数+收藏次数+订单量
+        int hots = views
+                +likesMapper.selectCount(wrapper)
+                +recordApplyMapper.selectCount(wrapper2);
+
+        recordMapper.updateViews(id.intValue(),hots,views);
+
         return Result.success(recordMapper.selectById(id));
     }
 

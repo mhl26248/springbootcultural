@@ -5,7 +5,7 @@
       <img :src="detail.images" style="height: 220px"  class="image">
     </el-aside>
       <el-main style="padding-top: 80px;height: 450px">
-        <el-card class="box-card" style="height: 300px" border="0"  shadow="hover">
+        <el-card class="box-card" style="height: 350px" border="0"  shadow="hover">
           <div  style="height: 50px"  class="text item">
             <div style="font-size: 30px">{{ detail.title}}</div>
           </div>
@@ -14,6 +14,11 @@
           </div>
           <div  style="height: 50px"  class="text item">
             折扣:&nbsp;&nbsp;&nbsp;&nbsp;<el-tag>{{ detail.diff}}</el-tag>
+            浏览量:&nbsp;&nbsp;&nbsp;&nbsp; <el-tag>{{ detail.views}}</el-tag>
+            热度:&nbsp;&nbsp;&nbsp;&nbsp; <el-tag>{{ detail.hots}}</el-tag>
+          </div>
+          <div  style="height: 50px"  class="text item">
+
           </div>
           <div  style="height: 70px"  >
             <el-button style="float: right; "  type="success" @click="book()">购买</el-button>

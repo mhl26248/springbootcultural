@@ -2,6 +2,7 @@ package com.example.demo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.demo.entity.Record;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public interface RecordMapper extends BaseMapper<Record> {
 
 
+    @Select("update record set views = #{views} , hots =#{hots} where  id = #{id}")
+    void updateViews(@Param("id") int id,@Param("hots") int hots,@Param("views") int views);
     @Select("select count(*) from record where in_date = DATE_FORMAT(NOW(), '%Y-%c-%d' )")
     int selectAll();
 

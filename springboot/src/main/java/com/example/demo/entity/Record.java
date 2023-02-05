@@ -28,6 +28,8 @@ public class Record {
     private String detail;
     private BigDecimal price;
     private BigDecimal diff;
+    private Integer views;
+    private Integer hots;
 
 
     @TableField(exist = false)
