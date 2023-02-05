@@ -94,19 +94,24 @@ public class UserController extends BaseController {
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user) {
         User res = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        if (res != null) {
+            return Result.error("-1", "用户名重复");
+        }
+        User res2 = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, user.getEmail()));
+        if (res2 != null) {
+            return Result.error("-1", "邮箱重复");
+        }
         //check code
         if(checkCodeMapper.selectCount(Wrappers.<CheckCode>lambdaQuery()
                 .eq(CheckCode::getSend, user.getEmail()).eq(CheckCode::getCode,user.getCode()))==0){
             return Result.error("-1", "验证码不正确");
         }
 
-        if (res != null) {
-            return Result.error("-1", "用户名重复");
-        }
 //        if (user.getPassword() == null) {
 //            user.setPassword("123456");
 //        }
         User userInfo = User.builder()
+                .email(user.getEmail())
                 .username(user.getUsername())
                 .password(bCryptPasswordEncoder.encode(user.getPassword()))
                 .nickName("用户" + user.getUsername())
