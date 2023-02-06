@@ -56,7 +56,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="景点设置" v-model="dialogVisible" width="70%">
+    <el-dialog title="设置" v-model="dialogVisible" width="70%">
 
       <el-form ref="form"   :model="form" label-width="80px">
 

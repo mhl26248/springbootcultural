@@ -3,7 +3,7 @@
     <div class="video-container">
       <div :style="bg"  class="filter">
         <div style="width: 400px; margin: 100px auto">
-          <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">CARTOON</div>
+          <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">助农生鲜电商</div>
           <el-form ref="form" :model="form" size="normal" :rules="rules">
             <el-form-item prop="username">
               <el-input prefix-icon="el-icon-user-solid" v-model="form.username" placeholder="请输入账号"></el-input>
@@ -66,7 +66,7 @@ export default {
       // 加背景图片
       bg: {
         // backgroundColor: "red",
-        backgroundImage: "url(" + require("@/assets/1.jpeg") + ")",
+        // backgroundImage: "url(" + require("@/assets/1.png") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 150%"
       }

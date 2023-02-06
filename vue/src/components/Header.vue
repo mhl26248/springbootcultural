@@ -1,6 +1,6 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">CARTOON
+    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">助农生鲜电商
 
 <!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
 <!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->

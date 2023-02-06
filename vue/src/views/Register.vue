@@ -12,13 +12,13 @@
         <el-form-item prop="confirm">
           <el-input prefix-icon="el-icon-lock" v-model="form.confirm" show-password></el-input>
         </el-form-item>
-        <el-form-item prop="email">
-          <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
-          <el-button type="success" @click="send">发送</el-button>
-        </el-form-item>
-        <el-form-item prop="code">
-          <el-input  v-model="form.code" placeholder="请输入验证码"></el-input>
-        </el-form-item>
+<!--        <el-form-item prop="email">-->
+<!--          <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>-->
+<!--          <el-button type="success" @click="send">发送</el-button>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item prop="code">-->
+<!--          <el-input  v-model="form.code" placeholder="请输入验证码"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item>
           <el-button style="width: 100%" type="primary" @click="register">注册</el-button>
         </el-form-item>
@@ -46,12 +46,12 @@ export default {
         confirm: [
           {required: true, message: '请确认密码', trigger: 'blur'},
         ],
-        email: [
-          {required: true, message: '请确认邮箱', trigger: 'blur'},
-        ],
-        code: [
-          {required: true, message: '请确认验证码', trigger: 'blur'},
-        ],
+        // email: [
+        //   {required: true, message: '请确认邮箱', trigger: 'blur'},
+        // ],
+        // code: [
+        //   {required: true, message: '请确认验证码', trigger: 'blur'},
+        // ],
       }
     }
   },
