@@ -1,6 +1,6 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">助农生鲜电商
+    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">资料共享平台
 
 <!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
 <!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->
@@ -17,18 +17,20 @@
     <div style="flex: 1;width: 200px; padding-left: 30px;">
       <el-menu v-if="user!='' && user.nickName!='管理员' && role != 6" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >购物车</el-menu-item>
-        <el-menu-item index="3" >收藏</el-menu-item>
-        <el-menu-item index="4">订单管理</el-menu-item>
-        <el-menu-item index="5">聊天</el-menu-item>
+        <el-menu-item index="2" >收藏</el-menu-item>
+        <el-menu-item index="3">我购买的</el-menu-item>
+        <el-menu-item index="4">我卖出的</el-menu-item>
+        <el-menu-item index="5">发布资料</el-menu-item>
+        <el-menu-item index="6">充值</el-menu-item>
       </el-menu>
 
       <el-menu v-if="user==''" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >购物车</el-menu-item>
-        <el-menu-item index="3" >收藏</el-menu-item>
-        <el-menu-item index="4">订单管理</el-menu-item>
-        <el-menu-item index="5">聊天</el-menu-item>
+        <el-menu-item index="2" >收藏</el-menu-item>
+        <el-menu-item index="3">我购买的</el-menu-item>
+        <el-menu-item index="4">我卖出的</el-menu-item>
+        <el-menu-item index="5">发布资料</el-menu-item>
+        <el-menu-item index="6">充值</el-menu-item>
       </el-menu>
     </div>
 
@@ -107,20 +109,23 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       sessionStorage.setItem("activeIndex",key)
-      if(key == '2'){
-        this.$router.push('/Cart');
+      if(key == '3'){
+        this.$router.push('/MyRecord');
       }
-      else if(key == '3'){
+      else if(key == '2'){
         this.$router.push('/Like');
       }
       else if(key == '1'){
         this.$router.push('/Index');
       }
       else if(key == '4'){
-        this.$router.push('/MyRecord');
+        this.$router.push('/StoreRecordApply');
       }
       else if(key == '5'){
-        this.$router.push('/Im');
+        this.$router.push('/StoreRecord');
+      }
+      else if(key == '6'){
+        this.$router.push('/StoreRecord');
       }
     }
   }

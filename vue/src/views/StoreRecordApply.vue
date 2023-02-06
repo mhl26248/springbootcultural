@@ -11,7 +11,7 @@
       </el-date-picker>
 <!--      <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>-->
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <!--      <el-button  @click="add">创建景点</el-button>-->
+      <!--      <el-button  @click="add">创建</el-button>-->
     </div>
     <el-table
         v-loading="loading"
@@ -26,12 +26,12 @@
           prop="applyName" width="80px"
           label="用户名">
       </el-table-column>
-      <el-table-column width="60px"
-          label="图片">
-        <template #default="scope" >
-          <img :src="scope.row.images" style="width: 50px">
-        </template>
-      </el-table-column>
+<!--      <el-table-column width="60px"-->
+<!--          label="图片">-->
+<!--        <template #default="scope" >-->
+<!--          <img :src="scope.row.images" style="width: 50px">-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column
           prop="title"
           label="名称">

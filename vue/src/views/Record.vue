@@ -4,7 +4,7 @@
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button  @click="add">创建商品</el-button>
+      <el-button  @click="add">创建资料</el-button>
     </div>
     <el-table
         v-loading="loading"

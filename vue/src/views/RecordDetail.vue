@@ -37,19 +37,19 @@
           {{ detail.remark}}
         </div>
       </el-card>
-      <el-card class="box-card"  shadow="hover">
-        <div slot="header" >
-          <span style="font-size: 30px">评价({{activeNames.length}})</span>
-        </div>
-        <div v-for="o in activeNames"  style="font-size: 15px" :key="o" class="text item">
-          用户：{{o.userName}}&nbsp;&nbsp;&nbsp;&nbsp;
-          评分：{{o.score}}&nbsp;&nbsp;&nbsp;&nbsp;
-          日期：{{o.created}}
-          <br>
-          评价内容：&nbsp;&nbsp;&nbsp;&nbsp;<br>
-          {{o.remark}}
-        </div>
-      </el-card>
+<!--      <el-card class="box-card"  shadow="hover">-->
+<!--        <div slot="header" >-->
+<!--          <span style="font-size: 30px">评价({{activeNames.length}})</span>-->
+<!--        </div>-->
+<!--        <div v-for="o in activeNames"  style="font-size: 15px" :key="o" class="text item">-->
+<!--          用户：{{o.userName}}&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--          评分：{{o.score}}&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--          日期：{{o.created}}-->
+<!--          <br>-->
+<!--          评价内容：&nbsp;&nbsp;&nbsp;&nbsp;<br>-->
+<!--          {{o.remark}}-->
+<!--        </div>-->
+<!--      </el-card>-->
     </el-footer>
 
   </el-container>

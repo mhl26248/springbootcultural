@@ -3,10 +3,10 @@
   <Header v-if="user == ''" :user="user"/>
   <div style="padding: 10px">
     <div style="margin: 10px 100px;">
-      <el-input v-model="search" placeholder="请输入商品名称" style="width: 60%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入资料名称" style="width: 60%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>
-      <el-button type="success" style="margin-left: 5px" @click="load(1)">热度</el-button>
-      <el-button type="success" style="margin-left: 5px" @click="load(2)">最新发布</el-button>
+<!--      <el-button type="success" style="margin-left: 5px" @click="load(1)">热度</el-button>-->
+<!--      <el-button type="success" style="margin-left: 5px" @click="load(2)">最新发布</el-button>-->
     </div>
 
 <!--    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >-->
@@ -17,8 +17,8 @@
     <el-row style="padding-top: 30px">
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
-      <el-card :body-style="{ padding: '10px'}" style="height:320px" shadow="hover">
-        <img :src="o.images" style="height: 120px"  @click="toDetail(o)" class="image">
+      <el-card :body-style="{ padding: '10px'}" style="height:220px" shadow="hover">
+<!--        <img :src="o.images" style="height: 120px"   class="image">-->
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
           <div class="bottom clearfix">
@@ -52,9 +52,9 @@
         <el-form-item label="标题">
           <el-input v-model="form.title" disabled style="width: 30%"></el-input>
         </el-form-item>
-        <el-form-item label="图片">
-          <img :src="form.images" style="width: 200px;height: 200px">
-        </el-form-item>
+<!--        <el-form-item label="图片">-->
+<!--          <img :src="form.images" style="width: 200px;height: 200px">-->
+<!--        </el-form-item>-->
         <el-form-item label="单价">
           <el-input v-model="form.price" disabled style="width: 30%"></el-input>
         </el-form-item>

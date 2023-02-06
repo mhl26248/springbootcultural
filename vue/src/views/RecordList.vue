@@ -6,9 +6,9 @@
 
     <!--    搜索区域-->
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入景点标题" style="width: 20%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入标题" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-<!--      <el-button  @click="add">创建景点</el-button>-->
+<!--      <el-button  @click="add">创建</el-button>-->
     </div>
     <el-row>
       <el-col :span="8" v-for="(o, index) in tableData" :key="o" :offset="index > 0 ? 2 : 0">
@@ -37,7 +37,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="景点预约" v-model="dialogVisible" width="70%">
+    <el-dialog title="预约" v-model="dialogVisible" width="70%">
 
       <el-form ref="form"   :model="form" label-width="80px">
 

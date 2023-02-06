@@ -4,7 +4,7 @@
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button  @click="add">创建商品</el-button>
+      <el-button  @click="add">创建资料</el-button>
     </div>
     <el-table
         v-loading="loading"
@@ -24,12 +24,12 @@
                        prop="diff"
                        label="折扣">
       </el-table-column>
-      <el-table-column
-          label="图片">
-        <template #default="scope">
-          <img  :src="scope.row.images" style="width: 50px;height: 50px">
-        </template>
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          label="图片">-->
+<!--        <template #default="scope">-->
+<!--          <img  :src="scope.row.images" style="width: 50px;height: 50px">-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column min-width="150"
           label="状态">
         <template #default="scope">
@@ -61,7 +61,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="景点设置" v-model="dialogVisible" width="70%">
+    <el-dialog title="设置" v-model="dialogVisible" width="70%">
 
       <el-form ref="form"   :model="form" label-width="80px">
 
@@ -79,10 +79,11 @@
         <el-form-item label="折扣">
           <el-input v-model="form.diff" style="width: 30%"></el-input>
         </el-form-item>
-        <el-form-item label="图片">
+        <el-form-item label="资料">
           <el-input v-model="form.images"  disabled></el-input>
           <el-upload
               class="upload-demo"
+              :list-type="text"
               action="http://127.0.0.1:9091/files/upload"
               :on-preview="handlePreview"
               :on-success="handlePreviewVideo"

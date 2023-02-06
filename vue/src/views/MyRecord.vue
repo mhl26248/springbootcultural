@@ -9,12 +9,12 @@
           prop="id"
           label="订单编号">
       </el-table-column>
-      <el-table-column
-          label="图片">
-        <template #default="scope" >
-          <img :src="scope.row.images" style="width: 50px">
-        </template>
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          label="图片">-->
+<!--        <template #default="scope" >-->
+<!--          <img :src="scope.row.images" style="width: 50px">-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column
           prop="title"
           label="名称">
@@ -46,8 +46,8 @@
 <!--              <el-button size="mini" type="info">取消</el-button>-->
 <!--            </template>-->
 <!--          </el-popconfirm>-->
-            <el-button size="mini" v-if="scope.row.comments == null" @click="pj(scope.row)">评价</el-button>
-          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>
+          <a :href="scope.row.images">下载</a>
+<!--          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>-->
         </template>
       </el-table-column>
     </el-table>
