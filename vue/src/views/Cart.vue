@@ -5,12 +5,12 @@
         :data="tableData"
         stripe
         style="width: 100%">
-      <el-table-column
-          label="图片">
-        <template #default="scope" >
-          <img :src="scope.row.images" style="width: 50px">
-        </template>
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          label="图片">-->
+<!--        <template #default="scope" >-->
+<!--          <img :src="scope.row.images" style="width: 50px">-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column
           prop="title"
           label="名称">
@@ -68,9 +68,9 @@
         <el-form-item label="标题">
           <el-input v-model="form.title" disabled style="width: 30%"></el-input>
         </el-form-item>
-        <el-form-item label="图片">
-          <img :src="form.images" style="width: 200px;height: 200px">
-        </el-form-item>
+<!--        <el-form-item label="图片">-->
+<!--          <img :src="form.images" style="width: 200px;height: 200px">-->
+<!--        </el-form-item>-->
         <el-form-item label="单价">
           <el-input v-model="form.price" disabled style="width: 30%"></el-input>
         </el-form-item>
@@ -88,6 +88,7 @@
         <el-form-item label="支付方式">
           <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
           <el-radio v-model="form.payType" label="微信">微信</el-radio>
+          <el-radio v-model="form.payType" label="余额">余额</el-radio>
         </el-form-item>
         <!--        <el-form-item label="预约日期">-->
         <!--          <el-date-picker-->

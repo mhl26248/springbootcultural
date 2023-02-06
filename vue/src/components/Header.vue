@@ -14,22 +14,22 @@
 <!--      <el-tag>{{city}}-->
 <!--        {{weather}}</el-tag>-->
 <!--    </div>-->
-    <div style="flex: 1;width: 200px; padding-left: 30px;">
+    <div style="flex: 1;width: 250px; padding-left: 30px;">
       <el-menu v-if="user!='' && user.nickName!='管理员' && role != 6" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >收藏</el-menu-item>
+        <el-menu-item index="2" >购物车</el-menu-item>
         <el-menu-item index="3">我购买的</el-menu-item>
         <el-menu-item index="4">我卖出的</el-menu-item>
-        <el-menu-item index="5">发布资料</el-menu-item>
+        <el-menu-item index="5">发布</el-menu-item>
         <el-menu-item index="6">充值</el-menu-item>
       </el-menu>
 
       <el-menu v-if="user==''" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >收藏</el-menu-item>
+        <el-menu-item index="2" >购物车</el-menu-item>
         <el-menu-item index="3">我购买的</el-menu-item>
         <el-menu-item index="4">我卖出的</el-menu-item>
-        <el-menu-item index="5">发布资料</el-menu-item>
+        <el-menu-item index="5">发布</el-menu-item>
         <el-menu-item index="6">充值</el-menu-item>
       </el-menu>
     </div>
@@ -113,7 +113,7 @@ export default {
         this.$router.push('/MyRecord');
       }
       else if(key == '2'){
-        this.$router.push('/Like');
+        this.$router.push('/Cart');
       }
       else if(key == '1'){
         this.$router.push('/Index');
@@ -125,7 +125,7 @@ export default {
         this.$router.push('/StoreRecord');
       }
       else if(key == '6'){
-        this.$router.push('/StoreRecord');
+        this.$router.push('/Charge');
       }
     }
   }

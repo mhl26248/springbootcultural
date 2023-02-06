@@ -12,9 +12,11 @@ import com.example.demo.mapper.CommentsMapper;
 import com.example.demo.mapper.RecordApplyMapper;
 import com.example.demo.mapper.RecordMapper;
 import com.example.demo.mapper.UserMapper;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -38,11 +40,27 @@ public class RecordApplyController extends BaseController {
         return Result.success(recordApplyMapper.count());
     }
 
+    public static void main(String[] args){
+        System.out.println(BigDecimal.valueOf(10L).subtract(BigDecimal.valueOf(11)).compareTo(BigDecimal.ZERO)>0);
+    }
     @PostMapping("/save")
     public Result<?> save(@RequestBody RecordApply obj) {
 //        if(null == obj.getApplyTime() ||obj.getApplyTime().equals("")){
 //            return Result.error("001","请选择预约日期");
 //        }
+        //买家 验证余额 和扣款
+        if(obj.getPayType().equals("余额")){
+            User user = getUser();
+            user = userMapper.selectById(user.getId());
+            if(user.getAccount().subtract(obj.getPayAmt()).compareTo(BigDecimal.ZERO)<0){
+                return Result.error("001","余额不足");
+            }
+            else{
+                user.setAccount(user.getAccount().subtract(obj.getPayAmt()));
+                userMapper.updateById(user);
+            }
+        }
+
         Record record = recordMapper.selectById(obj.getRecordId());
         if(record == null || record.getStatus() != 0){
             return Result.error("001","商品已经下架");
@@ -58,6 +76,11 @@ public class RecordApplyController extends BaseController {
         obj.setCreated(new Date());
         obj.setStatus(0);
         recordApplyMapper.insert(obj);
+
+        //卖家增加 账户余额
+        User seller = userMapper.selectById(record.getUserId());
+        seller.setAccount(seller.getAccount().add(obj.getPayAmt()));
+        userMapper.updateById(seller);
 
         return Result.success();
     }

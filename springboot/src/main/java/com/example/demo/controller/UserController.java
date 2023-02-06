@@ -150,6 +150,12 @@ public class UserController extends BaseController {
         return Result.success();
     }
 
+
+    @PostMapping("/updateaccount")
+    public Result<?> updateaccount(@RequestBody User user) {
+        userMapper.updateById(user);
+        return Result.success();
+    }
     @PutMapping("/pass")
     public Result<?> pass(@RequestBody Map<String, Object> map) {
         User user = userMapper.selectById((Integer) map.get("userId"));

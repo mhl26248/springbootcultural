@@ -84,6 +84,7 @@
         <el-form-item label="支付方式">
           <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
           <el-radio v-model="form.payType" label="微信">微信</el-radio>
+          <el-radio v-model="form.payType" label="余额">余额</el-radio>
         </el-form-item>
         <!--        <el-form-item label="预约日期">-->
         <!--          <el-date-picker-->

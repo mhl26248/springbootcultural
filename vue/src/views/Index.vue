@@ -23,10 +23,11 @@
           <span style="font-size: 18px">{{ o.title }}</span>
           <div class="bottom clearfix">
             <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
-            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag><el-tag type="danger">{{ o.userName }}</el-tag></time><br>
-
+            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time><br>
+            <time class="time" style="font-size: 12px">  卖家：<el-tag>{{ o.userName }}</el-tag></time>
             <br>
-            <el-button  class="button" @click="cart(o)">收藏</el-button>
+            <br>
+            <el-button  class="button" @click="cart(o)">购物车</el-button>
             <el-button  class="button" @click="book(o)">购买</el-button>
           </div>
         </div>
@@ -72,6 +73,7 @@
         <el-form-item label="支付方式">
           <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
           <el-radio v-model="form.payType" label="微信">微信</el-radio>
+          <el-radio v-model="form.payType" label="余额">余额</el-radio>
         </el-form-item>
 <!--        <el-form-item label="预约日期">-->
 <!--          <el-date-picker-->
