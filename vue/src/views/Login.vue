@@ -29,11 +29,9 @@
             <el-form-item><el-button type="text" @click="$router.push('/register')">前往注册 >> </el-button></el-form-item>
           </el-form>
         </div>
+
       </div>
-<!--      <video :style="fixStyle" autoplay loop muted class="fillWidth" v-on:canplay="canplay">-->
-<!--        <source src="../assets/sea.mp4" type="video/mp4"/>-->
-<!--        浏览器不支持 video 标签，建议升级浏览器。-->
-<!--      </video>-->
+
     </div>
   </div>
 
@@ -66,7 +64,7 @@ export default {
       // 加背景图片
       bg: {
         // backgroundColor: "red",
-        // backgroundImage: "url(" + require("@/assets/1.png") + ")",
+        // backgroundImage: "url(" + require("@/assets/1.jpeg") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 150%"
       }

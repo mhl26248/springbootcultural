@@ -9,15 +9,15 @@
       <el-button type="success" style="margin-left: 5px" @click="load(2)">最新发布</el-button>
     </div>
 
-    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
-      <el-carousel-item v-for="item in tableData" style="height: 250px;">
-        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>
-      </el-carousel-item>
-    </el-carousel>
+<!--    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >-->
+<!--      <el-carousel-item v-for="item in tableData" style="height: 250px;">-->
+<!--        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>-->
+<!--      </el-carousel-item>-->
+<!--    </el-carousel>-->
     <el-row style="padding-top: 30px">
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
-      <el-card :body-style="{ padding: '10px'}" style="height:350px" shadow="hover">
+      <el-card :body-style="{ padding: '10px'}" style="height:320px" shadow="hover">
         <img :src="o.images" style="height: 120px"  @click="toDetail(o)" class="image">
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
@@ -26,7 +26,7 @@
             <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag><el-tag type="danger">{{ o.userName }}</el-tag></time><br>
 
             <br>
-            <el-button  class="button" @click="cart(o)"><i class="el-icon-goods"></i></el-button>
+            <el-button  class="button" @click="cart(o)">收藏</el-button>
             <el-button  class="button" @click="book(o)">购买</el-button>
           </div>
         </div>
