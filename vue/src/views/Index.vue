@@ -17,7 +17,7 @@
     <el-row style="padding-top: 30px">
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
-      <el-card :body-style="{ padding: '10px'}" style="height:220px" shadow="hover">
+      <el-card :body-style="{ padding: '10px'}" @click="toDetail(o)" style="width:300px;height:220px" shadow="hover">
 <!--        <img :src="o.images" style="height: 120px"   class="image">-->
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
@@ -27,8 +27,9 @@
             <time class="time" style="font-size: 12px">  卖家：<el-tag>{{ o.userName }}</el-tag></time>
             <br>
             <br>
-            <el-button  class="button" @click="cart(o)">购物车</el-button>
-            <el-button  class="button" @click="book(o)">购买</el-button>
+            <el-button v-if="user.id != o.userId"  class="button" @click="word(o)">举报</el-button>
+            <el-button v-if="user.id != o.userId"  class="button" @click="cart(o)">购物车</el-button>
+            <el-button v-if="user.id != o.userId"  class="button" @click="book(o)">购买</el-button>
           </div>
         </div>
       </el-card>
@@ -293,6 +294,29 @@ export default {
       // this.$router.push('/RecordDetail');
       //
       this.$router.push({name: 'RecordDetail', query: {sid: row.id}});
+    },
+    word(row) {
+      let userStr = sessionStorage.getItem("user") || "{}"
+      console.log(userStr)
+      let user = JSON.parse(userStr)
+      this.userName = user.username
+      this.form.userId = user.id
+      this.form.recordId = row.id
+
+      request.post("/word/save", this.form).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "举报成功"
+          })
+
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+      })
     },
     cart(row) {
       let userStr = sessionStorage.getItem("user") || "{}"

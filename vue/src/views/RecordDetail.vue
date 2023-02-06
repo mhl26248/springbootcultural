@@ -1,9 +1,9 @@
 <template>
   <el-container>
     <el-container>
-    <el-aside width="500px" style="padding-top: 100px;height: 450px">
-      <img :src="detail.images" style="height: 220px"  class="image">
-    </el-aside>
+<!--    <el-aside width="500px" style="padding-top: 100px;height: 450px">-->
+<!--      <img :src="detail.images" style="height: 220px"  class="image">-->
+<!--    </el-aside>-->
       <el-main style="padding-top: 80px;height: 450px">
         <el-card class="box-card" style="height: 350px" border="0"  shadow="hover">
           <div  style="height: 50px"  class="text item">
@@ -21,8 +21,8 @@
 
           </div>
           <div  style="height: 70px"  >
-            <el-button style="float: right; "  type="success" @click="book()">购买</el-button>
-            <el-button style="float: right; " type="danger" @click="like()" class="button">收藏</el-button>
+<!--            <el-button style="float: right; "  type="success" @click="book()">购买</el-button>-->
+<!--            <el-button style="float: right; " type="danger" @click="like()" class="button">收藏</el-button>-->
           </div>
         </el-card>
 

@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -20,5 +21,12 @@ public class Word extends Model<Word> {
     private Long id;
 
     private String word;
+
+    private Long userId;
+    private Long recordId;
+    @TableField(exist = false)
+    String userName;
+    @TableField(exist = false)
+    String title;
 
 }

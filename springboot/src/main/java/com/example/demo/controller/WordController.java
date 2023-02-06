@@ -9,6 +9,8 @@ import com.example.demo.common.Result;
 import com.example.demo.entity.CheckCode;
 import com.example.demo.entity.Word;
 import com.example.demo.mapper.CheckCodeMapper;
+import com.example.demo.mapper.RecordMapper;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.mapper.WordMapper;
 import com.example.demo.utils.SensitiveFilterUtil;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,14 @@ public class WordController extends BaseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody Word obj) {
+        //check
+        LambdaQueryWrapper<Word> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(Word::getUserId,obj.getUserId());
+        wrapper.eq(Word::getRecordId,obj.getRecordId());
+        if(wordMapper.selectCount(wrapper)>0){
+            return Result.error("001","已经举报过了");
+        }
+
         wordMapper.insert(obj);
         return Result.success();
     }
@@ -63,6 +73,11 @@ public class WordController extends BaseController {
         return Result.success(wordMapper.selectById(id));
     }
 
+
+    @Resource
+    UserMapper userMapper;
+    @Resource
+    RecordMapper recordMapper;
     @GetMapping("/findPage")
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
@@ -79,7 +94,13 @@ public class WordController extends BaseController {
             }
         }
         Page<Word> page = wordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper.orderByDesc(Word::getId));
-
+        List<Word> words = page.getRecords();
+        if(CollectionUtils.isNotEmpty(words)){
+            for (Word w:words){
+                w.setUserName(userMapper.selectById(w.getUserId()).getUsername());
+                w.setTitle(recordMapper.selectById(w.getRecordId()).getTitle());
+            }
+        }
         return Result.success(page);
     }
 }

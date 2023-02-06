@@ -20,8 +20,12 @@
       >
       </el-table-column>
       <el-table-column
-          prop="word"
-          label="词">
+          prop="userName"
+          label="举报人">
+      </el-table-column>
+      <el-table-column
+          prop="title"
+          label="资料标题">
       </el-table-column>
 
 
