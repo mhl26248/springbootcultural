@@ -102,10 +102,10 @@ public class UserController extends BaseController {
             return Result.error("-1", "邮箱重复");
         }
         //check code
-        if(checkCodeMapper.selectCount(Wrappers.<CheckCode>lambdaQuery()
-                .eq(CheckCode::getSend, user.getEmail()).eq(CheckCode::getCode,user.getCode()))==0){
-            return Result.error("-1", "验证码不正确");
-        }
+//        if(checkCodeMapper.selectCount(Wrappers.<CheckCode>lambdaQuery()
+//                .eq(CheckCode::getSend, user.getEmail()).eq(CheckCode::getCode,user.getCode()))==0){
+//            return Result.error("-1", "验证码不正确");
+//        }
 
 //        if (user.getPassword() == null) {
 //            user.setPassword("123456");
