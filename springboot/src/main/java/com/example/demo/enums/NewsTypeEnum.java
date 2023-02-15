@@ -20,14 +20,14 @@ public enum NewsTypeEnum {
 
 
 //    SALES_ALL(-1,"全部分类"),
-    SALES_SIGN(1, "绿色要闻"),
-    SALES_IN(2, "校园动态"),
-    SALES_EXECUTE(3, "微媒体"),
-    SALES_EXECUTE4(4, "媒体北林"),
-    SALES_EXECUTE5(5, "党建思政"),
-    SALES_EXECUTE6(6, "绿色任务"),
-    SALES_EXECUTE7(7, "观点言论"),
-    SALES_EXECUTE8(8, "绿色视野");
+    SALES_SIGN(1, "咨询分类1"),
+    SALES_IN(2, "咨询分类2"),
+    SALES_EXECUTE(3, "咨询分类22"),
+    SALES_EXECUTE4(4, "咨询分类23"),
+    SALES_EXECUTE5(5, "咨询分类24"),
+    SALES_EXECUTE6(6, "咨询分类25"),
+    SALES_EXECUTE7(7, "咨询分类26"),
+    SALES_EXECUTE8(8, "咨询分类27");
 
     private Integer id;
     private String name;
