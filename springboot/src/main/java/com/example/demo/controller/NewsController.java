@@ -115,7 +115,7 @@ public class NewsController extends BaseController {
             news.setTypeName(NewsTypeEnum.getType(news.getType()));
         }
         news.setReadCounts(0);
-        news.setNewsStatus(0);//待审核
+        news.setNewsStatus(1);//待审核
         news.setTime(new Date());
         newsMapper.insert(news);
         return Result.success();
@@ -246,10 +246,14 @@ public class NewsController extends BaseController {
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
                               @RequestParam(defaultValue = "") String search,
+                              @RequestParam(defaultValue = "") String search2,
                               @RequestParam(required = false) Integer catId) {
         LambdaQueryWrapper<News> wrapper = Wrappers.<News>lambdaQuery();
         if (StrUtil.isNotBlank(search)) {
             wrapper.like(News::getTitle, search);
+        }
+        if (StrUtil.isNotBlank(search2)) {
+            wrapper.eq(News::getAuthor, search2);
         }
         if(catId!=null){
             wrapper.eq(News::getCatId,catId);

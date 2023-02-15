@@ -2,12 +2,12 @@
   <div style="padding: 10px">
 
     <!--    搜索区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>-->
+    <div style="margin: 10px 0">
+      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
 
-<!--      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
-<!--      <el-button type="primary" @click="add">发布</el-button>-->
-<!--    </div>-->
+      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
+      <el-button type="primary" @click="add">发布</el-button>
+    </div>
     <el-table
         v-loading="loading"
         :data="tableData"
@@ -75,6 +75,12 @@
             <el-button type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
+<!--        <el-form-item label="默认视频">-->
+<!--          <el-input v-model="form.defaultVideo" style="width: 50%" disabled></el-input>-->
+<!--          <el-upload ref="upload" :action="filesUploadUrl" :on-success="filesUploadSuccess2">-->
+<!--            <el-button type="primary">点击上传</el-button>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
         <el-form-item label="作者">
           <el-input disabled v-model="form.memberName" style="width: 50%"></el-input>
         </el-form-item>
@@ -91,8 +97,11 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <div id="div2">
+        <div id="div1">
         </div>
+        <!--        <el-form-item label="内容">-->
+        <!--          <el-input v-model="form.price" style="width: 80%"></el-input>-->
+        <!--        </el-form-item>-->
       </el-form>
       <template #footer>
           <span class="dialog-footer">
@@ -178,13 +187,15 @@ export default {
       this.form.defaultVideo = res.data
     },
     load() {
+      let userStr = JSON.parse(sessionStorage.getItem("user") || "{}")
+
       this.loading = true
       request.get("/news", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
           search: this.search,
-          search2: 1
+          search2: userStr.username
         }
       }).then(res => {
         this.loading = false
@@ -251,7 +262,7 @@ export default {
       this.$nextTick(() => {
         // 关联弹窗里面的div，new一个 editor对象
         if (!editor) {
-          editor = new E('#div2')
+          editor = new E('#div1')
           // 配置 server 接口地址
           editor.config.uploadImgServer = 'http://' + window.server.filesUploadUrl + ':9091/files/editor/upload'
           editor.config.uploadFileName = "file"  // 设置上传参数名称

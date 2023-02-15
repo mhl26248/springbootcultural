@@ -119,14 +119,14 @@ export default {
         this.$router.push('/Index');
       }
       else if(key == '4'){
-        this.$router.push('/MyNews');
+        this.$router.push('/MyNew');
       }
       else if(key == '5'){
-        this.$router.push('/AddNews');
+        this.$router.push('/MyNew');
       }
-      else if(key == '6'){
-        this.$router.push('/Charge');
-      }
+      // else if(key == '6'){
+      //   this.$router.push('/Charge');
+      // }
     }
   }
 }
