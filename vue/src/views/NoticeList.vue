@@ -5,7 +5,6 @@
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button type="primary" @click="add">新增</el-button>
     </div>
     <el-table
         v-loading="loading"
@@ -31,12 +30,8 @@
       <el-table-column label="操作" width="400">
         <template #default="scope">
 
-          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
-            <template #reference>
-              <el-button size="mini" type="danger">删除</el-button>
-            </template>
-          </el-popconfirm>
+          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">查看</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -68,7 +63,6 @@
       <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
           </span>
       </template>
     </el-dialog>

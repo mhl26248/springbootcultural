@@ -234,7 +234,7 @@ export default {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
           search2:this.search,
-          search1:0,
+          // search1:0,
           sort:sort
         }
       }).then(res => {

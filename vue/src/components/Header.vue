@@ -21,7 +21,7 @@
         <el-menu-item index="3">文化资讯</el-menu-item>
         <el-menu-item index="4">申报</el-menu-item>
         <el-menu-item index="5">我的资讯</el-menu-item>
-        <el-menu-item index="6">发表资讯</el-menu-item>
+<!--        <el-menu-item index="6">发表资讯</el-menu-item>-->
       </el-menu>
 
       <el-menu v-if="user==''" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -30,7 +30,7 @@
         <el-menu-item index="3">文化资讯</el-menu-item>
         <el-menu-item index="4">申报</el-menu-item>
         <el-menu-item index="5">我的资讯</el-menu-item>
-        <el-menu-item index="6">发表资讯</el-menu-item>
+<!--        <el-menu-item index="6">发表资讯</el-menu-item>-->
       </el-menu>
     </div>
 
@@ -110,19 +110,19 @@ export default {
       console.log(key, keyPath);
       sessionStorage.setItem("activeIndex",key)
       if(key == '3'){
-        this.$router.push('/MyRecord');
+        this.$router.push('/NewList');
       }
       else if(key == '2'){
-        this.$router.push('/Cart');
+        this.$router.push('/NoticeList');
       }
       else if(key == '1'){
         this.$router.push('/Index');
       }
       else if(key == '4'){
-        this.$router.push('/StoreRecordApply');
+        this.$router.push('/MyNews');
       }
       else if(key == '5'){
-        this.$router.push('/StoreRecord');
+        this.$router.push('/AddNews');
       }
       else if(key == '6'){
         this.$router.push('/Charge');
