@@ -4,7 +4,7 @@
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button  @click="add">创建资料</el-button>
+<!--      <el-button  @click="add">创建资料</el-button>-->
     </div>
     <el-table
         v-loading="loading"
@@ -13,23 +13,23 @@
         stripe
         style="width: 100%">
       <el-table-column min-width="200"
-          prop="title"
-          label="标题">
+          prop="recordNo"
+          label="编号">
       </el-table-column>
       <el-table-column min-width="200"
-                       prop="price"
-                       label="单价">
+                       prop="title"
+                       label="标题">
       </el-table-column>
       <el-table-column min-width="200"
-                       prop="diff"
-                       label="折扣">
+                       prop="type"
+                       label="类型">
       </el-table-column>
-<!--      <el-table-column-->
-<!--          label="图片">-->
-<!--        <template #default="scope">-->
-<!--          <img  :src="scope.row.images" style="width: 50px;height: 50px">-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column
+          label="图片">
+        <template #default="scope">
+          <img  :src="scope.row.images" style="width: 50px;height: 50px">
+        </template>
+      </el-table-column>
       <el-table-column min-width="150"
           label="状态">
         <template #default="scope">

@@ -17,7 +17,7 @@ public class Record {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer userId;
-    private Integer status;//0 上架 1 下架
+    private Integer status;//0 审核中 1 通过 2 驳回
     private String remark;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date created;
@@ -26,8 +26,7 @@ public class Record {
     private String title;
     private String recordNo;
     private String detail;
-    private BigDecimal price;
-    private BigDecimal diff;
+    private String type;
     private Integer views;
     private Integer hots;
 

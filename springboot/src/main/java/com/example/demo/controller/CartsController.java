@@ -73,8 +73,6 @@ public class CartsController extends BaseController {
             if(r!=null){
                 obj.setTitle(r.getTitle());
                 obj.setImages(r.getImages());
-                obj.setPrice(r.getPrice());
-                obj.setDiff(r.getDiff());
                 obj.setStatus(r.getStatus());
             }
 

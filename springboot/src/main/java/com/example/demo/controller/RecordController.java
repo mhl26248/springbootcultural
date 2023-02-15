@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -68,6 +69,7 @@ public class RecordController extends BaseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody Record obj) {
+        obj.setRecordNo(IdUtil.fastSimpleUUID());
         obj.setCreated(new Date());
         obj.setStatus(0);
         recordMapper.insert(obj);

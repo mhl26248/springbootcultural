@@ -17,20 +17,20 @@
     <div style="flex: 1;width: 250px; padding-left: 30px;">
       <el-menu v-if="user!='' && user.nickName!='管理员' && role != 6" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >购物车</el-menu-item>
-        <el-menu-item index="3">我购买的</el-menu-item>
-        <el-menu-item index="4">我卖出的</el-menu-item>
-        <el-menu-item index="5">发布</el-menu-item>
-        <el-menu-item index="6">充值</el-menu-item>
+        <el-menu-item index="2" >公告</el-menu-item>
+        <el-menu-item index="3">文化资讯</el-menu-item>
+        <el-menu-item index="4">申报</el-menu-item>
+        <el-menu-item index="5">我的资讯</el-menu-item>
+        <el-menu-item index="6">发表资讯</el-menu-item>
       </el-menu>
 
       <el-menu v-if="user==''" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" >首页</el-menu-item>
-        <el-menu-item index="2" >购物车</el-menu-item>
-        <el-menu-item index="3">我购买的</el-menu-item>
-        <el-menu-item index="4">我卖出的</el-menu-item>
-        <el-menu-item index="5">发布</el-menu-item>
-        <el-menu-item index="6">充值</el-menu-item>
+        <el-menu-item index="2" >公告</el-menu-item>
+        <el-menu-item index="3">文化资讯</el-menu-item>
+        <el-menu-item index="4">申报</el-menu-item>
+        <el-menu-item index="5">我的资讯</el-menu-item>
+        <el-menu-item index="6">发表资讯</el-menu-item>
       </el-menu>
     </div>
 

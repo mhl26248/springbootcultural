@@ -21,16 +21,6 @@
 <!--        <img :src="o.images" style="height: 120px"   class="image">-->
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
-          <div class="bottom clearfix">
-            <time class="time" style="font-size: 12px">单价：{{ o.price }}&emsp;&emsp; </time> <br>
-            <time class="time" style="font-size: 12px">  折扣：<el-tag>{{ o.diff }}</el-tag></time><br>
-            <time class="time" style="font-size: 12px">  卖家：<el-tag>{{ o.userName }}</el-tag></time>
-            <br>
-            <br>
-            <el-button v-if="user.id != o.userId"  class="button" @click="word(o)">举报</el-button>
-            <el-button v-if="user.id != o.userId"  class="button" @click="cart(o)">购物车</el-button>
-            <el-button v-if="user.id != o.userId"  class="button" @click="book(o)">购买</el-button>
-          </div>
         </div>
       </el-card>
       </el-col>
