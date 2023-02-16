@@ -44,10 +44,10 @@
           prop="memberName"
           label="作者">
       </el-table-column>
-      <el-table-column
-          prop="catName"
-          label="类型">
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          prop="catName"-->
+<!--          label="类型">-->
+<!--      </el-table-column>-->
       <el-table-column
           prop="typeName"
           label="类别">

@@ -33,8 +33,9 @@
       <el-table-column min-width="150"
           label="状态">
         <template #default="scope">
-          <el-tag v-if="scope.row.status == 0">上架</el-tag>
-          <el-tag type="danger" v-if="scope.row.status == 1">下架</el-tag>
+          <el-tag v-if="scope.row.status == 0">审核中</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 1">通过</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 2">拒绝</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="220">
@@ -60,19 +61,16 @@
 
       <el-form ref="form"   :model="form" label-width="80px">
 
-
         <el-form-item label="标题">
           <el-input v-model="form.title" style="width: 30%"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-radio v-model="form.status" :label="0">上架</el-radio>
-          <el-radio v-model="form.status" :label="1">下架</el-radio>
+          <el-radio v-model="form.status" :label="0">待审核</el-radio>
+          <el-radio v-model="form.status" :label="1">通过</el-radio>
+          <el-radio v-model="form.status" :label="2">拒绝</el-radio>
         </el-form-item>
-        <el-form-item label="单价">
-          <el-input v-model="form.price" style="width: 30%"></el-input>
-        </el-form-item>
-        <el-form-item label="折扣">
-          <el-input v-model="form.diff" style="width: 30%"></el-input>
+        <el-form-item label="类型">
+          <el-input v-model="form.type" style="width: 30%"></el-input>
         </el-form-item>
         <el-form-item label="图片">
           <el-input v-model="form.images"  disabled></el-input>

@@ -119,7 +119,7 @@ export default {
         this.$router.push('/Index');
       }
       else if(key == '4'){
-        this.$router.push('/MyNew');
+        this.$router.push('/MyRecord');
       }
       else if(key == '5'){
         this.$router.push('/MyNew');

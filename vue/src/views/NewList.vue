@@ -30,7 +30,7 @@
           label="来源">
       </el-table-column>
       <el-table-column
-          prop="memberName"
+          prop="author"
           label="作者">
       </el-table-column>
       <el-table-column
@@ -76,7 +76,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="作者">
-          <el-input disabled v-model="form.memberName" style="width: 50%"></el-input>
+          <el-input disabled v-model="form.author" style="width: 50%"></el-input>
         </el-form-item>
         <el-form-item label="来源">
           <el-input v-model="form.newsFrom" style="width: 50%"></el-input>
@@ -183,8 +183,7 @@ export default {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search: this.search,
-          search2: 1
+          search: this.search
         }
       }).then(res => {
         this.loading = false

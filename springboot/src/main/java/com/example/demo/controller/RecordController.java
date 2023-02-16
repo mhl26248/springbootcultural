@@ -13,6 +13,8 @@ import com.example.demo.entity.Likes;
 import com.example.demo.entity.Record;
 import com.example.demo.entity.RecordApply;
 import com.example.demo.entity.User;
+import com.example.demo.enums.NewsTypeEnum;
+import com.example.demo.enums.TypeEnum;
 import com.example.demo.mapper.LikesMapper;
 import com.example.demo.mapper.RecordApplyMapper;
 import com.example.demo.mapper.RecordMapper;
@@ -67,6 +69,10 @@ public class RecordController extends BaseController {
     }
 
 
+    @GetMapping("/catList2")
+    public Result<?> catList() {
+        return Result.success(TypeEnum.ALL);
+    }
     @PostMapping("/save")
     public Result<?> save(@RequestBody Record obj) {
         obj.setRecordNo(IdUtil.fastSimpleUUID());
@@ -74,15 +80,12 @@ public class RecordController extends BaseController {
         obj.setStatus(0);
         recordMapper.insert(obj);
 
-
         return Result.success();
     }
 
     @PostMapping("/update")
     public Result<?> update(@RequestBody Record obj) {
         recordMapper.updateById(obj);
-
-
         return Result.success();
     }
 
@@ -235,14 +238,14 @@ public class RecordController extends BaseController {
         if (StrUtil.isNotBlank(search1)) {
             wrapper.like(Record::getStatus, search1);
         }
-        if(StrUtil.isNotBlank(sort)){
-            if(sort.equals("1")){
-                wrapper.orderByDesc(Record::getHots);
-            }
-            if(sort.equals("2")){
-                wrapper.orderByDesc(Record::getId);
-            }
-        }
+//        if(StrUtil.isNotBlank(sort)){
+//            if(sort.equals("1")){
+//                wrapper.orderByDesc(Record::getHots);
+//            }
+//            if(sort.equals("2")){
+//                wrapper.orderByDesc(Record::getId);
+//            }
+//        }
         Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         List<Record> records = page.getRecords();
         if(page!=null && CollectionUtils.isNotEmpty(records)){
@@ -257,6 +260,33 @@ public class RecordController extends BaseController {
         return Result.success(page);
     }
 
+    @GetMapping("/index")
+    public Result<?> index(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "10") Integer pageSize,
+                                      @RequestParam(defaultValue = "") Integer userId,
+                                      @RequestParam(defaultValue = "") String search2,
+                                      @RequestParam(defaultValue = "") String search1) {
 
+        LambdaQueryWrapper<Record> wrapper = Wrappers.lambdaQuery();
+        if (userId!=null) {
+            wrapper.eq(Record::getUserId, userId);
+        }
+        if (StrUtil.isNotBlank(search2)) {
+            wrapper.like(Record::getTitle, search2);
+        }
+        wrapper.eq(Record::getStatus, 1);
+        Page<Record> page = recordMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        List<Record> records = page.getRecords();
+        if(page!=null && CollectionUtils.isNotEmpty(records)){
+            for(Record r:records){
+                User u = userMapper.selectById(r.getUserId());
+                if(u!=null){
+                    r.setUserName(u.getUsername());
+                }
+            }
+        }
+
+        return Result.success(page);
+    }
 
 }

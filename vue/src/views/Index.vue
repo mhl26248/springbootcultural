@@ -3,17 +3,15 @@
   <Header v-if="user == ''" :user="user"/>
   <div style="padding: 10px">
     <div style="margin: 10px 100px;">
-      <el-input v-model="search" placeholder="请输入资料名称" style="width: 60%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入关键词" style="width: 60%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>
-<!--      <el-button type="success" style="margin-left: 5px" @click="load(1)">热度</el-button>-->
-<!--      <el-button type="success" style="margin-left: 5px" @click="load(2)">最新发布</el-button>-->
     </div>
 
-<!--    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >-->
-<!--      <el-carousel-item v-for="item in tableData" style="height: 250px;">-->
-<!--        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>-->
-<!--      </el-carousel-item>-->
-<!--    </el-carousel>-->
+    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
+      <el-carousel-item v-for="item in tableData" style="height: 250px;">
+        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>
+      </el-carousel-item>
+    </el-carousel>
     <el-row style="padding-top: 30px">
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
@@ -228,8 +226,7 @@ export default {
       if(this.userName){
         this.user = user
       }
-      request.get("/record/findPageMyRecord", {
-
+      request.get("/record/index", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,

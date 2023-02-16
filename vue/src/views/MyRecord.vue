@@ -1,53 +1,46 @@
 <template>
   <div style="padding: 10px">
+    <!--    搜索区域-->
+    <div style="margin: 10px 0">
+      <el-input v-model="search" placeholder="请输入名称" style="width: 20%" clearable></el-input>
+      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
+            <el-button  @click="add">申报</el-button>
+    </div>
     <el-table
         v-loading="loading"
         :data="tableData"
+        border
         stripe
         style="width: 100%">
-      <el-table-column
-          prop="id"
-          label="订单编号">
+      <el-table-column min-width="200"
+                       prop="recordNo"
+                       label="编号">
       </el-table-column>
-<!--      <el-table-column-->
-<!--          label="图片">-->
-<!--        <template #default="scope" >-->
-<!--          <img :src="scope.row.images" style="width: 50px">-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column
-          prop="title"
-          label="名称">
+      <el-table-column min-width="200"
+                       prop="title"
+                       label="标题">
+      </el-table-column>
+      <el-table-column min-width="200"
+                       prop="type"
+                       label="类型">
       </el-table-column>
       <el-table-column
-          prop="payType"
-          label="支付方式">
-      </el-table-column>
-      <el-table-column
-          label="折扣">
-        <template #default="scope" >
-          <el-tag>{{scope.row.diff}}</el-tag>
+          label="图片">
+        <template #default="scope">
+          <img  :src="scope.row.images" style="width: 50px;height: 50px">
         </template>
       </el-table-column>
-      <el-table-column
-          prop="payAmt"
-          label="已支付">
+      <el-table-column min-width="150"
+                       label="状态">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status == 0">审核中</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 1">通过</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 2">拒绝</el-tag>
+        </template>
       </el-table-column>
-      <el-table-column
-          prop="created"
-          label="日期">
-      </el-table-column>
-
-
-      <el-table-column label="操作" min-width="200px">
-        <template #default="scope" >
-<!--          <el-popconfirm title="确定取消吗？" v-if="scope.row.status == 0" @confirm="handleEdit(scope.row.id)">&ndash;&gt;-->
-<!--            <template #reference>-->
-<!--              <el-button size="mini" type="info">取消</el-button>-->
-<!--            </template>-->
-<!--          </el-popconfirm>-->
-          <a :href="scope.row.images">下载</a>
-<!--          <el-button size="mini" type="danger" v-if="scope.row.comments != null" @click="pj2(scope.row)">查看评价</el-button>-->
+      <el-table-column label="操作" min-width="220">
+        <template #default="scope">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,26 +57,44 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="评价" v-model="dialogVisible" width="70%">
-      <el-form ref="form"   :model="form" label-width="90px">
-        <el-form-item label="商品">
-          <el-input v-model="form.title" disabled style="width: 30%"></el-input>
+    <el-dialog title="申报" v-model="dialogVisible" width="70%">
+      <el-form ref="form"   :model="form" label-width="80px">
+        <el-form-item label="标题">
+          <el-input v-model="form.title" style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="类别">
+          <el-select v-model="form.type">
+            <el-option
+                v-for="item in options"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="图片">
-          <img :src="form.images" style="width: 200px;height: 200px">
+          <el-input v-model="form.images"  disabled></el-input>
+          <el-upload
+              class="upload-demo"
+              action="http://127.0.0.1:9091/files/upload"
+              :on-preview="handlePreview"
+              :on-success="handlePreviewVideo"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              list-type="text">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+          </el-upload>
         </el-form-item>
-        <el-form-item label="评价">
-          <textarea cols="10" rows="10" v-model="form.remark"  style="width: 30%"></textarea>
-        </el-form-item>
-        <el-form-item label="评分">
-          <el-input v-model="form.score"  style="width: 30%"></el-input>
+        <el-form-item label="备注">
+          <textarea rows="10" v-model="form.remark" style="width: 80%"></textarea>
         </el-form-item>
       </el-form>
 
       <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" v-if="form.comments == null" @click="save">确 定</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
           </span>
       </template>
     </el-dialog>
@@ -107,31 +118,62 @@ export default {
             desc: ""
           }
         ]},
-      dialogVisible2: false,
       dialogVisible: false,
       search: '',
+      search1: '',
+      search2: '',
       currentPage: 1,
       pageSize: 10,
       total: 0,
       tableData: [],
       options: [],
-      options2:[],
-      userName:''
+      fileList: [],
+      file:{
+        name:'',
+        url:''
+      }
     }
   },
   created() {
     this.load()
   },
   methods: {
-    pj(row){
-      this.form = JSON.parse(JSON.stringify(row))
-      this.dialogVisible = true
+    handleRemove(file, fileList) {
+      var index = this.fileList.findIndex(item => {
+        if (item.name == file.name){
+          return true
+        }
+      })
+      this.fileList.splice(index,1)
+      this.form.images = ''
+      this.fileList.forEach((item, index) => {
+        if (this.form.images == "") {
+          this.form.images = item.name;
+        } else {
+          this.form.images = this.form.images + ";" + item.name;
+        }
+      });
+      console.log( this.fileList);
     },
-    pj2(row){
-      this.form = JSON.parse(JSON.stringify(row))
-      this.form.remark = this.form.comments.remark
-      this.form.score = this.form.comments.score
-      this.dialogVisible = true
+    handlePreviewVideo(file){
+      console.log(file.data)
+      if (file) {
+        if(this.form.images == undefined || this.form.images == ''){
+          this.form.images = ''
+        }
+        else{
+          this.form.images = this.form.images+ ';'
+        }
+        this.form.images = this.form.images+file.data;
+        // this.$set(this.form, "images", file.data.name);
+        this.$message.info('成功');
+      } else {
+        this.fileList = [];
+        this.$message.error('失败');
+      }
+    },
+    handlePreview(file) {
+      console.log(file);
     },
     addItem() {
       this.form.recordLogs.push({
@@ -153,6 +195,14 @@ export default {
       this.form.recordLogs.splice(index, 1);
       console.log(this.form.recordLogs, "删除");
     },
+    handleIn(row){
+      request.post("/record/recordIn", row).then(res => {
+        if (res.code === '0') {
+          this.$message.success("入库成功")
+          this.load()
+        }
+      })
+    },
     handleChange(row) {
       request.put("/role/changePermission", row).then(res => {
         if (res.code === '0') {
@@ -163,22 +213,35 @@ export default {
         }
       })
     },
+
     load() {
       this.loading = true
       let userStr = sessionStorage.getItem("user") || "{}"
       let user = JSON.parse(userStr)
       this.userName = user.username
-      request.get("/recordApply/findPage", {
+      request.get("/record/findPageMyRecord", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search2: user.id
         }
       }).then(res => {
         this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })
+
+      request.get("/record/catList2", {
+        params: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize,
+        }
+      }).then(res => {
+        this.loading = false
+        this.options = res.data
+      })
+
+
+
     },
     add() {
       this.dialogVisible = true
@@ -192,22 +255,92 @@ export default {
       // this.addItem()
     },
     save() {
-      let userStr = sessionStorage.getItem("user") || "{}"
-      let user = JSON.parse(userStr)
+      if (this.form.id) {  // 更新
 
-      let req = {}
-      req.userId = user.id
-      req.recordId = this.form.id
-      req.remark = this.form.remark
-      req.score = this.form.score
-      req.goodsId = this.form.recordId
+        request.post("/record/update", this.form).then(res => {
+          console.log(res)
+          if (res.code === '0') {
+            this.$message({
+              type: "success",
+              message: "更新成功"
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            })
+          }
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      } else {  // 新增
+        let userStr = sessionStorage.getItem("user") || "{}"
+        let user = JSON.parse(userStr)
+        this.form.userId = user.id
+        request.post("/record/save", this.form).then(res => {
+          console.log(res)
+          if (res.code === '0') {
+            this.$message({
+              type: "success",
+              message: "新增成功"
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            })
+          }
 
-      request.post("/comment/save", req).then(res => {
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }
+
+    },
+    handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
+      this.fileList = []
+      this.options = []
+      this.initProductImgs();
+    },
+    initProductImgs() {
+      this.fileList = []
+      if (this.form.images != undefined) {
+        if (this.form.images.indexOf(";") != -1) {
+          let urls = this.form.images.split(";");
+          urls.forEach((url, index) => {
+            this.file.name = url;
+            this.file.url =  url;
+            this.fileList.push(this.file);
+            this.resetImgobject();
+          });
+        } else {
+          this.file.name = this.form.images;
+          this.file.url = this.form.images;
+          this.fileList.push(this.file);
+          this.resetImgobject();
+        }
+      }
+    },
+    resetImgobject() {
+      this.file = {
+        name: "",
+        url: "",
+      };
+    },
+
+    handleUpdate(id,status) {
+      console.log(id)
+      let re = {}
+      re.id = id
+      re.status = status
+      request.post("/record/updateStatus", re).then(res => {
         console.log(res)
         if (res.code === '0') {
           this.$message({
             type: "success",
-            message: "评价成功"
+            message: "更新成功"
           })
         } else {
           this.$message({
@@ -215,50 +348,7 @@ export default {
             message: res.msg
           })
         }
-
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
-      })
-
-    },
-    handleUpdate(row){
-      this.form = JSON.parse(JSON.stringify(row))
-      this.dialogVisible2 = true
-    },
-    handleEdit(id) {
-      request.get("/recordApply/deleteById", {
-        params: {
-          id: id
-        }
-      }).then(res => {
-        this.$message({
-          type: "success",
-          message: "取消成功"
-        })
-        this.load() // 刷新表格的数据
-      })
-    },
-    handleApply(row) {
-      let userStr = sessionStorage.getItem("user") || "{}"
-      let user = JSON.parse(userStr)
-      this.form = {}
-      this.form.applyId = user.id
-      this.form.recordId = row.id
-      this.form.sickId = row.sickId
-      this.form.type = type
-      request.post("/recordApply/save" ,this.form).then(res => {
-        if (res.code === '0') {
-          this.$message({
-            type: "success",
-            message: "申请成功"
-          })
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
-          })
-        }
-        this.load()  // 删除之后重新加载表格的数据
+        this.load()
       })
     },
     handleSizeChange(pageSize) {   // 改变当前每页的个数触发

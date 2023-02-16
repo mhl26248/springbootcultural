@@ -30,10 +30,6 @@
           label="来源">
       </el-table-column>
       <el-table-column
-          prop="memberName"
-          label="作者">
-      </el-table-column>
-      <el-table-column
           prop="typeName"
           label="类别">
       </el-table-column>
@@ -43,7 +39,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="200px">
         <template #default="scope">
-          <el-button size="mini" @click="details(scope.row)">详情</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
 
