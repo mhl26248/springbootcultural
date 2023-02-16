@@ -148,18 +148,18 @@ public class RecordController extends BaseController {
 
     @GetMapping("/getById")
     public Result<?> getById(@RequestParam("id") Long id) {
-        Record r = recordMapper.selectById(id);
-        int views = r.getViews()+1;
-        LambdaQueryWrapper<Likes> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(Likes::getRecordId,id);
-        LambdaQueryWrapper<RecordApply> wrapper2 = Wrappers.lambdaQuery();
-        wrapper2.eq(RecordApply::getRecordId,id.intValue());
-        //更新热度  浏览次数+收藏次数+订单量
-        int hots = views
-                +likesMapper.selectCount(wrapper)
-                +recordApplyMapper.selectCount(wrapper2);
+//        Record r = recordMapper.selectById(id);
+//        int views = r.getViews()+1;
+//        LambdaQueryWrapper<Likes> wrapper = Wrappers.lambdaQuery();
+//        wrapper.eq(Likes::getRecordId,id);
+//        LambdaQueryWrapper<RecordApply> wrapper2 = Wrappers.lambdaQuery();
+//        wrapper2.eq(RecordApply::getRecordId,id.intValue());
+//        //更新热度  浏览次数+收藏次数+订单量
+//        int hots = views
+//                +likesMapper.selectCount(wrapper)
+//                +recordApplyMapper.selectCount(wrapper2);
 
-        recordMapper.updateViews(id.intValue(),hots,views);
+//        recordMapper.updateViews(id.intValue(),hots,views);
 
         return Result.success(recordMapper.selectById(id));
     }
