@@ -22,6 +22,7 @@ public class Record {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date created;
     private String images;
+    private String successor;
 
     private String title;
     private String recordNo;

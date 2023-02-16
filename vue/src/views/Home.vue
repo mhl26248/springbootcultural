@@ -14,9 +14,9 @@
             </el-timeline-item>
           </el-timeline>
         </el-card>
-        <el-card>
-          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>
-        </el-card>
+<!--        <el-card>-->
+<!--          <div id="myChart" :style="{width: '600px', height: '500px'}"></div>-->
+<!--        </el-card>-->
 
       </el-col>
 <!--      <el-col :span="12">-->
@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    this.drawLine();
+    // this.drawLine();
     // this.barGraph();
   },
   created() {

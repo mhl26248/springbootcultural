@@ -15,9 +15,13 @@
       <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
       style="margin-top: 10px;margin-bottom: 10px">
       <el-card :body-style="{ padding: '10px'}" @click="toDetail(o)" style="width:300px;height:220px" shadow="hover">
-<!--        <img :src="o.images" style="height: 120px"   class="image">-->
+        <img :src="o.images" style="height: 120px"   class="image">
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
+          <div class="bottom clearfix">
+            <time class="time" style="font-size: 12px">  <el-tag>{{ o.type }}</el-tag></time>
+            <br><br>
+          </div>
         </div>
       </el-card>
       </el-col>
@@ -35,51 +39,6 @@
           :total="total">
       </el-pagination>
     </div>
-
-    <el-dialog title="下单" v-model="dialogVisible" width="70%">
-      <el-form ref="form"   :model="form" label-width="80px">
-        <el-form-item label="标题">
-          <el-input v-model="form.title" disabled style="width: 30%"></el-input>
-        </el-form-item>
-<!--        <el-form-item label="图片">-->
-<!--          <img :src="form.images" style="width: 200px;height: 200px">-->
-<!--        </el-form-item>-->
-        <el-form-item label="单价">
-          <el-input v-model="form.price" disabled style="width: 30%"></el-input>
-        </el-form-item>
-        <el-form-item label="折扣">
-          <el-input v-model="form.diff" disabled style="width: 30%"></el-input>
-        </el-form-item>
-        <el-form-item label="待支付">
-          <span v-if="form.diff">
-          {{form.diff*form.price}}
-          </span>
-          <span v-if="!form.diff">
-          {{form.price}}
-          </span>
-        </el-form-item>
-        <el-form-item label="支付方式">
-          <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
-          <el-radio v-model="form.payType" label="微信">微信</el-radio>
-          <el-radio v-model="form.payType" label="余额">余额</el-radio>
-        </el-form-item>
-<!--        <el-form-item label="预约日期">-->
-<!--          <el-date-picker-->
-<!--              value-format="YYYY-MM-DD"-->
-<!--              v-model="form.applyTime"-->
-<!--              type="date"-->
-<!--              placeholder="选择日期">-->
-<!--          </el-date-picker>-->
-<!--        </el-form-item>-->
-      </el-form>
-
-      <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-          </span>
-      </template>
-    </el-dialog>
 
   </div>
 </template>

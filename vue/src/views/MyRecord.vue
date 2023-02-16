@@ -20,6 +20,10 @@
                        prop="title"
                        label="标题">
       </el-table-column>
+      <el-table-column
+                       prop="successor"
+                       label="传承人">
+      </el-table-column>
       <el-table-column min-width="200"
                        prop="type"
                        label="类型">
@@ -61,6 +65,9 @@
       <el-form ref="form"   :model="form" label-width="80px">
         <el-form-item label="标题">
           <el-input v-model="form.title" style="width: 30%"></el-input>
+        </el-form-item>
+        <el-form-item label="传承人">
+          <el-input v-model="form.successor" style="width: 30%"></el-input>
         </el-form-item>
         <el-form-item label="类别">
           <el-select v-model="form.type">
