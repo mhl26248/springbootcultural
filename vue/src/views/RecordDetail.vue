@@ -1,28 +1,22 @@
 <template>
   <el-container>
     <el-container>
-<!--    <el-aside width="500px" style="padding-top: 100px;height: 450px">-->
-<!--      <img :src="detail.images" style="height: 220px"  class="image">-->
-<!--    </el-aside>-->
+    <el-aside width="500px" style="padding-top: 100px;height: 450px">
+      <img :src="detail.images" style="height: 220px"  class="image">
+    </el-aside>
       <el-main style="padding-top: 80px;height: 450px">
-        <el-card class="box-card" style="height: 350px" border="0"  shadow="hover">
+        <el-card class="box-card" style="height: 250px" border="0"  shadow="hover">
           <div  style="height: 50px"  class="text item">
             <div style="font-size: 30px">{{ detail.title}}</div>
           </div>
+
           <div  style="height: 50px"  class="text item">
-            价格:&nbsp;&nbsp;&nbsp;&nbsp;{{ detail.price}}
-          </div>
-          <div  style="height: 50px"  class="text item">
-            折扣:&nbsp;&nbsp;&nbsp;&nbsp;<el-tag>{{ detail.diff}}</el-tag>
-            浏览量:&nbsp;&nbsp;&nbsp;&nbsp; <el-tag>{{ detail.views}}</el-tag>
-            热度:&nbsp;&nbsp;&nbsp;&nbsp; <el-tag>{{ detail.hots}}</el-tag>
+            分类:&nbsp;&nbsp;&nbsp;&nbsp;<el-tag>{{ detail.type}}</el-tag>
           </div>
           <div  style="height: 50px"  class="text item">
 
           </div>
           <div  style="height: 70px"  >
-<!--            <el-button style="float: right; "  type="success" @click="book()">购买</el-button>-->
-<!--            <el-button style="float: right; " type="danger" @click="like()" class="button">收藏</el-button>-->
           </div>
         </el-card>
 
@@ -37,68 +31,50 @@
           {{ detail.remark}}
         </div>
       </el-card>
-<!--      <el-card class="box-card"  shadow="hover">-->
-<!--        <div slot="header" >-->
-<!--          <span style="font-size: 30px">评价({{activeNames.length}})</span>-->
-<!--        </div>-->
-<!--        <div v-for="o in activeNames"  style="font-size: 15px" :key="o" class="text item">-->
-<!--          用户：{{o.userName}}&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--          评分：{{o.score}}&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--          日期：{{o.created}}-->
-<!--          <br>-->
-<!--          评价内容：&nbsp;&nbsp;&nbsp;&nbsp;<br>-->
-<!--          {{o.remark}}-->
-<!--        </div>-->
-<!--      </el-card>-->
+      <el-card>
+        <div style="padding: 20px; color: #888">
+          <div>
+            <el-input type="textarea" :rows="3" v-model="entity.content"></el-input>
+            <div style="text-align: right; padding: 10px"><el-button type="primary" @click="save">留言</el-button></div>
+          </div>
+        </div>
+
+        <div style="display: flex; padding: 20px" v-for="item in messages">
+          <div style="text-align: center; flex: 1">
+            <el-image :src="item.avatar" style="width: 60px; height: 60px; border-radius: 50%"></el-image>
+          </div>
+          <div style="padding: 0 10px; flex: 5">
+            <div><b style="font-size: 14px">{{ item.username }}</b></div>
+            <div style="padding: 10px 0; color: #888">
+              {{ item.content }}
+<!--              <el-button type="text" size="mini" @click="del(item.id)" v-if="item.username === user.username">删除</el-button>-->
+            </div>
+            <div style="background-color: #eee; padding: 10px" v-if="item.parentMessage">{{ item.username }}：{{ item.parentMessage.content }}</div>
+            <div style="color: #888; font-size: 12px">
+              <span>{{ item.time  }}</span>
+<!--              <el-button type="text" style="margin-left: 20px" @click="reReply(item.id)">回复</el-button>-->
+            </div>
+          </div>
+        </div>
+
+        <el-dialog title="回复信息" v-model="dialogFormVisible" width="30%">
+          <el-form :model="entity" label-width="80px">
+            <el-form-item label="内容">
+              <el-input v-model="entity.reply" autocomplete="off" type="textarea" :rows="3"></el-input>
+            </el-form-item>
+          </el-form>
+          <template #footer>
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="reply">确 定</el-button>
+          </template>
+        </el-dialog>
+      </el-card>
+
     </el-footer>
 
   </el-container>
 
 
-  <el-dialog title="下单" v-model="dialogVisible" width="70%">
-    <el-form ref="form"   :model="form" label-width="80px">
-      <el-form-item label="标题">
-        <el-input v-model="form.title" disabled style="width: 30%"></el-input>
-      </el-form-item>
-      <el-form-item label="图片">
-        <img :src="form.images" style="width: 200px;height: 200px">
-      </el-form-item>
-      <el-form-item label="单价">
-        <el-input v-model="form.price" disabled style="width: 30%"></el-input>
-      </el-form-item>
-      <el-form-item label="折扣">
-        <el-input v-model="form.diff" disabled style="width: 30%"></el-input>
-      </el-form-item>
-      <el-form-item label="待支付">
-          <span v-if="form.diff">
-          {{form.diff*form.price}}
-          </span>
-        <span v-if="!form.diff">
-          {{form.price}}
-          </span>
-      </el-form-item>
-      <el-form-item label="支付方式">
-        <el-radio v-model="form.payType" label="支付宝">支付宝</el-radio>
-        <el-radio v-model="form.payType" label="微信">微信</el-radio>
-        <el-radio v-model="form.payType" label="余额">余额</el-radio>
-      </el-form-item>
-      <!--        <el-form-item label="预约日期">-->
-      <!--          <el-date-picker-->
-      <!--              value-format="YYYY-MM-DD"-->
-      <!--              v-model="form.applyTime"-->
-      <!--              type="date"-->
-      <!--              placeholder="选择日期">-->
-      <!--          </el-date-picker>-->
-      <!--        </el-form-item>-->
-    </el-form>
-
-    <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-          </span>
-    </template>
-  </el-dialog>
 </template>
 
 <script>
@@ -110,18 +86,78 @@ export default {
   components: {},
   data() {
     return {
+      dialogFormVisible: false,
+      entity: {},
       comments:{},
       activeNames:[],
       detail:{},
       form:{},
+      user: {},
+      messages:[],
       dialogVisible:false
     }
   },
   created() {
+    this.user = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : {};
     this.load()
+    this.loadMessage()
   },
   methods: {
+    reply() {
+      this.entity.content = this.entity.reply;
+      this.save();
+    },
 
+    save() {
+      if (!this.user.username) {
+        this.$message({
+          message: "请登录",
+          type: "warning"
+        });
+        return;
+      }
+      if (!this.entity.content) {
+        this.$message({
+          message: "请填写内容",
+          type: "warning"
+        });
+        return;
+      }
+      this.entity.recordId = this.detail.id
+      this.entity.username = this.user.username
+      // 如果是评论的话，在 save的时候要注意设置 当前模块的id为 foreignId。也就是  entity.foreignId = 模块id
+      request.post("/message/save", this.entity).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            message: "评论成功",
+            type: "success"
+          });
+        } else {
+          this.$message({
+            message: res.msg,
+            type: "error"
+          });
+        }
+        this.entity = {}
+        this.loadMessage();
+        this.dialogFormVisible = false;
+      })
+    },
+    loadMessage() {
+      // 如果是留言的话，就写死=0
+      // 如果是 评论，则需要设置 当前被评论的模块的id作为foreignId
+      request.get("/message/findPage?search=" + this.detail.id).then(res => {
+        this.messages = res.data.records;
+      })
+
+      // request.get("/comment/findPage", {
+      //   params: {
+      //     search2: this.$route.query.sid
+      //   }
+      // }).then(res => {
+      //   this.activeNames = res.data.records
+      // })
+    },
     load() {
       request.get("/record/getById", {
         params: {
@@ -169,42 +205,7 @@ export default {
         }
       })
     },
-    save() {
-      let userStr = sessionStorage.getItem("user") || "{}"
-      let user = JSON.parse(userStr)
 
-      let req = {}
-      req.applyId = user.id
-      req.recordId = this.form.id
-      req.applyTime = this.form.applyTime
-      if(this.form.diff >0 && this.form.diff<1){
-        req.payAmt = this.form.price*this.form.diff
-      }else{
-        req.payAmt = this.form.price
-      }
-      req.payType = this.form.payType
-      req.payPrice = this.form.price
-      req.payDiff = this.form.diff
-
-      request.post("/recordApply/save", req).then(res => {
-        console.log(res)
-        if (res.code === '0') {
-          this.$message({
-            type: "success",
-            message: "下单成功"
-          })
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
-          })
-        }
-
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
-      })
-
-    },
   }
 }
 </script>

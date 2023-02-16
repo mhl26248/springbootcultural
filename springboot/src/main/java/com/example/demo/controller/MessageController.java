@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,9 +52,9 @@ public class MessageController extends BaseController {
                               @RequestParam(defaultValue = "10") Integer pageSize,
                               @RequestParam(defaultValue = "") String search) {
         LambdaQueryWrapper<Message> wrapper = Wrappers.lambdaQuery();
-//        if (StrUtil.isNotBlank(search)) {
-//            wrapper.like(CheckCode::getTitle, search);
-//        }
+        if (StrUtil.isNotBlank(search)) {
+            wrapper.like(Message::getRecordId, search);
+        }
         Page<Message> page = messageMapper.selectPage(new Page<>(pageNum, pageSize), wrapper.orderByDesc(Message::getId));
 
         return Result.success(page);

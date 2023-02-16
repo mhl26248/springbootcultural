@@ -6,10 +6,9 @@
       <el-input v-model="search" placeholder="请输入关键词" style="width: 60%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>
     </div>
-
-    <el-carousel :interval="2000" type="card"  v-if="tableData.length>0" >
-      <el-carousel-item v-for="item in tableData" style="height: 250px;">
-        <h3 class="medium"  @click="toDetail(item)" ><img  :src="item.images" ></h3>
+    <el-carousel :interval="2000" type="card" v-if="tableData2.length>0">
+      <el-carousel-item v-for="item in tableData2" >
+        <h3 class="small"><el-image  :src="item.img" fit="contain"></el-image></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row style="padding-top: 30px">
@@ -112,6 +111,12 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
+      tableData2: [
+        // {img:"https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"},
+        {img:"http://127.0.0.1:9091/files/3.jpeg"},
+        {img:"http://127.0.0.1:9091/files/2.png"},
+        {img:"http://127.0.0.1:9091/files/1.jpeg"},
+      ],
       options: [],
       fileList: [],
       file:{

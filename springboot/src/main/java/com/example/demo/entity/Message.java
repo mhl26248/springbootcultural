@@ -19,6 +19,7 @@ public class Message extends Model<Message> {
       */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+    private Long recordId;
 
     private String content;
 
