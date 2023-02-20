@@ -25,7 +25,16 @@
           prop="created"
           label="日期">
       </el-table-column>
+      <el-table-column label="操作" width="400">
+        <template #default="scope">
 
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
+            <template #reference>
+              <el-button size="mini" type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div style="margin: 10px 0">
@@ -199,7 +208,7 @@ export default {
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/notice/" + id).then(res => {
+      request.delete("/message/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",

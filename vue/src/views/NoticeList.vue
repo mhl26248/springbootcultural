@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 10px">
 
-    <div class="block" style="width: 80%;">
+    <div class="block" style="width: 80%;padding-left: 90px">
       <el-timeline v-for="it in tableData">
 
         <el-timeline-item :timestamp="it.created" placement="top">

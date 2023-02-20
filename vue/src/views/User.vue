@@ -1,22 +1,6 @@
 <template>
   <div style="padding: 10px">
 
-    <!--    功能区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--      <el-upload-->
-<!--        action="http://localhost:9090/user/import"-->
-<!--        :on-success="handleUploadSuccess"-->
-<!--        :show-file-list=false-->
-<!--        :limit="1"-->
-<!--        accept='.xlsx'-->
-<!--        style="display: inline-block; margin: 0 10px"-->
-<!--      >-->
-<!--        <el-button type="primary">导入</el-button>-->
-<!--      </el-upload>-->
-<!--      <el-button type="primary" @click="exportUser">导出</el-button>-->
-<!--    </div>-->
-
-    <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
@@ -54,10 +38,6 @@
           prop="address"
           label="地址">
       </el-table-column>
-      <el-table-column
-          prop="placeName"
-          label="车库">
-      </el-table-column>
       <el-table-column label="角色列表" width="300">
         <template #default="scope">
           <el-select v-model="scope.row.roles" multiple placeholder="请选择" style="width: 80%">
@@ -92,14 +72,6 @@
     </div>
 
 
-    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
-      <el-table :data="bookList" stripe border>
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-      </el-table>
-    </el-dialog>
-
     <el-dialog title="提示" v-model="dialogVisible" width="30%">
       <el-form :model="form" label-width="120px">
         <el-form-item label="用户名">
@@ -119,9 +91,7 @@
         <el-form-item label="地址">
           <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="账户余额">
-          <el-input v-model="form.account" style="width: 80%"></el-input>
-        </el-form-item>
+
       </el-form>
       <template #footer>
           <span class="dialog-footer">
