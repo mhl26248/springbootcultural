@@ -1,70 +1,19 @@
 <template>
   <div style="padding: 10px">
 
-    <!--    搜索区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>-->
-<!--      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
-<!--    </div>-->
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        stripe
-        style="width: 100%">
-<!--      <el-table-column-->
-<!--          prop="id"-->
-<!--          label="ID"-->
-<!--          sortable-->
-<!--      >-->
-<!--      </el-table-column>-->
-      <el-table-column
-          prop="title"
-          label="标题">
-      </el-table-column>
-      <el-table-column
-          prop="context"
-          label="内容">
-      </el-table-column>
+    <div class="block" style="width: 80%;">
+      <el-timeline v-for="it in tableData">
 
-      <el-table-column label="操作" width="400">
-        <template #default="scope">
+        <el-timeline-item :timestamp="it.created" placement="top">
+          <el-card>
+            <h4>{{it.title}}</h4>
+            <p>{{it.context}}</p>
+          </el-card>
+        </el-timeline-item>
 
-          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">查看</el-button>
-
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <div style="margin: 10px 0">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-      </el-pagination>
+      </el-timeline>
     </div>
 
-
-
-    <el-dialog title="提示" v-model="dialogVisible" width="60%">
-      <el-form :model="form" label-width="120px">
-        <el-form-item label="标题">
-          <el-input v-model="form.title" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="内容">
-          <textarea rows="6" v-model="form.context" style="width: 80%"></textarea>
-        </el-form-item>
-
-      </el-form>
-      <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-          </span>
-      </template>
-    </el-dialog>
 
   </div>
 </template>

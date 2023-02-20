@@ -14,7 +14,7 @@
     <el-row style="padding-top: 30px">
       <el-col :span="8" v-for="(o, index) in tableData"
       style="margin-top: 10px;margin-bottom: 10px">
-      <el-card :body-style="{ padding: '10px'}" @click="toDetail(o)" style="width:300px;height:220px" shadow="hover">
+      <el-card :body-style="{ padding: '10px'}" @click="toDetail(o)" style="width:350px;height:220px" shadow="hover">
         <img :src="o.images" style="height: 120px"   class="image">
         <div style="padding: 14px;" >
           <span style="font-size: 18px">{{ o.title }}</span>
