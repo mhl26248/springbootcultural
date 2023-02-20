@@ -12,7 +12,7 @@
       </el-carousel-item>
     </el-carousel>
     <el-row style="padding-top: 30px">
-      <el-col :span="4" v-for="(o, index) in tableData" :offset="index%4? 1 : 2"
+      <el-col :span="8" v-for="(o, index) in tableData"
       style="margin-top: 10px;margin-bottom: 10px">
       <el-card :body-style="{ padding: '10px'}" @click="toDetail(o)" style="width:300px;height:220px" shadow="hover">
         <img :src="o.images" style="height: 120px"   class="image">

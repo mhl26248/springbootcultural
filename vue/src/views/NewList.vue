@@ -1,112 +1,23 @@
 <template>
   <div style="padding: 10px">
 
-    <!--    搜索区域-->
-<!--    <div style="margin: 10px 0">-->
-<!--      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>-->
+    <el-row style="padding-top: 30px">
+      <el-col :span="24" v-for="(o, index) in tableData"
+              style="margin-top: 10px;margin-bottom: 10px;">
+        <el-row >
+          <el-card>
+            <el-col :span="12">
+              <div class="grid-content bg-purple"> <img :src="o.defaultImage" style="width: 350px"   class="image"></div>
+            </el-col>
+            <el-col :span="16" style="padding-left: 40px"><div >{{ o.title }}</div></el-col>
+          </el-card>
+        </el-row>
 
-<!--      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
-<!--      <el-button type="primary" @click="add">发布</el-button>-->
-<!--    </div>-->
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        stripe
-        style="width: 100%">
-      <el-table-column
-          label="默认图"
-      >
-        <template #default="scope">
-<!--          {{scope.row.defaultImage}}-->
-          <img style="width: 100px"  :src="scope.row.defaultImage">
-        </template>
-      </el-table-column>
-      <el-table-column
-          prop="title" min-width="200px"
-          label="标题">
-      </el-table-column>
-      <el-table-column
-          prop="newsFrom"
-          label="来源">
-      </el-table-column>
-      <el-table-column
-          prop="author"
-          label="作者">
-      </el-table-column>
-      <el-table-column
-          prop="typeName"
-          label="类别">
-      </el-table-column>
-      <el-table-column
-          prop="time"
-          label="时间">
-      </el-table-column>
-      <el-table-column label="操作" min-width="200px">
-        <template #default="scope">
-          <el-button size="mini" @click="details(scope.row)">详情</el-button>
-        </template>
-      </el-table-column>
+      </el-col>
+    </el-row>
 
-    </el-table>
 
-    <div style="margin: 10px 0">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-      </el-pagination>
-    </div>
 
-    <el-dialog title="提示" v-model="dialogVisible" width="50%" >
-      <el-form :model="form" label-width="120px">
-        <el-form-item label="标题">
-          <el-input v-model="form.title" style="width: 50%"></el-input>
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="form.desc2" style="width: 50%"></el-input>
-        </el-form-item>
-        <el-form-item label="默认图片">
-          <el-input v-model="form.defaultImage" style="width: 50%" disabled></el-input>
-          <el-upload ref="upload" :action="filesUploadUrl" :on-success="filesUploadSuccess">
-            <el-button type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="作者">
-          <el-input disabled v-model="form.author" style="width: 50%"></el-input>
-        </el-form-item>
-        <el-form-item label="来源">
-          <el-input v-model="form.newsFrom" style="width: 50%"></el-input>
-        </el-form-item>
-        <el-form-item label="类别">
-          <el-select v-model="form.type">
-            <el-option
-                v-for="item in options2"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <div id="div2">
-        </div>
-      </el-form>
-      <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-          </span>
-      </template>
-    </el-dialog>
-
-    <el-dialog title="详情" v-model="vis" width="50%">
-      <el-card>
-        <div v-html="detail.content" style="min-height: 100px"></div>
-      </el-card>
-    </el-dialog>
 
   </div>
 </template>
