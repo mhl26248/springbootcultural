@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 10px">
-    <div class="grid-content bg-purple"> <img src="http://127.0.0.1:9091/files/123.png" style="height: 120px"   class="image"></div>
+    <div class="grid-content bg-purple"> <img src="http://127.0.0.1:9091/files/123.png" style="height: 120px;width: 100%;"   class="image"></div>
     <el-row style="padding-top: 30px">
       <el-col :span="24" v-for="(o, index) in tableData"
               style="margin-top: 10px;margin-bottom: 10px;">
