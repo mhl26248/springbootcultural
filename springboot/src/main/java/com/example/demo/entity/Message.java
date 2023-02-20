@@ -24,6 +24,7 @@ public class Message extends Model<Message> {
     private String content;
 
     private String username;
+    private String userHead;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:dd", timezone = "GMT+8")
     private Date created;

@@ -52,6 +52,9 @@ public class UserController extends BaseController {
     @PostMapping("/login")
     public Result<?> login(@RequestBody User userParam) {
         User userPwd = userMapper.selectByName(userParam.getUsername());
+        if (userPwd == null) {
+            return Result.error("-1", "用户名或密码错误");
+        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userParam.getUsername());
         queryWrapper.eq("password", userPwd.getPassword());
