@@ -45,6 +45,11 @@ const routes = [
         name: 'RecordDetail',
         component: () => import("@/views/RecordDetail")
     },
+    {
+        path: '/NewDetail',
+        name: 'NewDetail',
+        component: () => import("@/views/NewDetail")
+    },
 
 
 ]

@@ -1,15 +1,18 @@
 <template>
   <div style="padding: 10px">
-
+    <div class="grid-content bg-purple"> <img src="http://127.0.0.1:9091/files/123.png" style="height: 120px"   class="image"></div>
     <el-row style="padding-top: 30px">
       <el-col :span="24" v-for="(o, index) in tableData"
               style="margin-top: 10px;margin-bottom: 10px;">
         <el-row >
-          <el-card>
+          <el-card @click="toDetail(o)">
             <el-col :span="12">
               <div class="grid-content bg-purple"> <img :src="o.defaultImage" style="width: 350px"   class="image"></div>
             </el-col>
-            <el-col :span="16" style="padding-left: 40px"><div >{{ o.title }}</div></el-col>
+            <el-col :span="16" style="padding-left: 40px"><div >
+              <div v-html="o.content" style="min-height: 100px"></div>
+<!--              {{ o.title }}-->
+            </div></el-col>
           </el-card>
         </el-row>
 
@@ -76,6 +79,10 @@ export default {
     this.load()
   },
   methods: {
+    toDetail(row){
+
+      this.$router.push({name: 'NewDetail', query: {sid: row.id}});
+    },
     details(row) {
       this.detail = row
       this.vis = true

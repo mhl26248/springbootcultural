@@ -177,7 +177,7 @@ public class NewsController extends BaseController {
     }
 
     @GetMapping("/getById")
-    public Result<?> getById(@RequestParam int id,@RequestParam int memberId) {
+    public Result<?> getById(@RequestParam int id) {
         //增加阅读次数
         News news = newsMapper.selectById(id);
         int readc = 1;
