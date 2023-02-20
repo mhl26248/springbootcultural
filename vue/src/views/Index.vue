@@ -2,13 +2,13 @@
 
   <Header v-if="user == ''" :user="user"/>
   <div style="padding: 10px">
-    <div style="margin: 10px 100px;">
-      <el-input v-model="search" placeholder="请输入关键词" style="width: 60%" clearable></el-input>
-      <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>
-    </div>
-    <el-carousel :interval="2000" type="card" v-if="tableData2.length>0">
+<!--    <div style="margin: 10px 100px;">-->
+<!--      <el-input v-model="search" placeholder="请输入关键词" style="width: 60%" clearable></el-input>-->
+<!--      <el-button type="primary" style="margin-left: 5px" @click="load()">查询</el-button>-->
+<!--    </div>-->
+    <el-carousel :interval="3000" type="card" height="250px" v-if="tableData2.length>0">
       <el-carousel-item v-for="item in tableData2" >
-        <h3 class="small"><el-image  :src="item.img" fit="contain"></el-image></h3>
+        <h3 class="small"><el-image :src="item.img" fit="contain"></el-image></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row style="padding-top: 30px">

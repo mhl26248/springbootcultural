@@ -1,7 +1,8 @@
 <template>
   <div style="height: 70px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
-    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">非遗申报平台
-
+    <div style="width: 100px;flex: 1; padding-left: 30px; font-weight: bold; color: dodgerblue">
+<!--      非遗申报平台-->
+<img style="width: 440px;" src="http://127.0.0.1:9091/files/11.png">
 <!--      <div style="margin: 10px 0" v-if="user.nickName!='管理员'" >-->
 <!--        <el-input v-if="user.nickName!='管理员'" v-model="search" placeholder="请输入商品名称" style="width: 50%" clearable></el-input>-->
 <!--        <el-button v-if="user.nickName!='管理员'" type="primary" style="margin-left: 5px" @click="load">查询</el-button>-->
